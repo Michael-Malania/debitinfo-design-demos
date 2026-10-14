@@ -23,15 +23,13 @@ import {
   Edit2, 
   X, 
   Send, 
-  ExternalLink,
-  MapPin,
-  Sparkles
+  ExternalLink
 } from 'lucide-react';
 
 export default function App() {
   const [selectedPageId, setSelectedPageId] = useState<string>('debitinfo.ge_1');
   const [userName, setUserNameState] = useState<string>('');
-  const [isEditingName, setIsEditingName] = useState<boolean>(false);
+  const [isNameModalOpen, setIsNameModalOpen] = useState<boolean>(false);
   const [tempName, setTempName] = useState<string>('');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
@@ -50,19 +48,15 @@ export default function App() {
     screenY: number;
   } | null>(null);
   const [draftText, setDraftText] = useState<string>('');
-  const [namePromptError, setNamePromptError] = useState<string>('');
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Load user name & comments
+  // Load user name & comments on mount
   useEffect(() => {
     const name = getUserName();
     setUserNameState(name);
     setTempName(name);
-    if (!name) {
-      setIsEditingName(true);
-    }
 
     const loadComments = () => setComments(getComments());
     loadComments();
@@ -80,7 +74,7 @@ export default function App() {
         return;
       }
       if (e.key === 'c' || e.key === 'C') {
-        setToolMode('comment');
+        handleActivateCommentMode();
       } else if (e.key === 'v' || e.key === 'V' || e.key === 'Escape') {
         setToolMode('select');
         setDraftComment(null);
@@ -89,25 +83,37 @@ export default function App() {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [userName]);
 
-  // Save User Name
-  const handleSaveName = (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!tempName.trim()) return;
-    setUserName(tempName.trim());
-    setUserNameState(tempName.trim());
-    setIsEditingName(false);
-    setNamePromptError('');
+  // Handle Comment Tool click with Obvious Name Prompt
+  const handleActivateCommentMode = () => {
+    const currentName = getUserName();
+    if (!currentName) {
+      setTempName('');
+      setIsNameModalOpen(true);
+      return;
+    }
+    setToolMode('comment');
+    setActivePinId(null);
   };
 
-  // Helper to sync pins into the iframe DOM
+  // Save User Name from Modal
+  const handleSaveNameModal = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const finalName = tempName.trim();
+    if (!finalName) return;
+
+    setUserName(finalName);
+    setUserNameState(finalName);
+    setIsNameModalOpen(false);
+    setToolMode('comment'); // Immediately activate comment tool!
+  };
+
+  // Helper to sync pins & popovers into the iframe DOM (positioned directly next to each pin!)
   const syncPinsToIframe = useCallback(() => {
     const iframe = iframeRef.current;
     if (!iframe || !iframe.contentDocument) return;
     const doc = iframe.contentDocument;
-
-    // Check if doc body exists
     if (!doc.body) return;
 
     // Set cursor style based on toolMode
@@ -133,63 +139,168 @@ export default function App() {
       doc.body.appendChild(pinContainer);
     }
 
-    // Render pins inside the iframe
+    // Clear previous pins
     pinContainer.innerHTML = '';
     const scrollH = doc.documentElement.scrollHeight || doc.body.scrollHeight;
     const scrollW = doc.documentElement.scrollWidth || doc.body.scrollWidth;
 
     pageComments.forEach((c, index) => {
-      const pinEl = doc.createElement('div');
-      pinEl.id = `pin-${c.id}`;
-      pinEl.style.position = 'absolute';
-      pinEl.style.left = `${(c.x / 100) * scrollW}px`;
-      pinEl.style.top = `${(c.y / 100) * scrollH}px`;
-      pinEl.style.transform = 'translate(-50%, -50%)';
-      pinEl.style.pointerEvents = 'auto';
-      pinEl.style.cursor = 'pointer';
-      pinEl.style.zIndex = c.id === activePinId ? '1000000' : '999999';
+      const pinWrapper = doc.createElement('div');
+      pinWrapper.id = `pin-wrap-${c.id}`;
+      pinWrapper.style.position = 'absolute';
+      pinWrapper.style.left = `${(c.x / 100) * scrollW}px`;
+      pinWrapper.style.top = `${(c.y / 100) * scrollH}px`;
+      pinWrapper.style.pointerEvents = 'auto';
+      pinWrapper.style.zIndex = c.id === activePinId ? '1000000' : '999998';
 
       const isResolved = c.resolved;
       const isSelected = c.id === activePinId;
 
-      pinEl.innerHTML = `
-        <div style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 30px;
-          height: 30px;
-          border-radius: 9999px;
-          font-family: monospace;
-          font-size: 12px;
-          font-weight: bold;
-          color: white;
-          background: ${isResolved ? '#059669' : '#0D45FC'};
-          border: 2px solid white;
-          box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-          transition: transform 0.15s ease;
-          ${isSelected ? 'transform: scale(1.25); outline: 3px solid #0D45FC; outline-offset: 2px;' : ''}
-        ">
-          ${isResolved ? '✓' : index + 1}
+      // Inner HTML: Pin marker + Attached Popover directly above it!
+      pinWrapper.innerHTML = `
+        <div style="position: relative;">
+          <!-- Pin Circle -->
+          <div id="pin-btn-${c.id}" style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 9999px;
+            font-family: monospace;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            background: ${isResolved ? '#059669' : '#0D45FC'};
+            border: 2px solid white;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+            cursor: pointer;
+            transform: translate(-50%, -50%) ${isSelected ? 'scale(1.2)' : 'scale(1)'};
+            ${isSelected ? 'outline: 3px solid #0D45FC; outline-offset: 2px;' : ''}
+            transition: transform 0.15s ease;
+          ">
+            ${isResolved ? '✓' : index + 1}
+          </div>
+
+          <!-- Popover Attached Directly Next to Pin -->
+          ${isSelected ? `
+            <div id="popover-${c.id}" style="
+              position: absolute;
+              bottom: 22px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 280px;
+              background: #0f172a;
+              color: white;
+              padding: 14px;
+              border-radius: 16px;
+              box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+              border: 1px solid #334155;
+              font-family: system-ui, sans-serif;
+              z-index: 1000001;
+              cursor: default;
+            ">
+              <!-- Popover Header -->
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid #1e293b;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 9999px; background: ${isResolved ? '#059669' : '#0D45FC'}; color: white; font-family: monospace; font-size: 10px; font-weight: bold;">
+                    ${isResolved ? '✓' : index + 1}
+                  </span>
+                  <span style="font-size: 12px; font-weight: 700; color: #f8fafc;">${c.author}</span>
+                </div>
+                <button id="close-pop-${c.id}" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 16px; line-height: 1; padding: 2px;">✕</button>
+              </div>
+
+              <!-- Comment Message -->
+              <p style="font-size: 12px; line-height: 1.5; color: ${isResolved ? '#94a3b8' : '#e2e8f0'}; margin: 0 0 12px 0; ${isResolved ? 'text-decoration: line-through;' : ''}">
+                ${c.text}
+              </p>
+
+              <!-- Popover Actions: Resolve & Delete -->
+              <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 1px solid #1e293b;">
+                <button id="toggle-resolve-${c.id}" style="
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 4px;
+                  padding: 4px 10px;
+                  border-radius: 8px;
+                  font-size: 11px;
+                  font-weight: 600;
+                  border: none;
+                  cursor: pointer;
+                  background: ${isResolved ? 'rgba(5, 150, 105, 0.2)' : '#1e293b'};
+                  color: ${isResolved ? '#34d399' : '#cbd5e1'};
+                ">
+                  ✓ ${isResolved ? 'Resolved' : 'Resolve'}
+                </button>
+
+                <button id="del-comment-${c.id}" style="
+                  background: transparent;
+                  border: none;
+                  color: #94a3b8;
+                  cursor: pointer;
+                  padding: 4px;
+                  font-size: 13px;
+                " title="Delete comment">
+                  🗑
+                </button>
+              </div>
+
+              <!-- Teardrop Arrow -->
+              <div style="
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 7px solid transparent;
+                border-right: 7px solid transparent;
+                border-top: 7px solid #0f172a;
+              "></div>
+            </div>
+          ` : ''}
         </div>
       `;
 
-      // Hover effect
-      pinEl.onmouseenter = () => {
-        pinEl.style.transform = 'translate(-50%, -50%) scale(1.2)';
-      };
-      pinEl.onmouseleave = () => {
-        pinEl.style.transform = isSelected ? 'translate(-50%, -50%) scale(1.25)' : 'translate(-50%, -50%) scale(1)';
-      };
+      // Event Listeners inside iframe for Popover buttons
+      const pinBtn = pinWrapper.querySelector(`#pin-btn-${c.id}`) as HTMLElement;
+      if (pinBtn) {
+        pinBtn.onclick = (e) => {
+          e.stopPropagation();
+          setActivePinId(isSelected ? null : c.id);
+          setDraftComment(null);
+        };
+      }
 
-      // Click pin opens details in main React state
-      pinEl.onclick = (e) => {
-        e.stopPropagation();
-        setActivePinId(c.id);
-        setDraftComment(null);
-      };
+      if (isSelected) {
+        const closeBtn = pinWrapper.querySelector(`#close-pop-${c.id}`) as HTMLElement;
+        if (closeBtn) {
+          closeBtn.onclick = (e) => {
+            e.stopPropagation();
+            setActivePinId(null);
+          };
+        }
 
-      pinContainer?.appendChild(pinEl);
+        const resolveBtn = pinWrapper.querySelector(`#toggle-resolve-${c.id}`) as HTMLElement;
+        if (resolveBtn) {
+          resolveBtn.onclick = (e) => {
+            e.stopPropagation();
+            toggleResolve(c.id);
+          };
+        }
+
+        const delBtn = pinWrapper.querySelector(`#del-comment-${c.id}`) as HTMLElement;
+        if (delBtn) {
+          delBtn.onclick = (e) => {
+            e.stopPropagation();
+            deleteComment(c.id);
+            setActivePinId(null);
+          };
+        }
+      }
+
+      pinContainer?.appendChild(pinWrapper);
     });
 
   }, [toolMode, pageComments, activePinId]);
@@ -204,14 +315,19 @@ export default function App() {
       if (!doc) return;
 
       const handleIframeClick = (e: MouseEvent) => {
-        if (toolMode !== 'comment') return;
+        if (toolMode !== 'comment') {
+          // If clicked outside pin in select mode, close active popover
+          const target = e.target as HTMLElement;
+          if (!target.closest('#debitinfo-pins-container')) {
+            setActivePinId(null);
+          }
+          return;
+        }
 
         // Ensure user entered their name
         const currentName = getUserName();
         if (!currentName) {
-          setIsEditingName(true);
-          setNamePromptError('Please enter your name first');
-          setIsSidebarOpen(true);
+          setIsNameModalOpen(true);
           return;
         }
 
@@ -291,12 +407,10 @@ export default function App() {
     setActivePinId(newComment.id);
   };
 
-  const activeCommentObj = pageComments.find(c => c.id === activePinId);
-
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-slate-950 font-sans text-slate-100 select-none">
       
-      {/* 1. Left Sidebar: Page List & Comments on Selected Page */}
+      {/* 1. Left Sidebar: Page List & Comments */}
       <aside 
         className={`bg-slate-900 border-r border-slate-800 flex flex-col shrink-0 transition-all duration-300 z-40 ${
           isSidebarOpen ? 'w-80' : 'w-0'
@@ -326,51 +440,29 @@ export default function App() {
 
           {/* User Name Identity */}
           <div className="px-4 py-3 bg-slate-950/60 border-b border-slate-800">
-            {isEditingName ? (
-              <form onSubmit={handleSaveName} className="space-y-2">
-                <label className="block text-[11px] font-semibold text-blue-400 uppercase tracking-wide">
-                  თქვენი სახელი / Your Name:
-                </label>
-                <div className="flex items-center gap-1.5">
-                  <input
-                    type="text"
-                    autoFocus
-                    value={tempName}
-                    onChange={(e) => setTempName(e.target.value)}
-                    placeholder="მაგ: გიორგი, დიზაინერი..."
-                    className="flex-1 px-2.5 py-1 text-xs rounded-md bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-blue-500"
-                  />
-                  <button
-                    type="submit"
-                    className="px-2.5 py-1 rounded-md bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold"
-                  >
-                    OK
-                  </button>
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2 overflow-hidden">
+                <div className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                  <User className="w-3.5 h-3.5" />
                 </div>
-                {namePromptError && (
-                  <p className="text-[10px] text-rose-400">{namePromptError}</p>
-                )}
-              </form>
-            ) : (
-              <div className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 overflow-hidden">
-                  <div className="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
-                    <User className="w-3.5 h-3.5" />
-                  </div>
-                  <div className="truncate">
-                    <span className="text-slate-400 text-[10px] block leading-none">Reviewer:</span>
-                    <span className="font-semibold text-white truncate">{userName || 'Anonymous'}</span>
-                  </div>
+                <div className="truncate">
+                  <span className="text-slate-400 text-[10px] block leading-none">Reviewer:</span>
+                  <span className="font-semibold text-white truncate">
+                    {userName || 'Click to set name...'}
+                  </span>
                 </div>
-                <button
-                  onClick={() => setIsEditingName(true)}
-                  className="p-1 text-slate-400 hover:text-white hover:bg-slate-800 rounded"
-                  title="Edit Name"
-                >
-                  <Edit2 className="w-3 h-3" />
-                </button>
               </div>
-            )}
+              <button
+                onClick={() => {
+                  setTempName(userName);
+                  setIsNameModalOpen(true);
+                }}
+                className="p-1 text-slate-400 hover:text-white hover:bg-slate-800 rounded"
+                title="Edit Name"
+              >
+                <Edit2 className="w-3 h-3" />
+              </button>
+            </div>
           </div>
 
           {/* Pages List */}
@@ -522,70 +614,9 @@ export default function App() {
         </button>
       )}
 
-      {/* 2. Main Viewport & Figma Toolbar */}
+      {/* 2. Main Viewport & Floating Toolbar at the Middle Bottom */}
       <main className="flex-1 flex flex-col relative h-full overflow-hidden bg-slate-950">
         
-        {/* Floating Figma-style Toolbar */}
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 p-1.5 rounded-full bg-slate-900/95 border border-slate-700/80 shadow-2xl backdrop-blur-md">
-          
-          {/* Select Tool (V) */}
-          <button
-            onClick={() => {
-              setToolMode('select');
-              setDraftComment(null);
-            }}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-              toolMode === 'select'
-                ? 'bg-blue-600 text-white shadow-sm font-semibold'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-            title="Interact with page (Key: V)"
-          >
-            <MousePointer className="w-3.5 h-3.5" />
-            <span>Select (V)</span>
-          </button>
-
-          {/* Comment Tool (C) */}
-          <button
-            onClick={() => {
-              const currentName = getUserName();
-              if (!currentName) {
-                setIsEditingName(true);
-                setNamePromptError('Please enter your name first');
-                setIsSidebarOpen(true);
-              }
-              setToolMode('comment');
-            }}
-            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
-              toolMode === 'comment'
-                ? 'bg-blue-600 text-white shadow-sm font-semibold animate-pulse'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
-            }`}
-            title="Drop comments anywhere on page (Key: C)"
-          >
-            <MessageSquare className="w-3.5 h-3.5 text-blue-300" />
-            <span>Comment (C)</span>
-            {pageComments.length > 0 && (
-              <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[10px] font-mono flex items-center justify-center font-bold">
-                {pageComments.length}
-              </span>
-            )}
-          </button>
-
-          <div className="h-4 w-px bg-slate-700 mx-1" />
-          <span className="text-[11px] text-slate-400 pr-2 font-mono truncate max-w-[200px]">
-            {currentPage.titleKa}
-          </span>
-        </div>
-
-        {/* Comment Tool Guidance Banner */}
-        {toolMode === 'comment' && (
-          <div className="absolute top-16 left-1/2 -translate-x-1/2 z-40 px-4 py-1.5 rounded-full bg-blue-600/90 text-white text-xs shadow-lg backdrop-blur-md flex items-center gap-2 pointer-events-none animate-in fade-in slide-in-from-top-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-            <span>დააწკაპუნეთ ნებისმიერ ადგილზე შენიშვნის დასატოვებლად (Esc to exit)</span>
-          </div>
-        )}
-
         {/* Viewport Frame Container */}
         <div ref={containerRef} className="flex-1 relative w-full h-full bg-white">
           <iframe
@@ -595,7 +626,7 @@ export default function App() {
             className="w-full h-full border-0"
           />
 
-          {/* New Comment Draft Popover */}
+          {/* New Comment Draft Popover at Click Coordinates */}
           {draftComment && (
             <div
               style={{
@@ -665,61 +696,119 @@ export default function App() {
               </form>
             </div>
           )}
-
-          {/* Active Pin Details Popover */}
-          {activeCommentObj && (
-            <div className="fixed bottom-6 right-6 z-50 w-80 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-slate-700 animate-in fade-in slide-in-from-bottom-2">
-              <div className="flex items-center justify-between text-xs mb-2 pb-2 border-b border-slate-800">
-                <div className="flex items-center gap-2">
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold ${
-                    activeCommentObj.resolved ? 'bg-emerald-600 text-white' : 'bg-blue-600 text-white'
-                  }`}>
-                    {activeCommentObj.resolved ? '✓' : '#'}
-                  </div>
-                  <span className="font-bold text-white">{activeCommentObj.author}</span>
-                </div>
-                <button
-                  onClick={() => setActivePinId(null)}
-                  className="text-slate-400 hover:text-white"
-                >
-                  <X className="w-3.5 h-3.5" />
-                </button>
-              </div>
-
-              <p className={`text-xs leading-relaxed mb-3 ${activeCommentObj.resolved ? 'line-through text-slate-400' : 'text-slate-200'}`}>
-                {activeCommentObj.text}
-              </p>
-
-              <div className="flex items-center justify-between pt-2 border-t border-slate-800 text-xs">
-                <button
-                  onClick={() => toggleResolve(activeCommentObj.id)}
-                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${
-                    activeCommentObj.resolved
-                      ? 'bg-emerald-500/20 text-emerald-400'
-                      : 'bg-slate-800 hover:bg-emerald-600 hover:text-white text-slate-300'
-                  }`}
-                >
-                  <Check className="w-3.5 h-3.5" />
-                  <span>{activeCommentObj.resolved ? 'Resolved' : 'Resolve'}</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    deleteComment(activeCommentObj.id);
-                    setActivePinId(null);
-                  }}
-                  className="text-slate-400 hover:text-rose-400 p-1"
-                  title="Delete Comment"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-          )}
-
         </div>
 
+        {/* Floating Figma-style Toolbar MOVED TO MIDDLE-BOTTOM */}
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1 p-1.5 rounded-full bg-slate-900/95 border border-slate-700 shadow-2xl backdrop-blur-md">
+          
+          {/* Select Tool (V) */}
+          <button
+            onClick={() => {
+              setToolMode('select');
+              setDraftComment(null);
+            }}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+              toolMode === 'select'
+                ? 'bg-blue-600 text-white shadow-sm font-semibold'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+            }`}
+            title="Interact with page (Key: V)"
+          >
+            <MousePointer className="w-3.5 h-3.5" />
+            <span>Select (V)</span>
+          </button>
+
+          {/* Comment Tool (C) */}
+          <button
+            onClick={handleActivateCommentMode}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+              toolMode === 'comment'
+                ? 'bg-blue-600 text-white shadow-sm font-semibold animate-pulse'
+                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+            }`}
+            title="Drop comments anywhere on page (Key: C)"
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-blue-300" />
+            <span>Comment (C)</span>
+            {pageComments.length > 0 && (
+              <span className="w-4 h-4 rounded-full bg-white/20 text-white text-[10px] font-mono flex items-center justify-center font-bold">
+                {pageComments.length}
+              </span>
+            )}
+          </button>
+
+          <div className="h-4 w-px bg-slate-700 mx-1" />
+          <span className="text-[11px] text-slate-400 pr-2 font-mono truncate max-w-[200px]">
+            {currentPage.titleKa}
+          </span>
+        </div>
+
+        {/* Comment Tool Guidance Banner (above the bottom toolbar) */}
+        {toolMode === 'comment' && (
+          <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-40 px-4 py-1.5 rounded-full bg-blue-600/95 text-white text-xs shadow-xl backdrop-blur-md flex items-center gap-2 pointer-events-none animate-in fade-in slide-in-from-bottom-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span>დააწკაპუნეთ ნებისმიერ ადგილზე შენიშვნის დასატოვებლად (Esc გამოსასვლელად)</span>
+          </div>
+        )}
+
       </main>
+
+      {/* 3. Obvious Name Input Modal (Prompted if name is missing or when clicking edit) */}
+      {isNameModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in duration-200">
+          <div 
+            className="w-full max-w-sm bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl p-6 text-white text-left animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+                <User className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-bold text-base leading-tight">შეიყვანეთ თქვენი სახელი</h3>
+                <p className="text-xs text-slate-400">Please enter your name</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-300 leading-relaxed mb-4">
+              შენიშვნების დასატოვებლად გთხოვთ მიუთითოთ თქვენი სახელი ან როლი, რათა სხვებმა იცოდნენ ვის ეკუთვნის კომენტარი:
+            </p>
+
+            <form onSubmit={handleSaveNameModal} className="space-y-4">
+              <div>
+                <input
+                  type="text"
+                  autoFocus
+                  required
+                  value={tempName}
+                  onChange={(e) => setTempName(e.target.value)}
+                  placeholder="მაგ: გიორგი, დიზაინერი, კლიენტი..."
+                  className="w-full px-3.5 py-2.5 text-sm rounded-xl bg-slate-800 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-1">
+                {userName && (
+                  <button
+                    type="button"
+                    onClick={() => setIsNameModalOpen(false)}
+                    className="px-3 py-2 text-xs text-slate-400 hover:text-white"
+                  >
+                    გაუქმება
+                  </button>
+                )}
+                <button
+                  type="submit"
+                  disabled={!tempName.trim()}
+                  className="w-full px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md transition-all disabled:opacity-50"
+                >
+                  გაგრძელება / Continue
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
     </div>
   );
