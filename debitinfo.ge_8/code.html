@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-surface-bg" lang="ka"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Debitinfo.GE — პირადი კაბინეტი (სუფთა პროფილი)</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Noto+Sans+Georgian:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary": "#ffffff",
+            "inverse-primary": "#bac3ff",
+            "on-tertiary-fixed": "#3d0700",
+            "on-primary-fixed-variant": "#0031c5",
+            "error": "#ba1a1a",
+            "on-tertiary-container": "#ffcec3",
+            "primary-fixed-dim": "#bac3ff",
+            "on-surface-variant": "#434657",
+            "background": "#fbf8ff",
+            "outline": "#747688",
+            "rating-a": "#0DFCC4",
+            "border-subtle": "#E2E8F0",
+            "on-background": "#191b25",
+            "surface-bg": "#F8FAFC",
+            "accent-mint": "#0DFCC4",
+            "secondary-container": "#12bdfd",
+            "rating-c": "#EF4444",
+            "surface-card": "#FFFFFF",
+            "secondary-fixed-dim": "#7cd0ff",
+            "surface-container-highest": "#e2e1ef",
+            "surface-container-low": "#f4f2ff",
+            "secondary-fixed": "#c4e7ff",
+            "rating-b": "#FBBF24",
+            "surface-dim": "#d9d9e7",
+            "on-secondary-fixed-variant": "#004c69",
+            "on-secondary-fixed": "#001e2c",
+            "tertiary-fixed-dim": "#ffb4a3",
+            "tertiary": "#8b1c00",
+            "surface-container": "#edecfb",
+            "on-primary-container": "#d2d7ff",
+            "surface-bright": "#fbf8ff",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f0effe",
+            "surface-tint": "#0b44fc",
+            "inverse-surface": "#2e303a",
+            "outline-variant": "#c4c5da",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed-variant": "#8a1b00",
+            "text-primary": "#0F172A",
+            "surface-container-lowest": "#ffffff",
+            "secondary": "#00668a",
+            "surface-variant": "#e2e1ef",
+            "primary-container": "#0d45fc",
+            "primary": "#0032c6",
+            "surface-container-high": "#e8e7f5",
+            "surface": "#fbf8ff",
+            "on-secondary-container": "#004964",
+            "primary-fixed": "#dee1ff",
+            "tertiary-fixed": "#ffdad2",
+            "on-surface": "#191b25",
+            "text-muted": "#64748B",
+            "tertiary-container": "#b62700",
+            "on-primary-fixed": "#001159",
+            "on-error": "#ffffff",
+            "error-container": "#ffdad6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "margin-desktop": "2rem",
+            "gutter": "1rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-desktop": "1.5rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "label-sm": ["JetBrains Mono", "monospace"],
+            "label-md": ["Noto Sans Georgian", "Inter", "sans-serif"],
+            "headline-md": ["Noto Sans Georgian", "Inter", "sans-serif"],
+            "body-sm": ["Noto Sans Georgian", "Inter", "sans-serif"],
+            "data-mono-lg": ["JetBrains Mono", "monospace"],
+            "headline-xl-mobile": ["Noto Sans Georgian", "Inter", "sans-serif"],
+            "body-md": ["Noto Sans Georgian", "Inter", "sans-serif"],
+            "headline-xl": ["Noto Sans Georgian", "Inter", "sans-serif"],
+            "headline-sm": ["Noto Sans Georgian", "Inter", "sans-serif"],
+            "data-mono-md": ["JetBrains Mono", "monospace"],
+            "headline-lg": ["Noto Sans Georgian", "Inter", "sans-serif"],
+            "body-lg": ["Noto Sans Georgian", "Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "500" }],
+            "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "data-mono-lg": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "data-mono-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-pulse-ring {
+      box-shadow: 0 0 0 0 rgba(13, 252, 196, 0.5);
+      animation: pulse-ring 2.5s infinite cubic-bezier(0.66, 0, 0, 1);
+    }
+    @keyframes pulse-ring {
+      to {
+        box-shadow: 0 0 0 16px rgba(13, 252, 196, 0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-surface-bg text-text-primary antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-primary selection:text-white">
+<!-- TOP NAVIGATION BAR -->
+<header class="bg-surface-card sticky top-0 z-50 shadow-sm border-b border-border-subtle">
+<div class="w-full px-4 lg:px-8 max-w-7xl mx-auto flex items-center justify-between h-16">
+<!-- Brand Logo -->
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 group" href="#">
+<div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-white shadow-sm shadow-primary/30 transition-transform group-hover:scale-105">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">assured_workload</span>
+</div>
+<div class="flex items-baseline">
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Debitinfo</span>
+<span class="font-headline-sm text-headline-sm font-bold text-secondary-container">.GE</span>
+</div>
+</a>
+<div class="hidden sm:flex items-center gap-1.5 ml-2 pl-3 border-l border-border-subtle">
+<span class="w-2 h-2 rounded-full bg-accent-mint custom-pulse-ring"></span>
+<span class="font-label-sm text-label-sm text-text-muted tracking-tight">RS.GE LIVE SYNC</span>
+</div>
+</div>
+<!-- Main Navigation Links -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-text-muted font-label-md text-label-md hover:text-primary transition-colors duration-150" href="#">მთავარი</a>
+<a class="text-primary font-label-md text-label-md border-b-2 border-primary pb-1 flex items-center gap-1.5" href="#">
+<span>ჩემი პროფილი</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+</a>
+<a class="text-text-muted font-label-md text-label-md hover:text-primary transition-colors duration-150" href="#">შემოწმების ისტორია</a>
+<a class="text-text-muted font-label-md text-label-md hover:text-primary transition-colors duration-150" href="#">სერვისები</a>
+<a class="text-text-muted font-label-md text-label-md hover:text-primary transition-colors duration-150" href="#">დახმარება</a>
+</nav>
+<!-- Right Actions / User Cluster -->
+<div class="flex items-center gap-3">
+<!-- Language Switcher -->
+<button class="hidden sm:flex items-center justify-center w-9 h-9 rounded-lg text-text-muted hover:text-primary hover:bg-surface-bg border border-border-subtle transition-colors" title="ენა / Language" type="button">
+<span class="material-symbols-outlined text-[19px]">language</span>
+</button>
+<!-- Notification Bell -->
+<button class="relative flex items-center justify-center w-9 h-9 rounded-lg text-text-muted hover:text-primary hover:bg-surface-bg border border-border-subtle transition-colors" title="შეტყობინებები" type="button">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-text-muted/40 rounded-full"></span>
+</button>
+<!-- Divider -->
+<div class="h-6 w-px bg-border-subtle hidden sm:block"></div>
+<!-- User Chip & Status -->
+<div class="flex items-center gap-3 pl-1">
+<div class="relative">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-primary font-bold text-xs border border-border-subtle">
+              გბ
+            </div>
+<span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-accent-mint rounded-full border-2 border-surface-card" title="ვერიფიცირებული"></span>
+</div>
+<div class="hidden lg:flex flex-col text-left">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-label-md text-text-primary leading-tight">გიორგი ბერიძე</span>
+<span class="material-symbols-outlined text-[14px] text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<span class="font-label-sm text-label-sm text-text-muted">აქტიური პროფილი</span>
+</div>
+</div>
+<!-- Exit Action -->
+<button class="text-text-muted hover:text-error hover:bg-error-container/30 px-2.5 py-1.5 rounded-lg font-body-sm text-body-sm transition-colors flex items-center gap-1 ml-1" title="გამოსვლა" type="button">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+<span class="hidden md:inline font-medium">გამოსვლა</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN CANVAS -->
+<main class="flex-1 w-full max-w-7xl mx-auto px-4 lg:px-8 py-8 space-y-8">
+<!-- BREADCRUMBS & SECTION TITLE -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<nav class="flex items-center gap-2 text-text-muted font-body-sm text-body-sm mb-1">
+<a class="hover:text-primary transition-colors" href="#">მთავარი</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-text-primary font-medium">მომხმარებლის პროფილი &amp; მონიტორინგი</span>
+</nav>
+<h1 class="font-headline-lg text-headline-lg text-text-primary tracking-tight">პირადი კაბინეტი</h1>
+</div>
+<!-- Timestamp chip -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-card border border-border-subtle shadow-sm self-start sm:self-auto">
+<span class="w-2 h-2 rounded-full bg-accent-mint"></span>
+<span class="font-body-sm text-body-sm text-text-muted">
+          სისტემური სტატუსი: <strong class="text-text-primary font-medium">აქტიური / სინქრონიზებული</strong>
+</span>
+</div>
+</div>
+<!-- 1. USER PROFILE IDENTITY & REQUISITES CARD -->
+<section class="bg-surface-card rounded-xl border border-border-subtle p-6 shadow-sm">
+<div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+<!-- Identity Summary Left -->
+<div class="flex items-start sm:items-center gap-4">
+<div class="w-16 h-16 rounded-xl bg-gradient-to-br from-primary-container to-secondary-container text-white flex items-center justify-center font-bold text-xl shadow-md shadow-primary/20 shrink-0">
+            გბ
+          </div>
+<div>
+<div class="flex flex-wrap items-center gap-2.5 mb-1">
+<h2 class="font-headline-md text-headline-md text-text-primary">გიორგი ბერიძე</h2>
+<!-- Verification Badge -->
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[15px] text-emerald-600" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+                იდენტობა დადასტურებულია
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">account_balance</span>
+              შემოწმებულია სახელმწიფო სერვისების განვითარების სააგენტოსა და RS.GE-ს ბაზებთან
+            </p>
+</div>
+</div>
+<!-- Security / Requisites Block Right -->
+<div class="w-full lg:w-auto grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 lg:pt-0 border-t lg:border-t-0 lg:border-l border-border-subtle lg:pl-8">
+<!-- Personal ID -->
+<div class="space-y-0.5">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider block">პირადი ნომერი (პ/ნ)</span>
+<div class="flex items-center gap-2">
+<span class="font-data-mono-md text-data-mono-md text-text-primary tracking-wide">01024089123</span>
+<button class="text-text-muted hover:text-primary transition-colors" onclick="navigator.clipboard.writeText('01024089123')" title="კოპირება" type="button">
+<span class="material-symbols-outlined text-[15px]">content_copy</span>
+</button>
+</div>
+</div>
+<!-- Phone -->
+<div class="space-y-0.5">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider block">ტელეფონის ნომერი</span>
+<span class="font-data-mono-md text-data-mono-md text-text-primary">+995 599 12 34 56</span>
+</div>
+<!-- Email -->
+<div class="space-y-0.5">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider block">ელ. ფოსტა</span>
+<span class="font-body-sm text-body-sm text-text-primary font-medium truncate block max-w-[200px]">giorgi.beridze@example.ge</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. CENTRAL HERO STATUS CARD (CLEAN STATE / ZERO DEBTS) -->
+<section class="relative overflow-hidden bg-gradient-to-br from-surface-card via-white to-slate-50/60 rounded-2xl border border-border-subtle p-6 sm:p-10 shadow-sm">
+<!-- Subtle Decorative Fintech Mesh -->
+<div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-accent-mint/10 blur-3xl pointer-events-none"></div>
+<div class="absolute -left-20 -top-20 w-72 h-72 rounded-full bg-primary/5 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col items-center text-center max-w-3xl mx-auto space-y-6">
+<!-- Big Trust Badge Icon -->
+<div class="relative flex items-center justify-center">
+<div class="w-24 h-24 rounded-2xl bg-gradient-to-tr from-accent-mint/20 via-sky-100 to-primary-fixed/30 border border-emerald-200 flex items-center justify-center shadow-lg shadow-accent-mint/20">
+<span class="material-symbols-outlined text-[54px] text-emerald-600" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<!-- Orbiting micro indicator -->
+<div class="absolute -top-1 -right-1 bg-surface-card rounded-full p-1.5 shadow-md border border-border-subtle flex items-center justify-center">
+<span class="w-3.5 h-3.5 rounded-full bg-accent-mint block"></span>
+</div>
+</div>
+<!-- Main Headline -->
+<div class="space-y-3">
+<div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-300/60">
+<span class="font-data-mono-md text-data-mono-md font-bold text-emerald-800">რეიტინგი: A (უნაკლო)</span>
+<span class="text-emerald-400">•</span>
+<span class="font-label-md text-label-md text-emerald-800 font-semibold">სუფთა პროფილი</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-text-primary tracking-tight font-extrabold max-w-2xl mx-auto leading-tight">
+            თქვენს სახელზე აქტიური დავალიანება ან საკრედიტო ვალდებულება არ მოიძებნა
+          </h2>
+<p class="font-body-md text-body-md text-text-muted max-w-xl mx-auto leading-relaxed">
+            მონაცემთა ბაზაში რაიმე ვალდებულების ან დავალების დაფიქსირების შემთხვევაში, თქვენი კაბინეტი ავტომატურად განახლდება და მოგენიჭებათ შესაბამისი სტატუსი.
+          </p>
+</div>
+<!-- Telemetry / Live Scan Info Bar -->
+<div class="w-full max-w-xl bg-surface-bg/80 border border-border-subtle rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-card border border-border-subtle flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">sync</span>
+</div>
+<div>
+<span class="font-body-sm text-body-sm font-medium text-text-primary block">ბოლო სრული სკანირება: დღეს, 14:32</span>
+<span class="font-label-sm text-label-sm text-text-muted">მონაცემთა ბაზა აქტუალურია • შემოწმებულია 18 ფინანსური წყარო</span>
+</div>
+</div>
+<span class="inline-flex items-center gap-1 text-emerald-700 font-label-md text-label-md bg-emerald-100/60 px-2.5 py-1 rounded-lg">
+<span class="material-symbols-outlined text-[14px]">done_all</span> 0 ჩანაწერი
+          </span>
+</div>
+<!-- Action CTAs -->
+<div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full pt-2">
+<!-- Download Certificate Primary CTA -->
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3 rounded-lg bg-primary text-white font-label-md text-label-md hover:bg-[#0A37CA] transition-all shadow-md shadow-primary/25 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>ოფიციალური ცნობის ჩამოტვირთვა (PDF)</span>
+</a>
+<!-- Refresh Check Secondary CTA -->
+<button class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-surface-card border border-border-subtle text-text-primary hover:border-secondary-container hover:text-primary transition-all font-label-md text-label-md shadow-sm active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">autorenew</span>
+<span>განმეორებით გადამოწმება</span>
+</button>
+</div>
+</div>
+</section>
+<!-- METRICS QUICK BAR (0 DEBTS BREAKDOWN) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Card 1 -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-5 flex items-center justify-between shadow-sm">
+<div class="space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider block">საბანკო სექტორი</span>
+<span class="font-data-mono-lg text-data-mono-lg text-text-primary font-bold">0.00 ₾</span>
+<span class="font-body-sm text-body-sm text-emerald-600 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check</span> ვადაგადაცილება არ არის
+          </span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-bg border border-border-subtle flex items-center justify-center text-text-muted">
+<span class="material-symbols-outlined text-[22px]">account_balance</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-5 flex items-center justify-between shadow-sm">
+<div class="space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider block">საგადასახადო (RS.GE)</span>
+<span class="font-data-mono-lg text-data-mono-lg text-text-primary font-bold">0.00 ₾</span>
+<span class="font-body-sm text-body-sm text-emerald-600 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check</span> საგადასახადო დავალიანება: 0
+          </span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-bg border border-border-subtle flex items-center justify-center text-text-muted">
+<span class="material-symbols-outlined text-[22px]">receipt_long</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-5 flex items-center justify-between shadow-sm">
+<div class="space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider block">სააღსრულებო რეესტრი</span>
+<span class="font-data-mono-lg text-data-mono-lg text-text-primary font-bold">არ ფიქსირდება</span>
+<span class="font-body-sm text-body-sm text-emerald-600 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check</span> მოვალეთა რეესტრი: სუფთა
+          </span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-bg border border-border-subtle flex items-center justify-center text-text-muted">
+<span class="material-symbols-outlined text-[22px]">gavel</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-5 flex items-center justify-between shadow-sm">
+<div class="space-y-1">
+<span class="font-label-sm text-label-sm text-text-muted uppercase tracking-wider block">მიკროსაფინანსო სექტორი</span>
+<span class="font-data-mono-lg text-data-mono-lg text-text-primary font-bold">0.00 ₾</span>
+<span class="font-body-sm text-body-sm text-emerald-600 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check</span> შეუსრულებელი ვალდებულება: 0
+          </span>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-bg border border-border-subtle flex items-center justify-center text-text-muted">
+<span class="material-symbols-outlined text-[22px]">domain</span>
+</div>
+</div>
+</div>
+<!-- 3. SEARCH & VERIFICATION HISTORY TABLE (შემოწმების ისტორია) -->
+<section class="bg-surface-card rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+<!-- Table Header & Controls -->
+<div class="p-6 border-b border-border-subtle flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-sm text-headline-sm text-text-primary">შემოწმების ისტორია &amp; აუდიტის ლოგი</h3>
+<span class="px-2 py-0.5 rounded-full bg-surface-bg border border-border-subtle text-text-muted font-label-sm text-label-sm">4 ჩანაწერი</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted mt-0.5">სისტემის მიერ ჩატარებული ოფიციალური შემოწმებების ქრონოლოგია</p>
+</div>
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-subtle text-text-muted hover:text-text-primary bg-surface-card text-body-sm font-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+<span>ფილტრი</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border-subtle text-text-muted hover:text-text-primary bg-surface-card text-body-sm font-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">file_download</span>
+<span>ექსპორტი (CSV)</span>
+</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 border-b border-border-subtle">
+<th class="py-3 px-4 sm:px-6 font-label-sm text-label-sm text-text-muted uppercase tracking-wider" scope="col">თარიღი და დრო</th>
+<th class="py-3 px-4 sm:px-6 font-label-sm text-label-sm text-text-muted uppercase tracking-wider" scope="col">შემოწმების ტიპი / წყარო</th>
+<th class="py-3 px-4 sm:px-6 font-label-sm text-label-sm text-text-muted uppercase tracking-wider" scope="col">მოთხოვნილი პ/ნ</th>
+<th class="py-3 px-4 sm:px-6 font-label-sm text-label-sm text-text-muted uppercase tracking-wider" scope="col">შედეგი</th>
+<th class="py-3 px-4 sm:px-6 font-label-sm text-label-sm text-text-muted uppercase tracking-wider text-right" scope="col">დოკუმენტი</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle font-body-sm text-body-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-4 px-4 sm:px-6">
+<div class="font-data-mono-md text-data-mono-md text-text-primary">24.10.2024 • 14:32</div>
+<span class="text-text-muted font-body-sm text-body-sm">ავტომატური სკანირება</span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary shrink-0"></span>
+<span class="font-medium text-text-primary">სრული სისტემური აუდიტი</span>
+</div>
+<span class="text-text-muted text-[11px] block mt-0.5">RS.GE + საკრედიტო ბიურო + მოვალეთა რეესტრი</span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<span class="font-data-mono-md text-data-mono-md text-text-muted bg-surface-bg px-2 py-0.5 rounded border border-border-subtle">
+                  01024089123
+                </span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span>ვალის გარეშე</span>
+</span>
+</td>
+<td class="py-4 px-4 sm:px-6 text-right">
+<a class="inline-flex items-center gap-1 text-primary hover:underline font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+<span>ცნობა #8912</span>
+</a>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-4 px-4 sm:px-6">
+<div class="font-data-mono-md text-data-mono-md text-text-primary">15.10.2024 • 10:15</div>
+<span class="text-text-muted font-body-sm text-body-sm">მომხმარებლის მოთხოვნა</span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-container shrink-0"></span>
+<span class="font-medium text-text-primary">RS.GE საგადასახადო რეესტრი</span>
+</div>
+<span class="text-text-muted text-[11px] block mt-0.5">შემოსავლების სამსახურის საინფორმაციო ბაზა</span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<span class="font-data-mono-md text-data-mono-md text-text-muted bg-surface-bg px-2 py-0.5 rounded border border-border-subtle">
+                  01024089123
+                </span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span>ვალის გარეშე</span>
+</span>
+</td>
+<td class="py-4 px-4 sm:px-6 text-right">
+<a class="inline-flex items-center gap-1 text-primary hover:underline font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+<span>ცნობა #8741</span>
+</a>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-4 px-4 sm:px-6">
+<div class="font-data-mono-md text-data-mono-md text-text-primary">01.10.2024 • 09:00</div>
+<span class="text-text-muted font-body-sm text-body-sm">გეგმიური მონიტორინგი</span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary shrink-0"></span>
+<span class="font-medium text-text-primary">საბანკო საკრედიტო მონიტორინგი</span>
+</div>
+<span class="text-text-muted text-[11px] block mt-0.5">საქართველოს საბანკო ასოციაციის ბაზა</span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<span class="font-data-mono-md text-data-mono-md text-text-muted bg-surface-bg px-2 py-0.5 rounded border border-border-subtle">
+                  01024089123
+                </span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span>ვალის გარეშე</span>
+</span>
+</td>
+<td class="py-4 px-4 sm:px-6 text-right">
+<a class="inline-flex items-center gap-1 text-primary hover:underline font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+<span>ცნობა #8519</span>
+</a>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="py-4 px-4 sm:px-6">
+<div class="font-data-mono-md text-data-mono-md text-text-primary">15.09.2024 • 16:45</div>
+<span class="text-text-muted font-body-sm text-body-sm">საწყისი ვერიფიკაცია</span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-accent-mint shrink-0"></span>
+<span class="font-medium text-text-primary">პირველადი რეგისტრაციის აუდიტი</span>
+</div>
+<span class="text-text-muted text-[11px] block mt-0.5">სრული საკრედიტო ისტორიის გენერირება</span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<span class="font-data-mono-md text-data-mono-md text-text-muted bg-surface-bg px-2 py-0.5 rounded border border-border-subtle">
+                  01024089123
+                </span>
+</td>
+<td class="py-4 px-4 sm:px-6">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-label-md text-label-md">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span>ვალის გარეშე</span>
+</span>
+</td>
+<td class="py-4 px-4 sm:px-6 text-right">
+<a class="inline-flex items-center gap-1 text-primary hover:underline font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+<span>ცნობა #8104</span>
+</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Footer Note -->
+<div class="p-4 bg-slate-50 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between text-text-muted font-body-sm text-body-sm gap-2">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">verified</span>
+          ყველა ჩანაწერი დამოწმებულია ელექტრონული კვალიფიციური შტამპით.
+        </span>
+<a class="text-primary hover:underline font-medium" href="#">სრული ისტორიის ნახვა (არქივი) →</a>
+</div>
+</section>
+<!-- 4. QUICK SERVICES & SUPPORT / SECURITY BLOCK -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- 2 Cards column (Services) -->
+<div class="lg:col-span-2 space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-text-primary">დამატებითი სერვისები &amp; უსაფრთხოება</h3>
+<span class="font-label-md text-label-md text-primary">მომსახურების პაკეტები</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Service Card 1 -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-5 flex flex-col justify-between hover:border-secondary-container transition-colors shadow-sm">
+<div class="space-y-2.5">
+<div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">sms</span>
+</div>
+<h4 class="font-label-md text-label-md text-text-primary">SMS შეტყობინებები</h4>
+<p class="font-body-sm text-body-sm text-text-muted">მყისიერი შეტყობინება ნებისმიერი ახალი დავალიანების ან მოთხოვნისას.</p>
+</div>
+<div class="pt-4 mt-2 border-t border-border-subtle flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded font-semibold">აქტიური</span>
+<span class="font-body-sm text-body-sm font-medium text-text-primary">უფასო</span>
+</div>
+</div>
+<!-- Service Card 2 -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-5 flex flex-col justify-between hover:border-secondary-container transition-colors shadow-sm">
+<div class="space-y-2.5">
+<div class="w-10 h-10 rounded-lg bg-secondary-container/15 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">workspace_premium</span>
+</div>
+<h4 class="font-label-md text-label-md text-text-primary">ოფიციალური ცნობა</h4>
+<p class="font-body-sm text-body-sm text-text-muted">დამოწმებული ელექტრონული შტამპით ბანკებსა და საელჩოებში წარსადგენად.</p>
+</div>
+<div class="pt-4 mt-2 border-t border-border-subtle flex items-center justify-between">
+<a class="font-body-sm text-body-sm text-primary hover:underline font-medium" href="#">გენერირება →</a>
+<span class="font-label-sm text-label-sm text-text-muted">PDF ფორმატი</span>
+</div>
+</div>
+<!-- Service Card 3 -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-5 flex flex-col justify-between hover:border-secondary-container transition-colors shadow-sm">
+<div class="space-y-2.5">
+<div class="w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">shield</span>
+</div>
+<h4 class="font-label-md text-label-md text-text-primary">მონაცემთა დაცვა</h4>
+<p class="font-body-sm text-body-sm text-text-muted">პერსონალურ მონაცემთა დაცვის შესახებ კანონის სრული გარანტია და შიფრაცია.</p>
+</div>
+<div class="pt-4 mt-2 border-t border-border-subtle flex items-center justify-between">
+<a class="font-body-sm text-body-sm text-primary hover:underline font-medium" href="#">უფლებები →</a>
+<span class="font-label-sm text-label-sm text-emerald-700 font-semibold">ISO 27001</span>
+</div>
+</div>
+</div>
+<!-- Institutional Security & Partners Banner -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-4 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-primary">security</span>
+<span class="font-body-sm text-body-sm text-text-primary font-medium">ინტეგრირებული უსაფრთხოების პარტნიორები:</span>
+</div>
+<div class="flex items-center gap-6 text-text-muted font-label-md text-label-md">
+<span class="hover:text-text-primary transition-colors flex items-center gap-1 font-semibold text-text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-mint"></span> RS.GE
+            </span>
+<span class="hover:text-text-primary transition-colors">საქართველოს ბანკი</span>
+<span class="hover:text-text-primary transition-colors">თიბისი ბანკი</span>
+<span class="flex items-center gap-1 text-emerald-600">
+<span class="material-symbols-outlined text-[14px]">lock</span> 256-bit SSL
+            </span>
+</div>
+</div>
+</div>
+<!-- Support / Contact Card -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-6 flex flex-col justify-between shadow-sm">
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">support_agent</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-text-primary">მხარდაჭერის ცენტრი</h4>
+<span class="font-label-sm text-label-sm text-emerald-600 font-medium">24/7 ოპერატორები ხაზზე არიან</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">
+            გაქვთ კითხვები მონაცემთა სისწორეზე ან გსურთ დამატებითი კონსულტაცია თქვენს საკრედიტო რეიტინგთან დაკავშირებით?
+          </p>
+<div class="space-y-3 pt-2">
+<!-- Hotline -->
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-bg border border-border-subtle">
+<span class="material-symbols-outlined text-primary text-[20px]">call</span>
+<div>
+<span class="font-label-sm text-label-sm text-text-muted block">ცხელი ხაზი:</span>
+<span class="font-data-mono-md text-data-mono-md text-text-primary font-bold">+995 32 2 123 456</span>
+</div>
+</div>
+<!-- Email -->
+<div class="flex items-center gap-3 p-3 rounded-lg bg-surface-bg border border-border-subtle">
+<span class="material-symbols-outlined text-primary text-[20px]">mail</span>
+<div>
+<span class="font-label-sm text-label-sm text-text-muted block">ელ. ფოსტა:</span>
+<a class="font-body-sm text-body-sm text-primary hover:underline font-medium" href="mailto:support@debitinfo.ge">support@debitinfo.ge</a>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-5 mt-4 border-t border-border-subtle">
+<button class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-surface-bg border border-border-subtle hover:border-primary hover:text-primary transition-colors text-text-primary font-label-md text-label-md" type="button">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+<span>ონლაინ კონსულტანტი (ჩატი)</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- FOOTER (SHARED COMPONENT BLUEPRINT EXECUTION) -->
+<footer class="bg-surface-card border-t border-border-subtle mt-12">
+<div class="w-full max-w-7xl mx-auto px-4 lg:px-8 py-12 flex flex-col gap-8">
+<!-- Top Row: Logo, System Integration Note & Nav Links -->
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-border-subtle">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Debitinfo</span>
+<span class="font-headline-sm text-headline-sm font-bold text-secondary-container">.GE</span>
+</div>
+<p class="font-body-sm text-body-sm text-text-muted">
+            საქართველოს დავალიანებებისა და საკრედიტო რეესტრის ოფიციალური მონიტორინგის პლატფორმა.
+          </p>
+</div>
+<!-- Links from Shared Components JSON -->
+<ul class="flex flex-wrap items-center gap-x-6 gap-y-2 font-body-sm text-body-sm">
+<li>
+<a class="text-text-muted hover:text-primary transition-colors duration-150 hover:underline" href="#">კონფიდენციალურობის პოლიტიკა</a>
+</li>
+<li>
+<a class="text-text-muted hover:text-primary transition-colors duration-150 hover:underline" href="#">მომსახურების პირობები</a>
+</li>
+<li>
+<a class="text-text-muted hover:text-primary transition-colors duration-150 hover:underline" href="#">რეკვიზიტები</a>
+</li>
+<li>
+<a class="text-text-muted hover:text-primary transition-colors duration-150 hover:underline" href="#">საგადასახადო შემოწმება</a>
+</li>
+<li>
+<a class="text-text-muted hover:text-primary transition-colors duration-150 hover:underline" href="#">საკონტაქტო პირი</a>
+</li>
+</ul>
+</div>
+<!-- Bottom Row: Exact Copyright Text from JSON -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-text-muted font-body-sm text-body-sm">
+<p class="text-center sm:text-left">
+          © 2024 Debitinfo.GE. ყველა უფლება დაცულია. ინტეგრირებულია RS.GE სისტემასთან.
+        </p>
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center gap-1.5 font-label-sm text-label-sm text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-mint"></span>
+            სისტემა მუშაობს სტაბილურად
+          </span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

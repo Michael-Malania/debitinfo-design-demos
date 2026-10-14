@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+
+<html class="h-full bg-surface-bg" lang="ka"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Debitinfo.GE — ანალიტიკოსის კონსოლი &amp; ოპერაციების მართვა</title>
+<!-- Google Fonts: Inter & JetBrains Mono for financial figures -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration Script -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary-fixed": "#3d0700",
+            "rating-a": "#0DFCC4",
+            "secondary-container": "#12bdfd",
+            "on-secondary-fixed-variant": "#004c69",
+            "on-surface": "#191b25",
+            "border-subtle": "#E2E8F0",
+            "secondary-fixed": "#c4e7ff",
+            "surface-tint": "#0b44fc",
+            "on-background": "#191b25",
+            "surface-container-highest": "#e2e1ef",
+            "text-muted": "#64748B",
+            "primary-fixed-dim": "#bac3ff",
+            "secondary": "#00668a",
+            "on-primary-container": "#d2d7ff",
+            "on-secondary-container": "#004964",
+            "on-primary-fixed": "#001159",
+            "surface-bright": "#fbf8ff",
+            "secondary-fixed-dim": "#7cd0ff",
+            "error": "#EF4444",
+            "surface-container": "#edecfb",
+            "tertiary": "#8b1c00",
+            "on-tertiary": "#ffffff",
+            "on-surface-variant": "#434657",
+            "surface-variant": "#e2e1ef",
+            "on-primary-fixed-variant": "#0031c5",
+            "surface-container-high": "#e8e7f5",
+            "on-primary": "#ffffff",
+            "surface-container-low": "#f4f2ff",
+            "inverse-primary": "#bac3ff",
+            "surface-bg": "#F8FAFC",
+            "tertiary-container": "#b62700",
+            "on-error": "#ffffff",
+            "accent-mint": "#0DFCC4",
+            "tertiary-fixed-dim": "#ffb4a3",
+            "surface-dim": "#d9d9e7",
+            "surface-container-lowest": "#ffffff",
+            "on-error-container": "#93000a",
+            "tertiary-fixed": "#ffdad2",
+            "inverse-surface": "#2e303a",
+            "surface-card": "#FFFFFF",
+            "background": "#fbf8ff",
+            "outline-variant": "#c4c5da",
+            "surface": "#fbf8ff",
+            "on-tertiary-container": "#ffcec3",
+            "text-primary": "#0F172A",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed": "#001e2c",
+            "outline": "#747688",
+            "primary-fixed": "#dee1ff",
+            "primary": "#0032c6",
+            "on-secondary": "#ffffff",
+            "inverse-on-surface": "#f0effe",
+            "rating-c": "#EF4444",
+            "primary-container": "#0d45fc",
+            "on-tertiary-fixed-variant": "#8a1b00",
+            "rating-b": "#FBBF24"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-md": "1rem",
+            "space-xl": "2rem",
+            "gutter": "1rem",
+            "margin": "1rem",
+            "space-sm": "0.5rem",
+            "gutter-desktop": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "2rem",
+            "space-lg": "1.5rem"
+          },
+          fontFamily: {
+            "data-mono-lg": ["JetBrains Mono"],
+            "headline-xl-mobile": ["Inter"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "data-mono-md": ["JetBrains Mono"],
+            "headline-sm": ["Inter"],
+            "headline-xl": ["Inter"],
+            "label-sm": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "body-sm": ["Inter"]
+          },
+          fontSize: {
+            "data-mono-lg": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+            "data-mono-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-xl": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "500" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Custom Scrollbar for FinTech Data Tables */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F8FAFC;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    }
+  </style>
+</head>
+<body class="bg-surface-bg text-text-primary min-h-screen antialiased flex flex-col font-body-md select-none selection:bg-primary-container selection:text-white">
+<!-- ========================================================================= -->
+<!-- 1. TOP NAVIGATION BAR / OPERATIONS HEADER -->
+<!-- ========================================================================= -->
+<header class="w-full bg-surface-card border-b border-border-subtle sticky top-0 z-40 shadow-sm">
+<div class="w-full px-4 lg:px-8 max-w-[1720px] mx-auto flex items-center justify-between h-16">
+<!-- Brand & Operations Subtitle -->
+<div class="flex items-center gap-4">
+<a class="flex items-center gap-2 group" href="#">
+<div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-white shadow-sm shadow-primary/30 transition-transform group-hover:scale-105">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">account_balance</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-baseline">
+<span class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">Debitinfo</span>
+<span class="text-headline-sm font-headline-sm font-bold text-secondary-container">.GE</span>
+</div>
+</div>
+</a>
+<div class="hidden sm:flex items-center gap-2 pl-3 border-l border-border-subtle">
+<span class="px-2.5 py-0.5 rounded-full bg-blue-50 text-primary border border-blue-200 font-label-sm text-label-sm uppercase tracking-wider font-semibold">
+            ანალიტიკოსის კონსოლი
+          </span>
+<span class="text-text-muted text-body-sm font-body-sm hidden md:inline">v2.4 Live</span>
+</div>
+</div>
+<!-- Quick Search Bar -->
+<div class="flex-1 max-w-xl mx-6 hidden md:block">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3.5 text-text-muted text-[18px]">search</span>
+<input class="w-full pl-10 pr-24 py-2 bg-surface-bg border border-border-subtle rounded-lg text-body-md font-body-md text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="საქმის №, პ/ნ, ს/კ ან მოვალის ძიება..." type="text"/>
+<div class="absolute right-2 flex items-center gap-1">
+<kbd class="px-1.5 py-0.5 text-[10px] font-mono text-text-muted bg-surface-card rounded border border-border-subtle">⌘K</kbd>
+</div>
+</div>
+</div>
+<!-- Live Telemetry, Notifications & User Profile -->
+<div class="flex items-center gap-4">
+<!-- Live System Telemetry Pulse -->
+<div class="hidden xl:flex items-center gap-2.5 px-3 py-1.5 bg-emerald-50 rounded-lg border border-emerald-200">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+</span>
+<div class="flex flex-col">
+<span class="text-label-sm font-label-sm text-text-muted">RS.GE სინქრონიზაცია</span>
+<span class="text-[11px] font-semibold text-emerald-700 flex items-center gap-1 leading-none">
+              აქტიური • 0.14 წმ
+            </span>
+</div>
+</div>
+<!-- Notification Bell with Unread Badge -->
+<button class="relative p-2 rounded-lg text-text-muted hover:text-text-primary hover:bg-slate-100 transition-colors" title="შეტყობინებები">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-4 h-4 bg-error text-white font-label-sm text-[9px] font-bold rounded-full flex items-center justify-center border-2 border-surface-card">
+            3
+          </span>
+</button>
+<!-- Current Date Widget -->
+<div class="hidden lg:flex flex-col text-right pr-2">
+<span class="text-body-sm font-body-sm font-medium text-text-primary">24 ოქტომბერი, 2024</span>
+<span class="text-label-sm font-label-sm text-text-muted">14:38:02 (Tbilisi, GMT+4)</span>
+</div>
+<!-- User Profile Pill -->
+<div class="flex items-center gap-3 pl-3 border-l border-border-subtle cursor-pointer group">
+<div class="w-9 h-9 rounded-full bg-primary-fixed text-primary flex items-center justify-center font-bold text-body-md border border-primary/20 shadow-sm">
+            დკ
+          </div>
+<div class="hidden sm:flex flex-col text-left">
+<span class="text-body-sm font-body-sm font-semibold text-text-primary group-hover:text-primary transition-colors">დავით კაპანაძე</span>
+<span class="text-label-sm font-label-sm text-text-muted">მთავარი ანალიტიკოსი</span>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[18px] group-hover:text-text-primary transition-colors">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<!-- ========================================================================= -->
+<!-- MAIN WORKSPACE LAYOUT (SIDEBAR + CONTENT CANVAS) -->
+<!-- ========================================================================= -->
+<div class="flex-1 flex w-full max-w-[1720px] mx-auto overflow-hidden">
+<!-- ========================================================================= -->
+<!-- 2. LEFT COLLAPSIBLE NAVIGATION SIDEBAR (260px) -->
+<!-- ========================================================================= -->
+<aside class="w-[260px] bg-surface-card border-r border-border-subtle flex-shrink-0 flex flex-col justify-between hidden md:flex py-5 px-3">
+<!-- Primary Navigation Cluster -->
+<div class="space-y-6">
+<div>
+<div class="px-3 pb-2 text-[10px] font-semibold text-text-muted uppercase tracking-wider">
+            მთავარი კონსოლი
+          </div>
+<nav class="space-y-1"><a class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-primary-container text-white shadow-sm font-body-md font-medium group transition-all" href="#"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">dashboard</span><span>მიმოხილვა &amp; მონიტორინგი</span></div><span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span></a><a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors font-body-md font-medium" href="#"><span class="material-symbols-outlined text-[20px] text-text-muted">pie_chart</span><span>საკრედიტო პორტფელები</span></a><a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors font-body-md font-medium" href="#"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-[20px] text-sky-600">badge</span><span>დებიტორთა რეესტრი</span></div><span class="px-1.5 py-0.2 rounded bg-sky-50 text-sky-700 border border-sky-200 text-[10px] font-mono font-semibold">1,248</span></a><a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors font-body-md font-medium" href="#"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-[20px] text-primary">account_balance</span><span>კრედიტორთა რეესტრი</span></div><span class="px-1.5 py-0.2 rounded bg-blue-50 text-primary border border-blue-200 text-[10px] font-mono font-bold">86</span></a><a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors font-body-md font-medium" href="#"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-[20px] text-text-muted">assignment</span><span>დავალებები &amp; დისპეტჩერი</span></div><span class="px-1.5 py-0.5 rounded bg-blue-50 text-primary border border-blue-200 text-[10px] font-mono font-bold">48</span></a><a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors font-body-md font-medium" href="#"><span class="material-symbols-outlined text-[20px] text-text-muted">groups</span><span>თანამშრომელთა გუნდი</span></a><a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors font-body-md font-medium" href="#"><span class="material-symbols-outlined text-[20px] text-text-muted">query_stats</span><span>რისკ-ანალიტიკა &amp; რეპორტინგი</span></a><a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-700 hover:text-primary hover:bg-slate-50 transition-colors font-body-md font-medium" href="#"><div class="flex items-center gap-3"><span class="material-symbols-outlined text-[20px] text-text-muted">verified_user</span><span>RS.GE აუდიტი</span></div><span class="w-2 h-2 rounded-full bg-emerald-500"></span></a></nav>
+</div>
+<!-- Quick Access Filters -->
+<div class="pt-2 border-t border-border-subtle">
+<div class="px-3 pb-2 text-[10px] font-semibold text-text-muted uppercase tracking-wider">
+            სწრაფი ფილტრები
+          </div>
+<div class="space-y-1">
+<button class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-body-sm font-body-sm text-slate-600 hover:bg-slate-50 hover:text-text-primary transition-colors text-left">
+<span class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-rating-c"></span>
+<span>სასამართლო სარჩელები</span>
+</span>
+<span class="font-mono text-label-sm text-text-muted">312</span>
+</button>
+<button class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-body-sm font-body-sm text-slate-600 hover:bg-slate-50 hover:text-text-primary transition-colors text-left">
+<span class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span>მოლაპარაკების ფაზა</span>
+</span>
+<span class="font-mono text-label-sm text-text-muted">456</span>
+</button>
+<button class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-body-sm font-body-sm text-slate-600 hover:bg-slate-50 hover:text-text-primary transition-colors text-left">
+<span class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>გრაფიკით დაფარვა</span>
+</span>
+<span class="font-mono text-label-sm text-text-muted">516</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Sidebar Health Widget -->
+<div class="p-3.5 bg-slate-50 rounded-xl border border-border-subtle space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">dns</span>
+<span class="text-body-sm font-body-sm font-semibold text-text-primary">სისტემის მდგომარეობა</span>
+</div>
+<span class="text-label-sm font-label-sm text-emerald-600 font-bold">99.8%</span>
+</div>
+<!-- Load bar -->
+<div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-emerald-500 h-full rounded-full" style="width: 92%"></div>
+</div>
+<div class="flex items-center justify-between text-[11px] text-text-muted">
+<span>აქტიური სესიები: <strong class="text-text-primary font-mono">14</strong></span>
+<span>პინგ: <strong class="text-emerald-600 font-mono">18ms</strong></span>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN CONTENT CANVAS -->
+<!-- ========================================================================= -->
+<main class="flex-1 overflow-y-auto px-4 lg:px-8 py-6 space-y-8 bg-surface-bg">
+<!-- Operational Header Row with Breadcrumb & Quick Actions -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-border-subtle">
+<div>
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-text-muted mb-1">
+<span>პლატფორმა</span>
+<span>/</span>
+<span>ოპერაციული ცენტრი</span>
+<span>/</span>
+<span class="text-primary font-medium">სამართავი პანელი</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-text-primary tracking-tight font-bold">
+            ფინანსური ანალიტიკოსის მთავარი დაფა
+          </h1>
+<p class="text-body-md font-body-md text-text-muted mt-0.5">
+            საქართველოს იურიდიულ პირთა დავალიანების მონიტორინგი, რისკ-შეფასება და დავალებების დისპეტჩერიზაცია
+          </p>
+</div>
+<div class="flex items-center gap-3">
+<button class="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-card border border-border-subtle text-text-primary hover:bg-slate-50 transition-colors text-body-md font-body-md shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-text-muted">download</span>
+<span>ექსპორტი (XLSX)</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-[#0A37CA] text-white transition-all shadow-md shadow-primary/20 hover:shadow-primary/30 active:scale-95 text-body-md font-body-md font-semibold cursor-pointer" onclick="openRegistrationModal()">
+<span class="material-symbols-outlined text-[19px]">person_add</span>
+<span>+ სუბიექტის რეგისტრაცია</span>
+</button>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- 3. TOP KPI METRIC ROW (4 CARDS) -->
+<!-- ========================================================================= -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+<!-- KPI Card 1 -->
+<div class="p-5 bg-surface-card rounded-xl border border-border-subtle relative overflow-hidden group hover:border-slate-300 transition-all shadow-sm">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-body-sm font-body-sm font-medium text-text-muted">მართული პორტფელი (ჯამური)</span>
+<div class="text-headline-md font-headline-md text-text-primary font-bold mt-2 font-data-mono-lg">
+                ₾ 64,820,500
+              </div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-blue-50 border border-blue-100 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px]">account_balance_wallet</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2 pt-3 border-t border-border-subtle">
+<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-data-mono-md text-label-sm font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+              +8.4%
+            </span>
+<span class="text-body-sm font-body-sm text-text-muted">გასულ თვესთან შედარებით</span>
+</div>
+</div>
+<!-- KPI Card 2 -->
+<div class="p-5 bg-surface-card rounded-xl border border-border-subtle relative overflow-hidden group hover:border-slate-300 transition-all shadow-sm">
+<div class="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-body-sm font-body-sm font-medium text-text-muted">ამოღებული / დაფარული თანხა</span>
+<div class="text-headline-md font-headline-md text-emerald-600 font-bold mt-2 font-data-mono-lg">
+                ₾ 28,450,120
+              </div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between pt-3 border-t border-border-subtle">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-data-mono-md text-label-sm font-semibold">
+                43.8% ეფექტურობა
+              </span>
+</div>
+<span class="text-label-sm font-label-sm text-text-muted font-mono">მიზანი: 40%</span>
+</div>
+</div>
+<!-- KPI Card 3 -->
+<div class="p-5 bg-surface-card rounded-xl border border-border-subtle relative overflow-hidden group hover:border-slate-300 transition-all shadow-sm">
+<div class="absolute top-0 left-0 w-1 h-full bg-amber-500"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-body-sm font-body-sm font-medium text-text-muted">აქტიური იურიდიული საქმეები</span>
+<div class="text-headline-md font-headline-md text-text-primary font-bold mt-2 font-data-mono-lg">
+                1,284 <span class="text-body-md font-body-md font-normal text-text-muted">საქმე</span>
+</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600">
+<span class="material-symbols-outlined text-[22px]">gavel</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2 pt-3 border-t border-border-subtle">
+<span class="px-2 py-0.5 rounded-full bg-red-50 text-red-700 border border-red-200 font-data-mono-md text-label-sm font-semibold">
+              312 სასამართლოში
+            </span>
+<span class="text-body-sm font-body-sm text-text-muted">972 მოლაპარაკებაზე</span>
+</div>
+</div>
+<!-- KPI Card 4 -->
+<div class="p-5 bg-surface-card rounded-xl border border-border-subtle relative overflow-hidden group hover:border-slate-300 transition-all shadow-sm">
+<div class="absolute top-0 left-0 w-1 h-full bg-sky-500"></div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-body-sm font-body-sm font-medium text-text-muted">თანამშრომელთა ეფექტურობა</span>
+<div class="text-headline-md font-headline-md text-text-primary font-bold mt-2 font-data-mono-lg">
+                94.2%
+              </div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600">
+<span class="material-symbols-outlined text-[22px]">speed</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2 pt-3 border-t border-border-subtle">
+<span class="px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200 font-data-mono-md text-label-sm font-semibold">
+              2.4 სთ
+            </span>
+<span class="text-body-sm font-body-sm text-text-muted">საშ. რეაგირების დრო</span>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- 4. ANALYTICAL CHARTS & VISUAL DIAGNOSTICS (GRID) -->
+<!-- ========================================================================= -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- CHART 1: ვალების ამოღების დინამიკა (Debt Recovery Dynamics & Forecast) -->
+<div class="lg:col-span-5 p-5 bg-surface-card rounded-xl border border-border-subtle flex flex-col justify-between shadow-sm">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+<div class="flex items-center gap-2.5">
+<div class="w-2.5 h-2.5 rounded-full bg-primary"></div>
+<h3 class="text-headline-sm font-headline-sm text-text-primary font-bold">
+                  ვალების ამოღების დინამიკა &amp; პროგნოზი
+                </h3>
+</div>
+<span class="text-label-sm font-label-sm text-text-muted font-mono bg-slate-50 px-2 py-0.5 rounded border border-border-subtle">Q1–Q3 2024</span>
+</div>
+<p class="text-body-sm font-body-sm text-text-muted mt-2">
+              დაგეგმილი სამიზნე მაჩვენებლებისა და ფაქტობრივად აკუმულირებული თანხების შედარება თვეების მიხედვით (მლნ ₾).
+            </p>
+<!-- Visual Bar / Dynamics Chart -->
+<div class="mt-6 space-y-4">
+<!-- Month 1: ივლისი -->
+<div class="space-y-1.5">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-text-primary font-medium">ივლისი</span>
+<div class="space-x-3 font-mono text-[13px]">
+<span class="text-text-muted">გეგმა: 7.5 მლნ</span>
+<span class="text-emerald-600 font-semibold">ფაქტი: 8.9 მლნ ₾</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
+<div class="bg-primary/40 h-full" style="width: 75%" title="გეგმა: 7.5"></div>
+<div class="bg-emerald-500 h-full" style="width: 14%" title="გადაჭარბება"></div>
+</div>
+</div>
+<!-- Month 2: აგვისტო -->
+<div class="space-y-1.5">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-text-primary font-medium">აგვისტო</span>
+<div class="space-x-3 font-mono text-[13px]">
+<span class="text-text-muted">გეგმა: 8.0 მლნ</span>
+<span class="text-emerald-600 font-semibold">ფაქტი: 9.2 მლნ ₾</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
+<div class="bg-primary/40 h-full" style="width: 80%" title="გეგმა: 8.0"></div>
+<div class="bg-emerald-500 h-full" style="width: 12%" title="გადაჭარბება"></div>
+</div>
+</div>
+<!-- Month 3: სექტემბერი -->
+<div class="space-y-1.5">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-text-primary font-medium">სექტემბერი</span>
+<div class="space-x-3 font-mono text-[13px]">
+<span class="text-text-muted">გეგმა: 8.5 მლნ</span>
+<span class="text-emerald-600 font-semibold">ფაქტი: 10.35 მლნ ₾</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
+<div class="bg-primary/40 h-full" style="width: 78%"></div>
+<div class="bg-emerald-500 h-full" style="width: 22%"></div>
+</div>
+</div>
+<!-- Month 4: ოქტომბერი (მიმდინარე) -->
+<div class="space-y-1.5">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="text-text-primary font-medium flex items-center gap-1.5">
+                    ოქტომბერი 
+                    <span class="px-1.5 py-0.2 bg-sky-50 text-sky-700 text-[10px] rounded font-mono border border-sky-200">მიმდინარე</span>
+</span>
+<div class="space-x-3 font-mono text-[13px]">
+<span class="text-text-muted">სამიზნე: 11.0 მლნ</span>
+<span class="text-primary font-semibold">მიმდინარე: 8.1 მლნ ₾</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden flex">
+<div class="bg-primary h-full relative" style="width: 74%">
+<div class="absolute right-0 top-0 bottom-0 w-1 bg-white animate-pulse"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Legend -->
+<div class="pt-4 mt-6 border-t border-border-subtle flex items-center justify-between text-label-sm font-label-sm">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5 text-text-muted">
+<span class="w-3 h-3 rounded bg-emerald-500"></span>
+                ამოღებული ფაქტი
+              </span>
+<span class="flex items-center gap-1.5 text-text-muted">
+<span class="w-3 h-3 rounded bg-primary/40"></span>
+                საბაზისო სამიზნე
+              </span>
+</div>
+<span class="text-emerald-600 font-mono font-bold">+14.6% საპროგნოზო გადაჭარბება</span>
+</div>
+</div>
+<!-- CHART 2: საკრედიტო რეიტინგების განაწილება (Credit Risk Grade Distribution) -->
+<div class="lg:col-span-4 p-5 bg-surface-card rounded-xl border border-border-subtle flex flex-col justify-between shadow-sm">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+<div class="flex items-center gap-2.5">
+<div class="w-2.5 h-2.5 rounded-full bg-emerald-500"></div>
+<h3 class="text-headline-sm font-headline-sm text-text-primary font-bold">
+                  საკრედიტო რისკ-რეიტინგი
+                </h3>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[18px]">verified</span>
+</div>
+<p class="text-body-sm font-body-sm text-text-muted mt-2">
+              პორტფელის სტრუქტურა Debitinfo Scoring-ის მოდელის მიხედვით
+            </p>
+<!-- Composite Progress Bar -->
+<div class="mt-6">
+<div class="h-4 w-full bg-slate-100 rounded-full overflow-hidden flex p-0.5 gap-0.5 border border-border-subtle">
+<div class="bg-emerald-400 h-full rounded-l-full" style="width: 48%" title="Grade A: 48%"></div>
+<div class="bg-amber-400 h-full" style="width: 34%" title="Grade B: 34%"></div>
+<div class="bg-red-400 h-full rounded-r-full" style="width: 18%" title="Grade C: 18%"></div>
+</div>
+</div>
+<!-- Grade Breakdown Cards -->
+<div class="mt-6 space-y-3">
+<!-- Grade A -->
+<div class="p-3 bg-emerald-50/50 rounded-lg border border-emerald-100 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-mono font-bold text-label-md border border-emerald-200">
+                    Grade A
+                  </span>
+<div>
+<div class="text-body-sm font-body-sm font-semibold text-text-primary">Prime / დაბალი რისკი</div>
+<div class="text-[11px] text-text-muted">მყისიერი გადამხდელი, სტაბილური ბრუნვა</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-mono text-body-md font-semibold text-emerald-700">48%</div>
+<div class="text-[11px] font-mono text-text-muted">₾ 31.1 მლნ</div>
+</div>
+</div>
+<!-- Grade B -->
+<div class="p-3 bg-amber-50/50 rounded-lg border border-amber-100 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-mono font-bold text-label-md border border-amber-200">
+                    Grade B
+                  </span>
+<div>
+<div class="text-body-sm font-body-sm font-semibold text-text-primary">Moderate / ზომიერი რისკი</div>
+<div class="text-[11px] text-text-muted">30-60 დღიანი დაყოვნება, აქტიური მოლაპარაკება</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-mono text-body-md font-semibold text-amber-700">34%</div>
+<div class="text-[11px] font-mono text-text-muted">₾ 22.0 მლნ</div>
+</div>
+</div>
+<!-- Grade C -->
+<div class="p-3 bg-red-50/50 rounded-lg border border-red-100 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="px-2.5 py-0.5 rounded-full bg-red-100 text-red-800 font-mono font-bold text-label-md border border-red-200">
+                    Grade C
+                  </span>
+<div>
+<div class="text-body-sm font-body-sm font-semibold text-text-primary">High / დეფოლტი &amp; სარჩელი</div>
+<div class="text-[11px] text-text-muted">90+ დღე, სააღსრულებო / სასამართლო რეჟიმი</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-mono text-body-md font-semibold text-red-700">18%</div>
+<div class="text-[11px] font-mono text-text-muted">₾ 11.6 მლნ</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-border-subtle text-[11px] text-text-muted flex items-center justify-between">
+<span>ბოლო კორექტირება: დღეს 12:00</span>
+<span class="text-primary font-medium cursor-pointer hover:underline">დეტალური აუდიტი →</span>
+</div>
+</div>
+<!-- CHART 3: თანამშრომელთა დატვირთვის ინდიკატორები (Workload by Role) -->
+<div class="lg:col-span-3 p-5 bg-surface-card rounded-xl border border-border-subtle flex flex-col justify-between shadow-sm">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-border-subtle">
+<div class="flex items-center gap-2.5">
+<div class="w-2.5 h-2.5 rounded-full bg-sky-500"></div>
+<h3 class="text-headline-sm font-headline-sm text-text-primary font-bold">
+                  გუნდის დატვირთვა
+                </h3>
+</div>
+<span class="material-symbols-outlined text-text-muted text-[18px]">group_work</span>
+</div>
+<p class="text-body-sm font-body-sm text-text-muted mt-2">
+              მიმდინარე ოპერაციული რესურსების განაწილება
+            </p>
+<div class="mt-6 space-y-5">
+<!-- Legal Dept -->
+<div>
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1.5">
+<span class="font-medium text-text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-rating-c">gavel</span>
+                    იურისტები
+                  </span>
+<span class="font-mono text-body-sm font-semibold text-text-primary">88%</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-primary to-rating-c h-full rounded-full" style="width: 88%"></div>
+</div>
+<div class="flex justify-between text-[11px] text-text-muted mt-1">
+<span>42 ღია სარჩელი</span>
+<span>5 იურისტი</span>
+</div>
+</div>
+<!-- Call Center -->
+<div>
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1.5">
+<span class="font-medium text-text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-sky-600">headset_mic</span>
+                    ქოლ-ცენტრი
+                  </span>
+<span class="font-mono text-body-sm font-semibold text-amber-600">95%</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-sky-500 to-amber-500 h-full rounded-full" style="width: 95%"></div>
+</div>
+<div class="flex justify-between text-[11px] text-text-muted mt-1">
+<span>340 ზარი დღეს</span>
+<span>8 ოპერატორი</span>
+</div>
+</div>
+<!-- Field Officers -->
+<div>
+<div class="flex justify-between items-center text-body-sm font-body-sm mb-1.5">
+<span class="font-medium text-text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">pin_drop</span>
+                    საველე ვიზიტორები
+                  </span>
+<span class="font-mono text-body-sm font-semibold text-emerald-600">72%</span>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+<div class="bg-emerald-500 h-full rounded-full" style="width: 72%"></div>
+</div>
+<div class="flex justify-between text-[11px] text-text-muted mt-1">
+<span>18 ვიზიტი რეგიონებში</span>
+<span>4 ექსპერტი</span>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-4 border-t border-border-subtle mt-4">
+<div class="p-2.5 bg-amber-50 rounded-lg border border-amber-200 flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-600 text-[18px]">warning</span>
+<span class="text-[11px] text-amber-800 leading-tight">
+                ქოლ-ცენტრის ხაზი გადატვირთულია. რეკომენდებულია 2 დამატებითი ოპერატორის ჩართვა.
+              </span>
+</div>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- 5. TASK DISPATCHER & PORTFOLIO ALLOCATION PANEL -->
+<!-- ========================================================================= -->
+<section class="bg-surface-card rounded-xl border border-border-subtle p-6 shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-5 border-b border-border-subtle">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[24px]">send_time_extension</span>
+</div>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-text-primary font-bold">
+                დავალების დისპეტჩერიზაცია და პორტფელის დელეგირება
+              </h2>
+<p class="text-body-sm font-body-sm text-text-muted">
+                მიაბით კონკრეტული საქმე თანამშრომელს, დააწესეთ პრიორიტეტები და გაუგზავნეთ მყისიერი შიდა დავალება
+              </p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm text-text-muted">ავტომატური დისპეტჩერი:</span>
+<span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 text-[11px] font-mono border border-emerald-200 font-semibold">AI Smart Route ჩართულია</span>
+</div>
+</div>
+<form class="mt-6 space-y-6" onsubmit="event.preventDefault();">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Employee Dropdown Selector -->
+<div>
+<label class="block text-body-sm font-body-sm font-medium text-text-primary mb-2">
+                შემსრულებელი თანამშრომელი <span class="text-rating-c">*</span>
+</label>
+<div class="relative">
+<select class="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-text-primary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all appearance-none">
+<option selected="" value="1">თეონა პეტრიაშვილი — ქოლ-ცენტრი / ოპერატორი</option>
+<option value="2">გიორგი მახარაძე — უფროსი იურისტი (სასამართლო განყ.)</option>
+<option value="3">ლევან კვირიკაშვილი — საველე ვიზიტორი (რეგიონები)</option>
+<option value="4">ნინო ბერიძე — რისკ-ანალიტიკოსი (Scoring)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-text-muted pointer-events-none text-[20px]">expand_more</span>
+</div>
+<span class="text-[11px] text-text-muted mt-1 block">მიმდინარე დატვირთვა: 4 აქტიური დავალება</span>
+</div>
+<!-- Portfolio / Case Reference Selector -->
+<div>
+<label class="block text-body-sm font-body-sm font-medium text-text-primary mb-2">
+                საქმე / პორტფელის რეკვიზიტი <span class="text-rating-c">*</span>
+</label>
+<div class="relative">
+<select class="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-text-primary focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all appearance-none font-mono text-[13px]">
+<option selected="" value="case1">საქმე #DB-2024-8841 (შპს 'ალფა ლოჯისტიკსი' - 24,500 ₾)</option>
+<option value="case2">საქმე #DB-2024-8902 (სს 'თბილისური ტექნოლოგიები' - 118,200 ₾)</option>
+<option value="case3">საქმე #DB-2024-9014 (შპს 'კავკასუს იმპორტი' - 6,850 ₾)</option>
+<option value="port1">პორტფელი #PF-B2B-12 (მიკრო-ბიზნეს სესხები - 45 საქმე)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-3 text-text-muted pointer-events-none text-[20px]">folder_open</span>
+</div>
+<span class="text-[11px] text-emerald-700 font-medium mt-1 block">ვადაგადაცილება: 48 დღე • RS.GE გადამოწმებულია</span>
+</div>
+<!-- Priority Selector (Toggle Badges) -->
+<div>
+<label class="block text-body-sm font-body-sm font-medium text-text-primary mb-2">
+                დავალების პრიორიტეტი <span class="text-rating-c">*</span>
+</label>
+<div class="grid grid-cols-3 gap-2">
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="priority" type="radio" value="high"/>
+<div class="py-2.5 px-3 rounded-lg bg-surface-bg border border-slate-300 text-center text-body-sm font-body-sm font-medium text-slate-600 peer-checked:bg-red-50 peer-checked:text-red-700 peer-checked:border-red-300 transition-all flex items-center justify-center gap-1">
+<span class="w-2 h-2 rounded-full bg-rating-c"></span>
+<span>სასწრაფო</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="priority" type="radio" value="medium"/>
+<div class="py-2.5 px-3 rounded-lg bg-surface-bg border border-slate-300 text-center text-body-sm font-body-sm font-medium text-slate-600 peer-checked:bg-amber-50 peer-checked:text-amber-700 peer-checked:border-amber-300 transition-all flex items-center justify-center gap-1">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span>საშუალო</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="priority" type="radio" value="low"/>
+<div class="py-2.5 px-3 rounded-lg bg-surface-bg border border-slate-300 text-center text-body-sm font-body-sm font-medium text-slate-600 peer-checked:bg-emerald-50 peer-checked:text-emerald-700 peer-checked:border-emerald-300 transition-all flex items-center justify-center gap-1">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>დაბალი</span>
+</div>
+</label>
+</div>
+<span class="text-[11px] text-text-muted mt-1 block">შესრულების დედლაინი: 24 საათი</span>
+</div>
+</div>
+<!-- Description and Quick Action Chips -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="text-body-sm font-body-sm font-medium text-text-primary">
+                დავალების შინაარსი &amp; შიდა ინსტრუქცია (Internal Memo)
+              </label>
+<div class="flex items-center gap-2">
+<span class="text-[11px] text-text-muted">სწრაფი შაბლონები:</span>
+<div class="flex flex-wrap gap-1.5">
+<button class="px-2 py-0.5 rounded-full bg-slate-100 hover:bg-slate-200 text-[11px] text-primary border border-border-subtle transition-colors" type="button">
+                    + სატელეფონო შეხსენება
+                  </button>
+<button class="px-2 py-0.5 rounded-full bg-slate-100 hover:bg-slate-200 text-[11px] text-primary border border-border-subtle transition-colors" type="button">
+                    + სარჩელის მომზადება
+                  </button>
+<button class="px-2 py-0.5 rounded-full bg-slate-100 hover:bg-slate-200 text-[11px] text-primary border border-border-subtle transition-colors" type="button">
+                    + ადგილზე ვიზიტი
+                  </button>
+<button class="px-2 py-0.5 rounded-full bg-slate-100 hover:bg-slate-200 text-[11px] text-primary border border-border-subtle transition-colors" type="button">
+                    + საბანკო ანგარიშების შემოწმება
+                  </button>
+</div>
+</div>
+</div>
+<textarea class="w-full bg-white border border-slate-300 rounded-lg p-3 text-body-md font-body-md text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all resize-none" placeholder="ჩაწერეთ კონკრეტული დავალება თანამშრომლისთვის (მაგ: დაუკავშირდით შპს 'ალფა ლოჯისტიკსის' დირექტორს, მოითხოვეთ გრაფიკის შეთანხმება ან გადაეცით საქმე იურიდიულ დეპარტამენტს სარჩელის აღსაძვრელად)..." rows="3"></textarea>
+</div>
+<!-- Bottom Actions / Submit -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border-subtle">
+<div class="flex items-center gap-3 text-body-sm font-body-sm text-text-muted">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded border-slate-300 text-primary focus:ring-primary w-4 h-4" type="checkbox"/>
+<span class="text-slate-700">SMS შეტყობინება თანამშრომელს</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded border-slate-300 text-primary focus:ring-primary w-4 h-4" type="checkbox"/>
+<span class="text-slate-700">საქმის ჟურნალში (Audit Log) ფიქსაცია</span>
+</label>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<button class="w-1/2 sm:w-auto px-4 py-2.5 rounded-lg border border-border-subtle bg-white text-slate-700 hover:bg-slate-50 text-body-md font-body-md transition-colors" type="reset">
+                გასუფთავება
+              </button>
+<button class="w-1/2 sm:w-auto px-6 py-2.5 rounded-lg bg-primary hover:bg-[#0A37CA] text-white font-medium text-body-md font-body-md shadow-sm flex items-center justify-center gap-2 transition-all active:scale-95" type="submit">
+<span class="material-symbols-outlined text-[18px]">send</span>
+<span>დავალების შექმნა და გაგზავნა</span>
+</button>
+</div>
+</div>
+</form>
+</section>
+<!-- ========================================================================= -->
+<!-- 6. ACTIVE TASKS MONITORING REGISTRY (TABLE) -->
+<!-- ========================================================================= -->
+<section class="bg-surface-card rounded-xl border border-border-subtle p-6 shadow-sm space-y-5">
+<!-- Table Header and Filter Pills -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-border-subtle">
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-headline-sm font-headline-sm font-bold text-text-primary">
+                აქტიური დავალებების მონიტორინგი &amp; რეესტრი
+              </h3>
+<span class="px-2 py-0.5 rounded-full bg-blue-50 text-primary border border-blue-200 text-label-sm font-mono font-bold">
+                48 სულ
+              </span>
+</div>
+<p class="text-body-sm font-body-sm text-text-muted mt-0.5">
+              რეალურ დროში დავალებების პროგრესი, შემსრულებლები და დედლაინის კონტროლი
+            </p>
+</div>
+<!-- Status Filters -->
+<div class="flex items-center gap-1.5 p-1 bg-surface-bg rounded-lg border border-border-subtle text-body-sm font-body-sm">
+<button class="px-3 py-1 rounded-md bg-primary text-white font-medium shadow-sm transition-all">
+              ყველა (48)
+            </button>
+<button class="px-3 py-1 rounded-md text-text-muted hover:text-text-primary transition-colors">
+              მიმდინარე (26)
+            </button>
+<button class="px-3 py-1 rounded-md text-text-muted hover:text-text-primary transition-colors">
+              შესრულებული (18)
+            </button>
+<button class="px-3 py-1 rounded-md text-rating-c hover:bg-red-50 transition-colors flex items-center gap-1 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-rating-c"></span>
+              ვადაგადაცილებული (4)
+            </button>
+</div>
+</div>
+<!-- High Density Data Table -->
+<div class="overflow-x-auto rounded-lg border border-border-subtle">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 border-b border-border-subtle text-label-md font-label-md text-text-muted uppercase tracking-wider">
+<th class="py-3 px-4">დავალების ID &amp; საქმე</th>
+<th class="py-3 px-4">შემსრულებელი თანამშრომელი</th>
+<th class="py-3 px-4">დავალების არსი &amp; ტიპი</th>
+<th class="py-3 px-4">გაცემის თარიღი / ვადა</th>
+<th class="py-3 px-4">სტატუსი</th>
+<th class="py-3 px-4 text-right">მოქმედება</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-border-subtle text-body-md font-body-md bg-white">
+<!-- Row 1: Teona Petriashvili (Call Center) -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3.5 px-4">
+<div class="font-mono font-semibold text-primary text-[13px]">#TSK-2024-1049</div>
+<div class="text-text-primary font-medium text-body-sm">შპს „ალფა ლოჯისტიკსი“</div>
+<div class="text-[11px] text-text-muted font-mono">₾ 24,500.00 • ს/კ 404991201</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-sky-100 border border-sky-200 flex items-center justify-center text-sky-700 font-bold text-xs">
+                      თპ
+                    </div>
+<div>
+<div class="text-text-primary font-medium text-body-sm">თეონა პეტრიაშვილი</div>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded bg-slate-100 text-[10px] text-text-muted font-mono">
+                        ქოლ-ცენტრი
+                      </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-text-primary font-medium text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-sky-600">phone_in_talk</span>
+                    სატელეფონო მოლაპარაკება
+                  </div>
+<div class="text-text-muted text-[11px] truncate max-w-xs">
+                    დირექტორთან დაკავშირება და დაფარვის გრაფიკის შეთავაზება (ეტაპი II).
+                  </div>
+</td>
+<td class="py-3.5 px-4 font-mono text-[12px]">
+<div class="text-text-primary">24 ოქტ, 10:30</div>
+<div class="text-primary font-medium">ვადა: დღეს, 18:00-მდე</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-50 text-primary border border-blue-200 text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                    მიმდინარე
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 rounded hover:bg-slate-100 text-text-muted hover:text-text-primary transition-colors" title="დეტალები">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded hover:bg-slate-100 text-text-muted hover:text-primary transition-colors" title="რედაქტირება">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded hover:bg-slate-100 text-text-muted hover:text-emerald-600 transition-colors" title="დასრულება">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Giorgi Makharadze (Lawyer) -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-slate-50/30">
+<td class="py-3.5 px-4">
+<div class="font-mono font-semibold text-primary text-[13px]">#TSK-2024-1048</div>
+<div class="text-text-primary font-medium text-body-sm">სს „თბილისური ტექნოლოგიები“</div>
+<div class="text-[11px] text-text-muted font-mono">₾ 118,200.00 • ს/კ 205889311</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center text-primary font-bold text-xs">
+                      გმ
+                    </div>
+<div>
+<div class="text-text-primary font-medium text-body-sm">გიორგი მახარაძე</div>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded bg-red-50 text-red-700 text-[10px] font-mono border border-red-200">
+                        უფროსი იურისტი
+                      </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-text-primary font-medium text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-rating-c">gavel</span>
+                    სასამართლო სარჩელი
+                  </div>
+<div class="text-text-muted text-[11px] truncate max-w-xs">
+                    საქალაქო სასამართლოში სარჩელის შეტანა და ყადაღის უზრუნველყოფა.
+                  </div>
+</td>
+<td class="py-3.5 px-4 font-mono text-[12px]">
+<div class="text-text-primary">23 ოქტ, 14:00</div>
+<div class="text-amber-700 font-medium">ვადა: 25 ოქტ, 12:00</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-200 text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    მომზადებაში
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 rounded hover:bg-slate-100 text-text-muted hover:text-text-primary transition-colors" title="დეტალები">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+<button class="p-1.5 rounded hover:bg-slate-100 text-text-muted hover:text-primary transition-colors" title="რედაქტირება">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+<button class="p-1.5 rounded hover:bg-slate-100 text-text-muted hover:text-emerald-600 transition-colors" title="დასრულება">
+<span class="material-symbols-outlined text-[18px]">check_circle</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Levan Kvirikashvili (Field Visitor) -->
+<tr class="hover:bg-slate-50/70 transition-colors">
+<td class="py-3.5 px-4">
+<div class="font-mono font-semibold text-primary text-[13px]">#TSK-2024-1045</div>
+<div class="text-text-primary font-medium text-body-sm">შპს „ბათუმი ტრანს გრუპი“</div>
+<div class="text-[11px] text-text-muted font-mono">₾ 43,100.00 • ს/კ 445892110</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-emerald-100 border border-emerald-200 flex items-center justify-center text-emerald-800 font-bold text-xs">
+                      ლკ
+                    </div>
+<div>
+<div class="text-text-primary font-medium text-body-sm">ლევან კვირიკაშვილი</div>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded bg-slate-100 text-[10px] text-text-muted font-mono">
+                        საველე ვიზიტორი
+                      </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-text-primary font-medium text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">location_on</span>
+                    ადგილზე ვიზიტი &amp; ინსპექცია
+                  </div>
+<div class="text-text-muted text-[11px] truncate max-w-xs">
+                    იურიდიულ მისამართზე ქონების და აქტივების ფაქტობრივი გადამოწმება.
+                  </div>
+</td>
+<td class="py-3.5 px-4 font-mono text-[12px]">
+<div class="text-text-primary">22 ოქტ, 09:00</div>
+<div class="text-emerald-700 font-medium">შესრულდა: 24 ოქტ</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">done_all</span>
+                    შესრულებული
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 rounded hover:bg-slate-100 text-text-muted hover:text-text-primary transition-colors" title="დოკუმენტის ნახვა">
+<span class="material-symbols-outlined text-[18px]">description</span>
+</button>
+<button class="p-1.5 rounded hover:bg-slate-100 text-text-muted hover:text-primary transition-colors" title="არქივი">
+<span class="material-symbols-outlined text-[18px]">archive</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4: Nino Beridze (Risk Analyst - Overdue) -->
+<tr class="hover:bg-slate-50/70 transition-colors bg-red-50/30">
+<td class="py-3.5 px-4">
+<div class="font-mono font-semibold text-rating-c text-[13px]">#TSK-2024-1041</div>
+<div class="text-text-primary font-medium text-body-sm">შპს „აგრო ექსპორტი 2020“</div>
+<div class="text-[11px] text-text-muted font-mono">₾ 89,400.00 • ს/კ 412893041</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-red-100 border border-red-200 flex items-center justify-center text-red-700 font-bold text-xs">
+                      ნბ
+                    </div>
+<div>
+<div class="text-text-primary font-medium text-body-sm">ნინო ბერიძე</div>
+<span class="inline-flex items-center px-1.5 py-0.2 rounded bg-slate-100 text-[10px] text-text-muted font-mono">
+                        რისკ-ანალიტიკოსი
+                      </span>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-4">
+<div class="text-text-primary font-medium text-body-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-rating-c">find_in_page</span>
+                    სიღრმისეული Scoring &amp; აუდიტი
+                  </div>
+<div class="text-text-muted text-[11px] truncate max-w-xs">
+                    RS.GE ფინანსური ბრუნვების და დღგ-ის დეკლარაციების შედარება.
+                  </div>
+</td>
+<td class="py-3.5 px-4 font-mono text-[12px]">
+<div class="text-text-primary">20 ოქტ, 11:00</div>
+<div class="text-rating-c font-bold">ვადა ამოიწურა (გადაც. 1 დღე)</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-50 text-rating-c border border-red-200 text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+                    ვადაგადაცილებული
+                  </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<div class="flex items-center justify-end gap-1">
+<button class="p-1.5 rounded hover:bg-slate-100 text-rating-c hover:text-red-700 transition-colors" title="ესკალაცია">
+<span class="material-symbols-outlined text-[18px]">crisis_alert</span>
+</button>
+<button class="p-1.5 rounded hover:bg-slate-100 text-text-muted hover:text-text-primary transition-colors" title="დეტალები">
+<span class="material-symbols-outlined text-[18px]">visibility</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Table Pagination Footer -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 text-body-sm font-body-sm text-text-muted">
+<div>
+            ნაჩვენებია <strong class="text-text-primary font-mono">1-4</strong> დავალება სულ <strong class="text-text-primary font-mono">48</strong>-დან
+          </div>
+<div class="flex items-center gap-1 font-mono text-[13px]">
+<button class="px-2.5 py-1 rounded bg-white border border-border-subtle text-text-muted hover:text-text-primary disabled:opacity-50" disabled="">
+              წინა
+            </button>
+<button class="px-3 py-1 rounded bg-primary text-white font-semibold shadow-sm">1</button>
+<button class="px-3 py-1 rounded bg-white border border-border-subtle hover:text-text-primary">2</button>
+<button class="px-3 py-1 rounded bg-white border border-border-subtle hover:text-text-primary">3</button>
+<span>...</span>
+<button class="px-3 py-1 rounded bg-white border border-border-subtle hover:text-text-primary">12</button>
+<button class="px-2.5 py-1 rounded bg-white border border-border-subtle text-text-muted hover:text-text-primary">
+              შემდეგი
+            </button>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- ========================================================================= -->
+<!-- HIGH-FIDELITY SUBJECT REGISTRATION MODAL / POPUP DIALOG -->
+<!-- ========================================================================= -->
+<div aria-labelledby="modal-title" aria-modal="true" class="fixed inset-0 z-50 overflow-y-auto hidden" id="subjectRegistrationModal" role="dialog">
+<!-- Backdrop -->
+<div class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" onclick="closeRegistrationModal()"></div>
+<!-- Modal Center Container -->
+<div class="flex min-h-full items-center justify-center p-4 text-center sm:p-6">
+<div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all w-full max-w-3xl border border-border-subtle" onclick="event.stopPropagation()">
+<!-- Modal Header -->
+<div class="bg-surface-card px-6 py-5 border-b border-border-subtle flex items-start justify-between">
+<div class="flex items-center gap-3.5">
+<div class="w-11 h-11 rounded-xl bg-primary-container flex items-center justify-center text-white shadow-md shadow-primary/20 flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">how_to_reg</span>
+</div>
+<div>
+<div class="flex items-center gap-2.5">
+<h3 class="text-headline-sm font-headline-sm font-bold text-text-primary" id="modal-title">
+                სუბიექტის რეგისტრაცია (დებიტორი / კრედიტორი)
+              </h3>
+<span class="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-label-sm text-[11px] border border-emerald-200 font-semibold hidden sm:inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                RS.GE Sync
+              </span>
+</div>
+<p class="text-body-sm font-body-sm text-text-muted mt-0.5">
+              ახალი სუბიექტის სისტემაში დამატება და RS.GE ბაზებთან ავტომატური სინქრონიზაცია
+            </p>
+</div>
+</div>
+<button class="rounded-lg p-1.5 text-text-muted hover:text-text-primary hover:bg-slate-100 transition-colors" onclick="closeRegistrationModal()" title="დახურვა">
+<span class="material-symbols-outlined text-[22px]">close</span>
+</button>
+</div>
+<!-- Segmented Mode Tabs (Debtor vs Creditor) -->
+<div class="px-6 pt-5 pb-1 bg-surface-bg/50 border-b border-border-subtle">
+<div class="grid grid-cols-2 p-1 bg-slate-200/70 rounded-xl gap-1">
+<button class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-body-md font-semibold text-primary bg-white shadow-sm transition-all text-sm" id="tabBtnDebtor" onclick="switchRegistrationTab('debtor')">
+<span class="material-symbols-outlined text-[19px] text-sky-600">person_add</span>
+<span>დებიტორის რეგისტრაცია (Debtor)</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-sky-100/70 text-sky-800 font-normal hidden sm:inline">მოვალე</span>
+</button>
+<button class="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-body-md font-medium text-text-muted hover:text-text-primary transition-all text-sm" id="tabBtnCreditor" onclick="switchRegistrationTab('creditor')">
+<span class="material-symbols-outlined text-[19px]">domain_add</span>
+<span>კრედიტორის რეგისტრაცია (Creditor)</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-normal hidden sm:inline">მოთხოვნის მფლობელი</span>
+</button>
+</div>
+</div>
+<!-- Modal Body Form Area -->
+<div class="p-6 max-h-[calc(85vh-200px)] overflow-y-auto">
+<!-- FORM 1: DEBTOR FORM -->
+<div class="space-y-4" id="formDebtorSection">
+<div class="flex items-center justify-between pb-2 border-b border-border-subtle">
+<div class="flex items-center gap-4 text-body-sm">
+<span class="font-semibold text-text-primary text-xs uppercase tracking-wider text-slate-500">სუბიექტის ტიპი:</span>
+<label class="inline-flex items-center gap-1.5 cursor-pointer">
+<input checked="" class="text-primary focus:ring-primary w-4 h-4" name="debtor_entity_type" type="radio"/>
+<span class="text-text-primary font-medium text-body-sm">იურიდიული პირი (შპს/სს)</span>
+</label>
+<label class="inline-flex items-center gap-1.5 cursor-pointer">
+<input class="text-primary focus:ring-primary w-4 h-4" name="debtor_entity_type" type="radio"/>
+<span class="text-slate-600 text-body-sm">ფიზიკური პირი</span>
+</label>
+</div>
+<span class="px-2 py-0.5 rounded bg-sky-50 text-sky-700 text-[11px] font-semibold border border-sky-200 hidden md:inline">დავალიანების მქონე სუბიექტი</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                საიდენტიფიკაციო კოდი (ს/კ ან პ/ნ) <span class="text-rating-c">*</span>
+</label>
+<div class="relative flex items-center">
+<input class="w-full bg-white border border-slate-300 rounded-lg pl-3 pr-24 py-2 text-body-md font-mono text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="404991201" type="text" value="405118492"/>
+<button class="absolute right-1 px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 text-primary border border-blue-200 text-label-sm font-semibold flex items-center gap-1 transition-colors" title="შემოწმება RS.GE რეესტრში" type="button">
+<span class="material-symbols-outlined text-[14px]">sync</span>
+<span>RS.GE</span>
+</button>
+</div>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                სრული დასახელება / სახელი და გვარი <span class="text-rating-c">*</span>
+</label>
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="მაგ: შპს 'კავკასუს ტრანსი'" type="text" value="შპს „კავკასუს ტრანს სერვისი“"/>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                საკონტაქტო ტელეფონი <span class="text-rating-c">*</span>
+</label>
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md font-mono text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="+995 599 000000" type="tel" value="+995 591 442299"/>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                ელ. ფოსტა
+              </label>
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="contact@company.ge" type="email" value="info@cts-georgia.ge"/>
+</div>
+<div class="md:col-span-2">
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                იურიდიული / ფაქტობრივი მისამართი
+              </label>
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="ქ. თბილისი, აკაკი წერეთლის გამზ. #116" type="text" value="ქ. თბილისი, საბურთალოს რ-ნი, ალ. ყაზბეგის გამზ. #24ა"/>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                საწყისი დავალიანება / სასესხო მოცულობა (GEL)
+              </label>
+<div class="relative flex items-center">
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md font-mono text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="0.00" type="text" value="48,500.00"/>
+<span class="absolute right-3 font-mono text-text-muted text-body-sm font-semibold">₾</span>
+</div>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                პასუხისმგებელი ექსპერტი / ანალიტიკოსი
+              </label>
+<select class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md text-text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all">
+<option selected="" value="1">დავით კაპანაძე (მთავარი ანალიტიკოსი)</option>
+<option value="2">თეონა პეტრიაშვილი (ქოლ-ცენტრი)</option>
+<option value="3">გიორგი მახარაძე (იურისტი)</option>
+<option value="4">ლევან კვირიკაშვილი (საველე)</option>
+</select>
+</div>
+</div>
+<div class="pt-2 p-3 bg-emerald-50/70 border border-emerald-200 rounded-lg flex items-center justify-between text-xs">
+<span class="text-emerald-800 font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
+              RS.GE სტატუსი: რეგისტრირებული, აქტიური დღგ-ის გადამხდელი
+            </span>
+<span class="font-mono text-emerald-700">სკორე: 84 / 100</span>
+</div>
+</div>
+<!-- FORM 2: CREDITOR FORM -->
+<div class="space-y-4 hidden" id="formCreditorSection">
+<div class="flex items-center justify-between pb-2 border-b border-border-subtle">
+<div class="flex items-center gap-3 text-body-sm">
+<span class="font-semibold text-text-primary text-xs uppercase tracking-wider text-slate-500">კრედიტორის კატეგორია:</span>
+<select class="bg-white border border-slate-300 rounded-lg px-3 py-1 text-body-sm text-text-primary font-medium focus:outline-none focus:border-primary">
+<option selected="">კომერციული ორგანიზაცია / B2B</option>
+<option>საბანკო ინსტიტუტი</option>
+<option>მიკროსაფინანსო ორგანიზაცია</option>
+<option>კერძო საინვესტიციო ფონდი</option>
+</select>
+</div>
+<span class="px-2 py-0.5 rounded bg-blue-50 text-primary text-[11px] font-semibold border border-blue-200 hidden md:inline">მოთხოვნის მფლობელი ორგანიზაცია</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                საიდენტიფიკაციო კოდი (ს/კ 9 ნიშნა) <span class="text-rating-c">*</span>
+</label>
+<div class="relative flex items-center">
+<input class="w-full bg-white border border-slate-300 rounded-lg pl-3 pr-24 py-2 text-body-md font-mono text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="204876221" type="text" value="205889311"/>
+<button class="absolute right-1 px-2.5 py-1 rounded bg-blue-50 hover:bg-blue-100 text-primary border border-blue-200 text-label-sm font-semibold flex items-center gap-1 transition-colors" title="შემოწმება RS.GE რეესტრში" type="button">
+<span class="material-symbols-outlined text-[14px]">sync</span>
+<span>RS.GE</span>
+</button>
+</div>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                კრედიტორი კომპანიის დასახელება <span class="text-rating-c">*</span>
+</label>
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="მაგ: სს 'თბილისური ტექნოლოგიები'" type="text" value="სს „თბილისური ტექნოლოგიები“"/>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                ხელშეკრულების საფუძველი &amp; № <span class="text-rating-c">*</span>
+</label>
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md font-mono text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="ხელშ. #B2B-SERV-892/2024" type="text" value="ხელშ. #B2B-SERV-892/2024"/>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                საქმის / პორტფელის მიბმა
+              </label>
+<select class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md font-mono text-[13px] text-text-primary focus:outline-none focus:border-primary">
+<option selected="" value="1">საქმე #DB-2024-8902 (აქტიური)</option>
+<option value="2">პორტფელი #PF-B2B-12 (მიკრო-ბიზნესი)</option>
+<option value="3">ახალი პორტფელის გახსნა...</option>
+</select>
+</div>
+<div class="md:col-span-2">
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                საბანკო რეკვიზიტები (IBAN ანგარიშსწორებისთვის)
+              </label>
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md font-mono text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="GE00TB0000000000000000" type="text" value="GE29TB7982245081100092"/>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                უფლებამოსილი წარმომადგენელი
+              </label>
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="სახელი, გვარი, პოზიცია" type="text" value="ირაკლი ჯაფარიძე (დირექტორი)"/>
+</div>
+<div>
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                საკონტაქტო ტელეფონი
+              </label>
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md font-mono text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="+995 599 000000" type="tel" value="+995 595 110022"/>
+</div>
+<div class="md:col-span-2">
+<label class="block text-body-sm font-medium text-text-primary mb-1">
+                მოთხოვნის დავალიანებული მოცულობა (GEL)
+              </label>
+<div class="relative flex items-center">
+<input class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-body-md font-mono text-text-primary placeholder:text-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="0.00" type="text" value="118,200.00"/>
+<span class="absolute right-3 font-mono text-text-muted text-body-sm font-semibold">₾</span>
+</div>
+</div>
+</div>
+<div class="pt-2 p-3 bg-blue-50/70 border border-blue-200 rounded-lg flex items-center justify-between text-xs">
+<span class="text-primary font-medium flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">account_balance_wallet</span>
+              მოთხოვნის დადასტურებული მოცულობა: 118,200.00 ₾
+            </span>
+<span class="font-mono text-slate-600">სტატუსი: ხელშეკრულება აქტიურია</span>
+</div>
+</div>
+</div>
+<!-- Modal Footer -->
+<div class="bg-surface-bg px-6 py-4 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-3">
+<button class="inline-flex items-center gap-1.5 text-body-sm font-medium text-slate-600 hover:text-primary transition-colors cursor-pointer" type="button">
+<span class="material-symbols-outlined text-[17px] text-emerald-600">upload_file</span>
+<span>Excel რეესტრიდან მასიური იმპორტი</span>
+</button>
+<div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+<button class="px-4 py-2 rounded-lg border border-border-subtle bg-white text-slate-700 hover:bg-slate-100 text-body-md font-medium transition-colors" onclick="closeRegistrationModal()" type="button">
+            გაუქმება
+          </button>
+<button class="px-5 py-2 rounded-lg bg-primary hover:bg-[#0A37CA] text-white font-medium text-body-md shadow-sm shadow-primary/20 flex items-center gap-2 transition-all active:scale-95" id="modalSubmitBtnDebtor" onclick="closeRegistrationModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">check</span>
+<span>დებიტორის ბაზაში დამატება &amp; ვერიფიკაცია</span>
+</button>
+<button class="hidden px-5 py-2 rounded-lg bg-primary hover:bg-[#0A37CA] text-white font-medium text-body-md shadow-sm shadow-primary/20 flex items-center gap-2 transition-all active:scale-95" id="modalSubmitBtnCreditor" onclick="closeRegistrationModal()" type="button">
+<span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+<span>კრედიტორის რეგისტრაცია &amp; აქტივაცია</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ========================================================================= -->
+<!-- JAVASCRIPT FOR MODAL & TABS -->
+<!-- ========================================================================= -->
+<script>
+  function openRegistrationModal() {
+    const modal = document.getElementById('subjectRegistrationModal');
+    if (modal) {
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+  }
+
+  function closeRegistrationModal() {
+    const modal = document.getElementById('subjectRegistrationModal');
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+  }
+
+  function switchRegistrationTab(tab) {
+    const debtorForm = document.getElementById('formDebtorSection');
+    const creditorForm = document.getElementById('formCreditorSection');
+    const tabDebtor = document.getElementById('tabBtnDebtor');
+    const tabCreditor = document.getElementById('tabBtnCreditor');
+    const submitDebtor = document.getElementById('modalSubmitBtnDebtor');
+    const submitCreditor = document.getElementById('modalSubmitBtnCreditor');
+
+    if (tab === 'debtor') {
+      debtorForm.classList.remove('hidden');
+      creditorForm.classList.add('hidden');
+      
+      tabDebtor.className = 'flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-body-md font-semibold text-primary bg-white shadow-sm transition-all text-sm';
+      tabCreditor.className = 'flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-body-md font-medium text-text-muted hover:text-text-primary transition-all text-sm';
+      
+      submitDebtor.classList.remove('hidden');
+      submitCreditor.classList.add('hidden');
+    } else {
+      debtorForm.classList.add('hidden');
+      creditorForm.classList.remove('hidden');
+      
+      tabDebtor.className = 'flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-body-md font-medium text-text-muted hover:text-text-primary transition-all text-sm';
+      tabCreditor.className = 'flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg font-body-md font-semibold text-primary bg-white shadow-sm transition-all text-sm';
+      
+      submitDebtor.classList.add('hidden');
+      submitCreditor.classList.remove('hidden');
+    }
+  }
+
+  // Keyboard accessibility: ESC key closes the modal
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeRegistrationModal();
+    }
+  });
+</script>
+<!-- ========================================================================= -->
+<!-- SHARED FOOTER COMPONENT -->
+<!-- ========================================================================= -->
+<footer class="w-full bg-surface-card border-t border-border-subtle mt-auto">
+<div class="w-full max-w-[1720px] mx-auto px-4 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex flex-col sm:flex-row items-center gap-3">
+<div class="flex items-center">
+<span class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">Debitinfo</span>
+<span class="text-headline-sm font-headline-sm font-bold text-secondary-container">.GE</span>
+</div>
+<span class="hidden sm:inline text-slate-300">•</span>
+<p class="text-body-sm font-body-sm text-text-muted text-center sm:text-left">
+          © 2024 Debitinfo.GE. ყველა უფლება დაცულია. ინტეგრირებულია RS.GE სისტემასთან.
+        </p>
+</div>
+<nav class="flex flex-wrap items-center justify-center gap-6 text-body-sm font-body-sm text-text-muted">
+<a class="hover:text-primary transition-colors hover:underline" href="#">კონფიდენციალურობის პოლიტიკა</a>
+<a class="hover:text-primary transition-colors hover:underline" href="#">მომსახურების პირობები</a>
+<a class="hover:text-primary transition-colors hover:underline" href="#">რეკვიზიტები</a>
+<a class="hover:text-primary transition-colors hover:underline" href="#">საგადასახადო შემოწმება</a>
+<a class="hover:text-primary transition-colors hover:underline" href="#">საკონტაქტო პირი</a>
+</nav>
+</div>
+</footer>
+</body></html>

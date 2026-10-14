@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="ka"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Debitinfo.GE — დებიტორთა რეესტრი და საკრედიტო რისკების მართვა</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Noto+Sans+Georgian:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-secondary-fixed": "#001e2c",
+            "rating-c": "#EF4444",
+            "inverse-primary": "#bac3ff",
+            "surface-container-high": "#e8e7f5",
+            "primary-fixed": "#dee1ff",
+            "on-error-container": "#93000a",
+            "outline-variant": "#c4c5da",
+            "on-tertiary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "surface-variant": "#e2e1ef",
+            "on-tertiary-fixed": "#3d0700",
+            "border-subtle": "#E2E8F0",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed-variant": "#004c69",
+            "tertiary-fixed-dim": "#ffb4a3",
+            "on-primary": "#ffffff",
+            "on-background": "#191b25",
+            "on-primary-fixed": "#001159",
+            "surface-bg": "#F8FAFC",
+            "secondary-container": "#12bdfd",
+            "outline": "#747688",
+            "surface-bright": "#fbf8ff",
+            "surface-container": "#edecfb",
+            "error-container": "#ffdad6",
+            "text-muted": "#64748B",
+            "primary-container": "#0d45fc",
+            "surface-container-highest": "#e2e1ef",
+            "surface-card": "#FFFFFF",
+            "on-tertiary-fixed-variant": "#8a1b00",
+            "primary-fixed-dim": "#bac3ff",
+            "on-secondary-container": "#004964",
+            "background": "#fbf8ff",
+            "on-surface-variant": "#434657",
+            "inverse-on-surface": "#f0effe",
+            "tertiary-container": "#b62700",
+            "surface-tint": "#0b44fc",
+            "on-primary-fixed-variant": "#0031c5",
+            "text-primary": "#0F172A",
+            "rating-a": "#0DFCC4",
+            "on-tertiary-container": "#ffcec3",
+            "tertiary": "#8b1c00",
+            "on-primary-container": "#d2d7ff",
+            "inverse-surface": "#2e303a",
+            "secondary-fixed-dim": "#7cd0ff",
+            "accent-mint": "#0DFCC4",
+            "surface-dim": "#d9d9e7",
+            "surface-container-low": "#f4f2ff",
+            "secondary-fixed": "#c4e7ff",
+            "primary": "#0032c6",
+            "on-surface": "#191b25",
+            "on-error": "#ffffff",
+            "rating-b": "#FBBF24",
+            "error": "#ba1a1a",
+            "surface": "#fbf8ff",
+            "tertiary-fixed": "#ffdad2",
+            "secondary": "#00668a"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "gutter-desktop": "1.5rem",
+            "space-md": "1rem",
+            "margin-desktop": "2rem",
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem"
+          },
+          fontFamily: {
+            "body-md": ["Noto Sans Georgian", "Inter"],
+            "headline-lg": ["Noto Sans Georgian", "Inter"],
+            "headline-xl-mobile": ["Noto Sans Georgian", "Inter"],
+            "headline-xl": ["Noto Sans Georgian", "Inter"],
+            "headline-md": ["Noto Sans Georgian", "Inter"],
+            "label-sm": ["JetBrains Mono"],
+            "body-sm": ["Noto Sans Georgian", "Inter"],
+            "body-lg": ["Noto Sans Georgian", "Inter"],
+            "data-mono-lg": ["JetBrains Mono"],
+            "label-md": ["Noto Sans Georgian", "Inter"],
+            "headline-sm": ["Noto Sans Georgian", "Inter"],
+            "data-mono-md": ["JetBrains Mono"]
+          },
+          fontSize: {
+            "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+            "headline-lg": ["28px", { lineHeight: "36px", fontWeight: "600" }],
+            "headline-xl-mobile": ["28px", { lineHeight: "36px", fontWeight: "700" }],
+            "headline-xl": ["36px", { lineHeight: "44px", fontWeight: "700" }],
+            "headline-md": ["22px", { lineHeight: "30px", fontWeight: "600" }],
+            "label-sm": ["10px", { lineHeight: "14px", fontWeight: "500" }],
+            "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "body-lg": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            "data-mono-lg": ["18px", { lineHeight: "24px", fontWeight: "600" }],
+            "label-md": ["12px", { lineHeight: "16px", fontWeight: "600" }],
+            "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }],
+            "data-mono-md": ["14px", { lineHeight: "20px", fontWeight: "500" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Noto Sans Georgian', 'Inter', sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .brand-glow {
+      box-shadow: 0 0 24px -4px rgba(13, 69, 252, 0.15);
+    }
+  </style>
+</head>
+<body class="bg-surface-bg text-text-primary antialiased min-h-screen flex flex-col">
+<!-- 1. Header (Navbar) -->
+<header class="bg-surface-card sticky top-0 z-50 shadow-sm border-b border-border-subtle">
+<div class="w-full px-4 lg:px-8 max-w-7xl mx-auto flex items-center justify-between h-16">
+<!-- Brand Logo -->
+<a class="flex items-center gap-2 group" href="#">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary font-bold shadow-sm">
+<span class="material-symbols-outlined text-lg">assured_workload</span>
+</div>
+<span class="text-headline-sm font-headline-sm text-text-primary tracking-tight font-bold">
+          Debitinfo<span class="text-primary-container">.GE</span>
+</span>
+<span class="w-2 h-2 rounded-full bg-accent-mint animate-pulse ml-0.5"></span>
+</a>
+<!-- Desktop Navigation Menu -->
+<nav class="hidden md:flex items-center space-x-6 lg:space-x-8">
+<a class="text-text-muted hover:text-primary-container transition-colors duration-150 font-label-md text-label-md" href="#services">სერვისები</a>
+<a class="text-primary-container border-b-2 border-primary-container pb-1 font-label-md text-label-md" href="#registry">დებიტორთა რეესტრი</a>
+<a class="text-text-muted hover:text-primary-container transition-colors duration-150 font-label-md text-label-md" href="#pricing">ტარიფები</a>
+<a class="text-text-muted hover:text-primary-container transition-colors duration-150 font-label-md text-label-md" href="#blog">ბლოგი &amp; სიახლეები</a>
+<a class="text-text-muted hover:text-primary-container transition-colors duration-150 font-label-md text-label-md" href="#contact">კონტაქტი</a>
+</nav>
+<!-- Right Side Actions & Language Switcher -->
+<div class="flex items-center gap-3">
+<!-- Language Switcher -->
+<div class="hidden sm:flex items-center p-1 bg-surface-bg rounded-lg border border-border-subtle text-body-sm font-label-md">
+<button class="px-2 py-0.5 rounded bg-surface-card text-primary-container font-semibold shadow-xs" type="button">GE</button>
+<button class="px-2 py-0.5 text-text-muted hover:text-text-primary transition-colors" type="button">EN</button>
+<button class="px-2 py-0.5 text-text-muted hover:text-text-primary transition-colors" type="button">RU</button>
+</div>
+<!-- Auth Actions -->
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-lg text-body-md font-body-md text-text-primary hover:bg-surface-bg transition-colors duration-150 active:scale-95" type="button">
+            შესვლა
+          </button>
+<button class="px-4 py-1.5 rounded-lg text-body-md font-body-md bg-primary-container text-on-primary hover:bg-primary transition-colors duration-150 shadow-sm font-medium active:scale-95 flex items-center gap-1" type="button">
+<span>რეგისტრაცია</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Flow -->
+<main class="flex-grow">
+<!-- 2. Hero Section with Interactive Slider & Verification Search -->
+<section class="relative pt-8 pb-16 lg:py-20 bg-gradient-to-b from-surface-card to-surface-bg border-b border-border-subtle overflow-hidden">
+<div class="max-w-7xl mx-auto px-4 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+<!-- Left Column: Slider & Mission Credo (7 Cols) -->
+<div class="lg:col-span-7 flex flex-col justify-between h-full pt-2">
+<!-- Trust Badge -->
+<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-card border border-border-subtle w-fit mb-6 shadow-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-accent-mint animate-ping"></span>
+<span class="text-body-sm font-body-sm text-text-muted flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-primary-container">verified_user</span>
+                ოფიციალური მონაცემთა გადამცემი პლატფორმა
+              </span>
+</div>
+<!-- Interactive Slides Container -->
+<div class="relative min-h-[220px]">
+<!-- Slide 1 -->
+<div class="transition-opacity duration-300" id="hero-slide-1">
+<h1 class="text-headline-xl lg:text-headline-xl font-headline-xl text-text-primary tracking-tight leading-tight mb-4">
+                  მიიღე ინფორმაცია საკუთარ დებიტორულ დავალიანებაზე ან შენს სახელზე არსებულ დავალიანებაზე <span class="text-primary-container">უფასოდ</span> — ხელი რომ არ შეგეშალოს ბიზნეს საქმიანობაში
+                </h1>
+<p class="text-body-lg font-body-lg text-text-muted max-w-2xl leading-relaxed">
+                  გამჭვირვალე ფინანსური რისკების შემცირება, რეალურ დროში RS.GE ინტეგრაცია და დებიტორთა რეესტრის მონიტორინგი ერთიან ეროვნულ სივრცეში.
+                </p>
+</div>
+<!-- Slide 2 -->
+<div class="hidden transition-opacity duration-300" id="hero-slide-2">
+<h1 class="text-headline-xl lg:text-headline-xl font-headline-xl text-text-primary tracking-tight leading-tight mb-4">
+                  მართე <span class="text-primary-container">ფინანსური რისკები</span> და დაიცავი შენი ბიზნესი რეალურ დროში
+                </h1>
+<p class="text-body-lg font-body-lg text-text-muted max-w-2xl leading-relaxed">
+                  დებიტორული ანალიტიკა, ავტომატური სამართლებრივი შეტყობინებები და კონტრაგენტის საკრედიტო რეიტინგის მყისიერი შემოწმება.
+                </p>
+</div>
+</div>
+<!-- Slider Controls -->
+<div class="flex items-center gap-4 mt-8 pt-4">
+<div class="flex items-center gap-2">
+<button aria-label="Slide 1" class="w-8 h-2 rounded-full bg-primary-container transition-all duration-200" id="slider-btn-1" onclick="switchSlide(1)"></button>
+<button aria-label="Slide 2" class="w-3 h-2 rounded-full bg-border-subtle hover:bg-outline-variant transition-all duration-200" id="slider-btn-2" onclick="switchSlide(2)"></button>
+</div>
+<div class="flex items-center gap-1.5 ml-4">
+<button class="w-8 h-8 rounded-lg border border-border-subtle bg-surface-card flex items-center justify-center text-text-muted hover:text-text-primary hover:border-text-muted transition-all" onclick="prevSlide()">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+</button>
+<button class="w-8 h-8 rounded-lg border border-border-subtle bg-surface-card flex items-center justify-center text-text-muted hover:text-text-primary hover:border-text-muted transition-all" onclick="nextSlide()">
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<span class="text-label-sm font-label-sm text-text-muted uppercase tracking-wider ml-2">სისტემის ვერსია 2.4.0</span>
+</div>
+<!-- Visual Rating Preview Card (Bento Component) -->
+<div class="mt-8 p-4 rounded-xl bg-surface-card border border-border-subtle shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-bg flex items-center justify-center border border-border-subtle text-primary-container">
+<span class="material-symbols-outlined">analytics</span>
+</div>
+<div>
+<div class="text-body-sm font-body-sm text-text-muted">კონტრაგენტის რისკის მაჩვენებლები</div>
+<div class="text-label-md font-label-md text-text-primary flex items-center gap-2">
+                    აქტიური რეიტინგების სკალა
+                    <span class="text-label-sm font-label-sm bg-surface-bg px-2 py-0.5 rounded text-text-muted">დღევანდელი ინდექსი</span>
+</div>
+</div>
+</div>
+<!-- Rating Badges -->
+<div class="flex items-center gap-2">
+<div class="px-2.5 py-1 rounded-full bg-rating-a/20 border border-rating-a text-text-primary text-label-md font-label-md flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-accent-mint"></span>
+                  Grade A (Prime)
+                </div>
+<div class="px-2.5 py-1 rounded-full bg-rating-b/20 border border-rating-b/40 text-text-primary text-label-md font-label-md flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-rating-b"></span>
+                  Grade B
+                </div>
+<div class="px-2.5 py-1 rounded-full bg-rating-c/20 border border-rating-c/40 text-text-primary text-label-md font-label-md flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-rating-c"></span>
+                  Grade C
+                </div>
+</div>
+</div>
+</div>
+<!-- Right Column: Verification Search Box (5 Cols) -->
+<div class="lg:col-span-5" id="registry">
+<div class="bg-surface-card rounded-xl border border-border-subtle shadow-lg p-6 lg:p-7 relative brand-glow">
+<div class="flex items-center justify-between border-b border-border-subtle pb-4 mb-5">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">search_check</span>
+                    უფასო გადამოწმება ბაზაში
+                  </h2>
+<p class="text-body-sm font-body-sm text-text-muted mt-0.5">შეამოწმეთ დავალიანების სტატუსი მყისიერად</p>
+</div>
+<span class="px-2 py-0.5 text-label-sm font-label-sm rounded bg-primary-container/10 text-primary-container uppercase font-semibold">Live DB</span>
+</div>
+<!-- Segmented Selection Tabs -->
+<div class="grid grid-cols-2 gap-1 p-1 bg-surface-bg rounded-lg border border-border-subtle mb-4">
+<button class="py-2 text-label-md font-label-md rounded bg-surface-card text-primary-container shadow-xs font-semibold text-center transition-all" id="tab-personal" onclick="setSearchMode('personal')" type="button">
+                  პირადი ნომერი (11 ნიშნა)
+                </button>
+<button class="py-2 text-label-md font-label-md rounded text-text-muted hover:text-text-primary text-center transition-all" id="tab-corporate" onclick="setSearchMode('corporate')" type="button">
+                  საიდენტიფიკაციო (9 ნიშნა)
+                </button>
+</div>
+<!-- Search Form -->
+<form class="space-y-4" onsubmit="event.preventDefault(); simulateSearch();">
+<div>
+<label class="block text-label-md font-label-md text-text-primary mb-1.5" id="input-label">
+                    მოქალაქის პირადი ნომერი
+                  </label>
+<div class="relative rounded-lg shadow-xs">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-text-muted">
+<span class="material-symbols-outlined text-lg">badge</span>
+</div>
+<input class="block w-full pl-10 pr-4 py-2.5 bg-surface-card border border-border-subtle rounded-lg text-body-md font-data-mono-md text-text-primary placeholder:text-text-muted focus:ring-2 focus:ring-secondary-container/40 focus:border-secondary-container transition-all" id="search-input" maxlength="11" placeholder="მაგ: 01024012345" type="text"/>
+</div>
+<p class="text-body-sm font-body-sm text-text-muted mt-1.5 flex items-center gap-1" id="helper-text">
+<span class="material-symbols-outlined text-xs">info</span>
+                    შეიყვანეთ ზუსტად 11 ციფრი RS.GE ავთენტიფიკაციისთვის
+                  </p>
+</div>
+<!-- Terms check -->
+<div class="flex items-start gap-2 pt-1">
+<input checked="" class="mt-1 rounded border-border-subtle text-primary-container focus:ring-primary-container" id="consent" type="checkbox"/>
+<label class="text-body-sm font-body-sm text-text-muted" for="consent">
+                    ვეთანხმები საჯარო მონაცემთა დამუშავების წესებს და კონფიდენციალურობის პოლიტიკას
+                  </label>
+</div>
+<!-- High-Emphasis CTA Button -->
+<button class="w-full py-3 px-4 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-body-md text-body-md font-semibold transition-all duration-150 shadow-sm flex items-center justify-center gap-2 active:scale-[0.99]" id="search-cta" type="submit">
+<span class="material-symbols-outlined text-lg">manage_search</span>
+<span>გადამოწმება ბაზაში</span>
+</button>
+</form>
+<!-- Dynamic Result Placeholder for Interaction -->
+<div class="hidden mt-4 p-3 bg-surface-bg border border-accent-mint/50 rounded-lg" id="search-result-box">
+<div class="flex items-center justify-between text-body-sm font-body-sm">
+<span class="text-text-muted flex items-center gap-1">
+<span class="material-symbols-outlined text-accent-mint text-sm">check_circle</span>
+                    სტატუსი: <strong>დავალიანება არ ფიქსირდება</strong>
+</span>
+<span class="px-2 py-0.5 rounded-full bg-accent-mint/20 text-text-primary text-label-sm font-label-sm font-bold">Grade A</span>
+</div>
+</div>
+<!-- Reassurance Trust Badges -->
+<div class="mt-5 pt-4 border-t border-border-subtle grid grid-cols-3 gap-2 text-center">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary-container mb-0.5">lock</span>
+<span class="text-label-sm font-label-sm text-text-muted leading-tight">256-bit SSL დაცვა</span>
+</div>
+<div class="flex flex-col items-center border-x border-border-subtle">
+<span class="material-symbols-outlined text-base text-primary-container mb-0.5">sync_alt</span>
+<span class="text-label-sm font-label-sm text-text-muted leading-tight">RS.GE სინქრონი</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-base text-primary-container mb-0.5">bolt</span>
+<span class="text-label-sm font-label-sm text-text-muted leading-tight">მყისიერი შედეგი</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. Live Stats & Trust Bar -->
+<section class="py-10 bg-surface-card border-b border-border-subtle">
+<div class="max-w-7xl mx-auto px-4 lg:px-8">
+<!-- Grid of 4 Key Metrics -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8 pb-8 border-b border-border-subtle">
+<div class="flex flex-col">
+<span class="text-text-muted text-body-sm font-body-sm mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary-container">account_balance_wallet</span>
+              მართული პორტფელი
+            </span>
+<div class="text-headline-md lg:text-headline-lg font-data-mono-lg text-text-primary tracking-tight">
+              ₾42M+
+            </div>
+<span class="text-label-sm font-label-sm text-rating-a font-medium mt-1 flex items-center gap-0.5">
+<span class="material-symbols-outlined text-xs">trending_up</span> +14.2% წინა კვარტალთან
+            </span>
+</div>
+<div class="flex flex-col">
+<span class="text-text-muted text-body-sm font-body-sm mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary-container">history</span>
+              აქტიური შემოწმება
+            </span>
+<div class="text-headline-md lg:text-headline-lg font-data-mono-lg text-text-primary tracking-tight">
+              18,400+
+            </div>
+<span class="text-label-sm font-label-sm text-text-muted mt-1">ბოლო 30 დღე</span>
+</div>
+<div class="flex flex-col">
+<span class="text-text-muted text-body-sm font-body-sm mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary-container">verified</span>
+              მონაცემთა სიზუსტე
+            </span>
+<div class="text-headline-md lg:text-headline-lg font-data-mono-lg text-text-primary tracking-tight">
+              99.4%
+            </div>
+<span class="text-label-sm font-label-sm text-primary-container mt-1">RS.GE ოფიციალური წყარო</span>
+</div>
+<div class="flex flex-col">
+<span class="text-text-muted text-body-sm font-body-sm mb-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary-container">business</span>
+              პარტნიორი კომპანია
+            </span>
+<div class="text-headline-md lg:text-headline-lg font-data-mono-lg text-text-primary tracking-tight">
+              350+
+            </div>
+<span class="text-label-sm font-label-sm text-text-muted mt-1">საქართველოს მასშტაბით</span>
+</div>
+</div>
+<!-- Institutional Trust Indicators -->
+<div class="pt-6 flex flex-wrap items-center justify-between gap-6">
+<span class="text-label-md font-label-md text-text-muted uppercase tracking-wider">
+            სისტემური ინტეგრატორები და პარტნიორები:
+          </span>
+<div class="flex flex-wrap items-center gap-6 lg:gap-10 opacity-75 hover:opacity-100 transition-opacity">
+<div class="flex items-center gap-2 font-headline-sm font-bold text-text-muted">
+<span class="w-6 h-6 rounded bg-primary-container text-on-primary flex items-center justify-center text-xs font-mono">RS</span>
+<span>RS.GE შემოსავლების სამსახური</span>
+</div>
+<div class="flex items-center gap-2 font-headline-sm font-semibold text-text-muted">
+<span class="material-symbols-outlined text-primary-container">account_balance</span>
+<span>საქართველოს ბანკი</span>
+</div>
+<div class="flex items-center gap-2 font-headline-sm font-semibold text-text-muted">
+<span class="material-symbols-outlined text-secondary-container">domain</span>
+<span>თიბისი ბანკი</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 4. Pricing & Packages Section -->
+<section class="py-16 lg:py-24 bg-surface-bg" id="pricing">
+<div class="max-w-7xl mx-auto px-4 lg:px-8">
+<!-- Header & Segmented Switch -->
+<div class="text-center max-w-3xl mx-auto mb-12">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-card border border-border-subtle text-label-md font-label-md text-primary-container mb-3 shadow-xs">
+<span class="material-symbols-outlined text-sm">payments</span>
+            გამჭვირვალე ფასები
+          </div>
+<h2 class="text-headline-xl font-headline-xl text-text-primary tracking-tight mb-4">
+            მოქნილი ტარიფები ყველა ტიპის მომხმარებლისთვის
+          </h2>
+<p class="text-body-lg font-body-lg text-text-muted">
+            შეარჩიეთ თქვენს მოთხოვნებზე მორგებული პაკეტი პირადი საკრედიტო ისტორიის მონიტორინგისთვის ან კორპორაციული რისკების სამართავად.
+          </p>
+<!-- Toggle Control -->
+<div class="inline-flex items-center p-1.5 bg-surface-card rounded-xl border border-border-subtle mt-8 shadow-xs">
+<button class="px-5 py-2 rounded-lg text-body-md font-body-md font-semibold transition-all bg-primary-container text-on-primary shadow-xs" id="pricing-btn-ind" onclick="togglePricing('individual')" type="button">
+              ფიზიკური პირი
+            </button>
+<button class="px-5 py-2 rounded-lg text-body-md font-body-md text-text-muted hover:text-text-primary transition-all" id="pricing-btn-corp" onclick="togglePricing('corporate')" type="button">
+              იურიდიული პირი (კომპანია)
+            </button>
+</div>
+</div>
+<!-- 3 Tier Pricing Cards (Bento style) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+<!-- Card 1: Free Tier -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-7 shadow-sm flex flex-col justify-between hover:border-text-muted transition-all">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="px-3 py-1 rounded-full bg-surface-bg border border-border-subtle text-label-md font-label-md text-text-muted">
+                  საწყისი
+                </span>
+<span class="material-symbols-outlined text-text-muted">person</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-text-primary mb-2">საბაზისო / სტარტი</h3>
+<p class="text-body-sm font-body-sm text-text-muted mb-6">იდეალურია მოქალაქეებისთვის საკუთარი სტატუსის შესამოწმებლად.</p>
+<div class="flex items-baseline gap-1 mb-6 pb-6 border-b border-border-subtle">
+<span class="text-headline-xl font-data-mono-lg text-text-primary">0 ₾</span>
+<span class="text-body-sm font-body-sm text-text-muted">/ უფასო</span>
+</div>
+<!-- Features -->
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check</span>
+                  პირადი შემოწმება
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check</span>
+                  1 გადამოწმება თვეში
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check</span>
+                  SMS შეტყობინება
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check</span>
+                  საბაზისო რეიტინგი
+                </li>
+</ul>
+</div>
+<button class="w-full py-2.5 px-4 rounded-lg border border-border-subtle text-primary-container font-body-md text-body-md font-semibold hover:bg-surface-bg transition-colors" type="button">
+              დაიწყე უფასოდ
+            </button>
+</div>
+<!-- Card 2: Professional / Standard (Highlighted) -->
+<div class="bg-surface-card rounded-xl border-2 border-primary-container p-7 shadow-md flex flex-col justify-between relative transform md:-translate-y-2">
+<!-- Popular Badge -->
+<div class="absolute -top-3.5 left-1/2 transform -translate-x-1/2">
+<span class="px-3 py-1 rounded-full bg-accent-mint text-text-primary font-label-md text-label-md font-bold uppercase tracking-wider shadow-xs border border-surface-card">
+                რეკომენდებული
+              </span>
+</div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="px-3 py-1 rounded-full bg-primary-container/10 text-label-md font-label-md text-primary-container font-medium">
+                  პოპულარული
+                </span>
+<span class="material-symbols-outlined text-primary-container">stars</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-text-primary mb-2">პროფესიონალი / ბიზნეს სტანდარტი</h3>
+<p class="text-body-sm font-body-sm text-text-muted mb-6">მცირე ბიზნესისა და აქტიური მეწარმეებისთვის.</p>
+<div class="flex items-baseline gap-1 mb-6 pb-6 border-b border-border-subtle">
+<span class="text-headline-xl font-data-mono-lg text-text-primary" id="price-card-2">49 ₾</span>
+<span class="text-body-sm font-body-sm text-text-muted">/ თვე</span>
+</div>
+<!-- Features -->
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check_circle</span>
+<strong>ულიმიტო გადამოწმება</strong>
+</li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check_circle</span>
+                  დეტალური საკრედიტო ისტორია
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check_circle</span>
+                  ავტომატური მონიტორინგი
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check_circle</span>
+                  იურიდიული მხარდაჭერის კონსულტაცია
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check_circle</span>
+                  PDF ოფიციალური ამონაწერი
+                </li>
+</ul>
+</div>
+<button class="w-full py-3 px-4 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-body-md text-body-md font-semibold transition-colors shadow-sm" type="button">
+              პაკეტის არჩევა
+            </button>
+</div>
+<!-- Card 3: Enterprise -->
+<div class="bg-surface-card rounded-xl border border-border-subtle p-7 shadow-sm flex flex-col justify-between hover:border-text-muted transition-all">
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="px-3 py-1 rounded-full bg-surface-bg border border-border-subtle text-label-md font-label-md text-text-muted">
+                  ენტერპრაიზი
+                </span>
+<span class="material-symbols-outlined text-text-muted">apartment</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-text-primary mb-2">კორპორაციული / ენტერპრაიზი</h3>
+<p class="text-body-sm font-body-sm text-text-muted mb-6">მსხვილი სადისტრიბუციო და ფინანსური ინსტიტუტებისთვის.</p>
+<div class="flex items-baseline gap-1 mb-6 pb-6 border-b border-border-subtle">
+<span class="text-headline-xl font-data-mono-lg text-text-primary" id="price-card-3">199 ₾</span>
+<span class="text-body-sm font-body-sm text-text-muted">/ თვე</span>
+</div>
+<!-- Features -->
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check</span>
+                  API ინტეგრაცია (REST API)
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check</span>
+                  მრავალმომხმარებლიანი წვდომა
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check</span>
+                  პორტფელის მასიური ანალიზი
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check</span>
+                  პერსონალური მენეჯერი
+                </li>
+<li class="flex items-center gap-2 text-body-md font-body-md text-text-primary">
+<span class="material-symbols-outlined text-accent-mint text-base">check</span>
+                  24/7 პრიორიტეტული მხარდაჭერა
+                </li>
+</ul>
+</div>
+<button class="w-full py-2.5 px-4 rounded-lg border border-border-subtle text-primary-container font-body-md text-body-md font-semibold hover:bg-surface-bg transition-colors" type="button">
+              დაგვიკავშირდით
+            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Blog & News Section -->
+<section class="py-16 lg:py-24 bg-surface-card border-t border-b border-border-subtle" id="blog">
+<div class="max-w-7xl mx-auto px-4 lg:px-8">
+<!-- Header & Category Filters -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-bg border border-border-subtle text-label-md font-label-md text-primary-container mb-3">
+<span class="material-symbols-outlined text-sm">newspaper</span>
+              ანალიტიკა და ცოდნის ბაზა
+            </div>
+<h2 class="text-headline-xl font-headline-xl text-text-primary tracking-tight">
+              სასარგებლო რესურსები და სიახლეები
+            </h2>
+</div>
+<!-- Filter tags -->
+<div class="flex flex-wrap items-center gap-2">
+<button class="px-3.5 py-1.5 rounded-full bg-primary-container text-on-primary text-label-md font-label-md font-medium">ყველა</button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-bg hover:bg-border-subtle text-text-muted text-label-md font-label-md transition-colors">საკრედიტო განათლება</button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-bg hover:bg-border-subtle text-text-muted text-label-md font-label-md transition-colors">საგადასახადო სიახლეები</button>
+<button class="px-3.5 py-1.5 rounded-full bg-surface-bg hover:bg-border-subtle text-text-muted text-label-md font-label-md transition-colors">ტრენინგები</button>
+</div>
+</div>
+<!-- 3 Rich Blog Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Article 1 -->
+<article class="bg-surface-bg rounded-xl border border-border-subtle overflow-hidden flex flex-col group hover:shadow-md transition-all">
+<div class="h-48 overflow-hidden relative bg-border-subtle">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Modern corporate financial dashboard interface displayed on high-resolution monitor in bright modern office space, showcasing blue credit score graphs, clear data cards, clean high-key ambient lighting, fintech analytic workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw042bPozb2YVyuya7uTw8Lmi2bSCThH_jd528e71cjyInSKZ4O1zHPoaSJMVQSd7dsc6ikN_RRbEHzW6KY3jTaGL1rbs-FPCTBGhkLv_AFK4hPYPL6Tyq78hC1eMtKttJmoYatDNFf0iuqf8jCb5Z_bR4DyesXc1HW3NQwIkfKituVQw1RUHewUhlCSlbRCBzOw4TSkvbKZ6SBP0qfFfGkwbSPUPq7z6uCac5ZjBePpjt9ByegpaCYw"/>
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-surface-card/90 backdrop-blur-xs text-primary-container text-label-sm font-label-sm font-semibold border border-border-subtle">
+                საკრედიტო განათლება
+              </span>
+</div>
+<div class="p-6 flex flex-col justify-between flex-grow">
+<div>
+<div class="flex items-center gap-2 text-text-muted text-body-sm font-body-sm mb-2">
+<span class="material-symbols-outlined text-xs">calendar_today</span>
+<span>12 ოქტომბერი, 2024</span>
+<span>•</span>
+<span>5 წთ საკითხავი</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-text-primary group-hover:text-primary-container transition-colors line-clamp-2 mb-3">
+                  როგორ ავიმაღლოთ საკრედიტო რეიტინგი და შევამციროთ დავალიანების რისკები
+                </h3>
+<p class="text-body-md font-body-md text-text-muted line-clamp-3 mb-4">
+                  პრაქტიკული რჩევები ბიზნესისთვის და ფიზიკური პირებისთვის: როგორ მოვახდინოთ დავალიანებების რესტრუქტურიზაცია და თავიდან ავირიდოთ უარყოფითი ჩანაწერები.
+                </p>
+</div>
+<a class="inline-flex items-center gap-1.5 text-primary-container font-label-md text-label-md group-hover:gap-2 transition-all" href="#">
+                სრულად წაკითხვა
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</article>
+<!-- Article 2 -->
+<article class="bg-surface-bg rounded-xl border border-border-subtle overflow-hidden flex flex-col group hover:shadow-md transition-all">
+<div class="h-48 overflow-hidden relative bg-border-subtle">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Georgian business taxation and legal office setting with modern tablets displaying Revenue Service portal data charts, clean minimalist architecture with crisp white desks and subtle blue lighting reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnaGcbiKn09T6ykq6X8vg6fXaOCYJTMlssZSf-8vlI1-jlOtEI3k7XoYlmGA2Q_G9BaH6I2gU4UjwXGqmlp5v70dcLU5fexnGJjyCvm_Eu8BVtz85eM1Hw9iJn6L8byCLiw_WwfbMnWwueMZY5hdQZaJPuY_2ICu69MKsNJYQo0DUDmTv0XQBdoHFMraDt1_jKBQk4x1-fkda0BeMffQmCocd7IFI_3C9xQlcL4A-RAL1v8OFW3e6m3Q"/>
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-surface-card/90 backdrop-blur-xs text-primary-container text-label-sm font-label-sm font-semibold border border-border-subtle">
+                საგადასახადო სიახლეები
+              </span>
+</div>
+<div class="p-6 flex flex-col justify-between flex-grow">
+<div>
+<div class="flex items-center gap-2 text-text-muted text-body-sm font-body-sm mb-2">
+<span class="material-symbols-outlined text-xs">calendar_today</span>
+<span>8 ოქტომბერი, 2024</span>
+<span>•</span>
+<span>7 წთ საკითხავი</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-text-primary group-hover:text-primary-container transition-colors line-clamp-2 mb-3">
+                  საგადასახადო კანონმდებლობის ცვლილებები და RS.GE-ს ახალი მოთხოვნები ბიზნესისთვის
+                </h3>
+<p class="text-body-md font-body-md text-text-muted line-clamp-3 mb-4">
+                  რა იცვლება ელექტრონულ დეკლარირებასა და დებიტორული დავალიანებების საგადასახადო აღრიცხვაში 2024 წლის ბოლოდან.
+                </p>
+</div>
+<a class="inline-flex items-center gap-1.5 text-primary-container font-label-md text-label-md group-hover:gap-2 transition-all" href="#">
+                სრულად წაკითხვა
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</article>
+<!-- Article 3 -->
+<article class="bg-surface-bg rounded-xl border border-border-subtle overflow-hidden flex flex-col group hover:shadow-md transition-all">
+<div class="h-48 overflow-hidden relative bg-border-subtle">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Professional financial workshop conference room with attendees reviewing risk analysis slides on widescreen projection, sleek corporate ambiance, bright natural daylight streaming through large commercial windows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsfF_HtUJWABH7ijPdNma_cUGWSGd_-eiaWVV_8DG1rYy-DkGhSil9iAiMqD0Nl295kX1HfYXv8T0KTfua0NxMMy7MKltGhC9FI-RvVVsBD30o4RLVPvLoTodpZw3udxCz9uM5frMGq04rArS2Dwyn76sJZRraU95ytIrLYAANZGIirqp48zkxNxGGQCae-4RADyopFMA49lOvj_EvtoeO8MM5wuZ8rlnu54XL55yqMNEOyG1FqJ9J8Q"/>
+<span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-surface-card/90 backdrop-blur-xs text-primary-container text-label-sm font-label-sm font-semibold border border-border-subtle">
+                ტრენინგები
+              </span>
+</div>
+<div class="p-6 flex flex-col justify-between flex-grow">
+<div>
+<div class="flex items-center gap-2 text-text-muted text-body-sm font-body-sm mb-2">
+<span class="material-symbols-outlined text-xs">calendar_today</span>
+<span>1 ოქტომბერი, 2024</span>
+<span>•</span>
+<span class="text-accent-mint font-semibold">რეგისტრაცია ღიაა</span>
+</div>
+<h3 class="text-headline-sm font-headline-sm text-text-primary group-hover:text-primary-container transition-colors line-clamp-2 mb-3">
+                  პრაქტიკული ვორქშოპი: დებიტორული დავალიანებების ეფექტური მართვა და პრევენცია
+                </h3>
+<p class="text-body-md font-body-md text-text-muted line-clamp-3 mb-4">
+                  ინტერაქტიული ონლაინ სესია მთავარ ბუღალტრებთან და იურისტებთან ერთად. გაეცანით დავალიანების ამოღების სამართლებრივ მექანიზმებს.
+                </p>
+</div>
+<a class="inline-flex items-center gap-1.5 text-primary-container font-label-md text-label-md group-hover:gap-2 transition-all" href="#">
+                სრულად წაკითხვა
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</article>
+</div>
+<!-- View All Action Button -->
+<div class="text-center mt-12">
+<a class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-border-subtle bg-surface-card text-text-primary hover:text-primary-container font-body-md text-body-md font-semibold transition-all shadow-xs" href="#">
+<span>ყველა სტატიის ნახვა</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- 6. Footer -->
+<footer class="bg-surface-card border-t border-border-subtle text-text-primary" id="contact">
+<div class="w-full max-w-7xl mx-auto px-4 lg:px-8 py-12 flex flex-col gap-10">
+<!-- 4 Columns Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+<!-- Col 1: Brand & Credo -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded bg-primary-container flex items-center justify-center text-on-primary font-bold">
+<span class="material-symbols-outlined text-base">assured_workload</span>
+</div>
+<span class="text-headline-sm font-headline-sm font-bold text-text-primary tracking-tight">
+              Debitinfo<span class="text-primary-container">.GE</span>
+</span>
+</div>
+<p class="text-body-sm font-body-sm text-text-muted leading-relaxed">
+            საქართველოს წამყვანი ციფრული პლატფორმა საკრედიტო რისკების მონიტორინგისა და დებიტორული დავალიანებების საჯარო გამჭვირვალობისთვის.
+          </p>
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-text-muted mt-2">
+<span class="w-2 h-2 rounded-full bg-accent-mint"></span>
+            ინტეგრირებულია RS.GE სისტემასთან
+          </div>
+</div>
+<!-- Col 2: Navigation & Services -->
+<div class="flex flex-col gap-3">
+<h4 class="text-label-md font-label-md font-semibold text-text-primary uppercase tracking-wider">
+            ნავიგაცია &amp; სერვისები
+          </h4>
+<ul class="space-y-2 text-body-sm font-body-sm text-text-muted">
+<li><a class="hover:text-primary-container transition-colors" href="#registry">დებიტორთა რეესტრი</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">საკრედიტო მონიტორინგი</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">API დოკუმენტაცია</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#pricing">ტარიფები და პაკეტები</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#blog">სიახლეები და ბლოგი</a></li>
+</ul>
+</div>
+<!-- Col 3: Legal & Regulatory -->
+<div class="flex flex-col gap-3">
+<h4 class="text-label-md font-label-md font-semibold text-text-primary uppercase tracking-wider">
+            იურიდიული &amp; პოლიტიკა
+          </h4>
+<ul class="space-y-2 text-body-sm font-body-sm text-text-muted">
+<li><a class="hover:text-primary-container transition-colors" href="#">კონფიდენციალურობის პოლიტიკა</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">მომსახურების პირობები</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">რეგულაციები და უსაფრთხოება</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">საგადასახადო შემოწმება</a></li>
+<li><a class="hover:text-primary-container transition-colors" href="#">საკონტაქტო პირი</a></li>
+</ul>
+</div>
+<!-- Col 4: Banking Requisites & Contact -->
+<div class="flex flex-col gap-3">
+<h4 class="text-label-md font-label-md font-semibold text-text-primary uppercase tracking-wider">
+            საბანკო რეკვიზიტები &amp; კონტაქტი
+          </h4>
+<div class="p-3 bg-surface-bg rounded-lg border border-border-subtle space-y-2 text-label-sm font-label-sm">
+<div>
+<div class="font-semibold text-text-primary">საქართველოს ბანკი:</div>
+<div class="text-text-muted select-all">GE79BG0000000123456789 (GEL)</div>
+<div class="text-text-muted">SWIFT: BOGAGE22</div>
+</div>
+<div class="pt-1 border-t border-border-subtle">
+<div class="font-semibold text-text-primary">თიბისი ბანკი:</div>
+<div class="text-text-muted select-all">GE02TB7000000987654321 (GEL)</div>
+<div class="text-text-muted">SWIFT: TBCBGE22</div>
+</div>
+</div>
+<div class="text-body-sm font-body-sm text-text-muted space-y-1 mt-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-primary-container">call</span>
+<span>+995 (32) 2 100 200</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-primary-container">mail</span>
+<span>info@debitinfo.ge</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-xs text-primary-container">location_on</span>
+<span>თბილისი, საქართველო</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Bar: Social & Copyright -->
+<div class="pt-8 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
+<p class="text-body-sm font-body-sm text-text-muted text-center sm:text-left">
+          © 2024 Debitinfo.GE. ყველა უფლება დაცულია. ინტეგრირებულია RS.GE სისტემასთან.
+        </p>
+<!-- Social Icons -->
+<div class="flex items-center gap-4">
+<a aria-label="LinkedIn" class="w-8 h-8 rounded-full bg-surface-bg flex items-center justify-center text-text-muted hover:text-primary-container border border-border-subtle transition-colors" href="#">
+<span class="font-bold text-xs">in</span>
+</a>
+<a aria-label="Facebook" class="w-8 h-8 rounded-full bg-surface-bg flex items-center justify-center text-text-muted hover:text-primary-container border border-border-subtle transition-colors" href="#">
+<span class="font-bold text-xs">fb</span>
+</a>
+<a aria-label="Telegram" class="w-8 h-8 rounded-full bg-surface-bg flex items-center justify-center text-text-muted hover:text-primary-container border border-border-subtle transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">send</span>
+</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- Interactive Logic Scripts -->
+<script>
+    // 1. Hero Slider Interaction
+    let currentSlide = 1;
+    function switchSlide(slideIndex) {
+      currentSlide = slideIndex;
+      const slide1 = document.getElementById('hero-slide-1');
+      const slide2 = document.getElementById('hero-slide-2');
+      const btn1 = document.getElementById('slider-btn-1');
+      const btn2 = document.getElementById('slider-btn-2');
+
+      if (slideIndex === 1) {
+        slide1.classList.remove('hidden');
+        slide2.classList.add('hidden');
+        btn1.className = "w-8 h-2 rounded-full bg-primary-container transition-all duration-200";
+        btn2.className = "w-3 h-2 rounded-full bg-border-subtle hover:bg-outline-variant transition-all duration-200";
+      } else {
+        slide1.classList.add('hidden');
+        slide2.classList.remove('hidden');
+        btn1.className = "w-3 h-2 rounded-full bg-border-subtle hover:bg-outline-variant transition-all duration-200";
+        btn2.className = "w-8 h-2 rounded-full bg-primary-container transition-all duration-200";
+      }
+    }
+
+    function nextSlide() {
+      switchSlide(currentSlide === 1 ? 2 : 1);
+    }
+
+    function prevSlide() {
+      switchSlide(currentSlide === 1 ? 2 : 1);
+    }
+
+    // 2. Verification Search Segmented Control
+    let searchMode = 'personal';
+    function setSearchMode(mode) {
+      searchMode = mode;
+      const tabPersonal = document.getElementById('tab-personal');
+      const tabCorporate = document.getElementById('tab-corporate');
+      const input = document.getElementById('search-input');
+      const label = document.getElementById('input-label');
+      const helper = document.getElementById('helper-text');
+      const resultBox = document.getElementById('search-result-box');
+
+      resultBox.classList.add('hidden');
+
+      if (mode === 'personal') {
+        tabPersonal.className = "py-2 text-label-md font-label-md rounded bg-surface-card text-primary-container shadow-xs font-semibold text-center transition-all";
+        tabCorporate.className = "py-2 text-label-md font-label-md rounded text-text-muted hover:text-text-primary text-center transition-all";
+        label.innerText = "მოქალაქის პირადი ნომერი";
+        input.placeholder = "მაგ: 01024012345";
+        input.maxLength = 11;
+        helper.innerHTML = `<span class="material-symbols-outlined text-xs">info</span> შეიყვანეთ ზუსტად 11 ციფრი RS.GE ავთენტიფიკაციისთვის`;
+      } else {
+        tabCorporate.className = "py-2 text-label-md font-label-md rounded bg-surface-card text-primary-container shadow-xs font-semibold text-center transition-all";
+        tabPersonal.className = "py-2 text-label-md font-label-md rounded text-text-muted hover:text-text-primary text-center transition-all";
+        label.innerText = "კომპანიის საიდენტიფიკაციო კოდი";
+        input.placeholder = "მაგ: 405123456";
+        input.maxLength = 9;
+        helper.innerHTML = `<span class="material-symbols-outlined text-xs">info</span> შეიყვანეთ კომპანიის 9-ნიშნა საიდენტიფიკაციო კოდი`;
+      }
+    }
+
+    function simulateSearch() {
+      const input = document.getElementById('search-input');
+      const resultBox = document.getElementById('search-result-box');
+      if (!input.value.trim()) {
+        input.focus();
+        return;
+      }
+      resultBox.classList.remove('hidden');
+    }
+
+    // 3. Pricing Period & Target Toggle
+    function togglePricing(tier) {
+      const btnInd = document.getElementById('pricing-btn-ind');
+      const btnCorp = document.getElementById('pricing-btn-corp');
+      const price2 = document.getElementById('price-card-2');
+      const price3 = document.getElementById('price-card-3');
+
+      if (tier === 'individual') {
+        btnInd.className = "px-5 py-2 rounded-lg text-body-md font-body-md font-semibold transition-all bg-primary-container text-on-primary shadow-xs";
+        btnCorp.className = "px-5 py-2 rounded-lg text-body-md font-body-md text-text-muted hover:text-text-primary transition-all";
+        price2.innerText = "49 ₾";
+        price3.innerText = "199 ₾";
+      } else {
+        btnCorp.className = "px-5 py-2 rounded-lg text-body-md font-body-md font-semibold transition-all bg-primary-container text-on-primary shadow-xs";
+        btnInd.className = "px-5 py-2 rounded-lg text-body-md font-body-md text-text-muted hover:text-text-primary transition-all";
+        price2.innerText = "89 ₾";
+        price3.innerText = "349 ₾";
+      }
+    }
+  </script>
+</body></html>
