@@ -1,48 +1,59 @@
 import { NextResponse } from 'next/server';
+import { get, put } from '@vercel/blob';
 import fs from 'fs';
 import path from 'path';
 
-const GIST_ID = process.env.GIST_ID || '4fc3639e846602d89c228973948ecaf5';
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'comments.json');
 
-// Read comments from GitHub Gist or local file
+// Read comments from Vercel Blob Store (or local fallback)
 export async function GET() {
   try {
-    if (GIST_ID && GITHUB_TOKEN) {
-      const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          'User-Agent': 'Debitinfo-Comments-App',
-        },
-        cache: 'no-store',
-      });
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      try {
+        const res = await get('comments.json', {
+          access: 'private',
+          useCache: false,
+        });
 
-      if (res.ok) {
-        const data = await res.json();
-        const content = data.files?.['comments.json']?.content;
-        if (content) {
-          const parsed = JSON.parse(content);
-          return NextResponse.json({ comments: parsed, source: 'cloud-db' });
+        if (res && res.statusCode === 200 && res.stream) {
+          const text = await new Response(res.stream).text();
+          const parsed = JSON.parse(text);
+          if (Array.isArray(parsed)) {
+            return NextResponse.json(
+              { comments: parsed, source: 'vercel-blob' },
+              { headers: { 'Cache-Control': 'no-store, max-age=0' } }
+            );
+          }
         }
+      } catch (blobErr) {
+        console.warn('Vercel Blob GET warning, falling back to local:', blobErr);
       }
     }
 
-    // Fallback to local file if Gist read fails
+    // Local file fallback for offline/local development
     if (fs.existsSync(DATA_FILE)) {
       const content = fs.readFileSync(DATA_FILE, 'utf-8');
-      return NextResponse.json({ comments: JSON.parse(content), source: 'local-file' });
+      const parsed = JSON.parse(content);
+      return NextResponse.json(
+        { comments: Array.isArray(parsed) ? parsed : [], source: 'local-file' },
+        { headers: { 'Cache-Control': 'no-store, max-age=0' } }
+      );
     }
 
-    return NextResponse.json({ comments: [], source: 'empty' });
+    return NextResponse.json(
+      { comments: [], source: 'empty' },
+      { headers: { 'Cache-Control': 'no-store, max-age=0' } }
+    );
   } catch (err: any) {
     return NextResponse.json({ comments: [], error: err.message }, { status: 200 });
   }
 }
 
-// Write comments to GitHub Gist and local file
+// Write comments to Vercel Blob Store (and local fallback)
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -54,26 +65,17 @@ export async function POST(req: Request) {
 
     const jsonString = JSON.stringify(comments, null, 2);
 
-    // 1. Sync to GitHub Gist Cloud Database
-    if (GIST_ID && GITHUB_TOKEN) {
-      await fetch(`https://api.github.com/gists/${GIST_ID}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${GITHUB_TOKEN}`,
-          'User-Agent': 'Debitinfo-Comments-App',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          files: {
-            'comments.json': {
-              content: jsonString,
-            },
-          },
-        }),
+    // 1. Sync directly to Vercel Blob Store (cross-platform cloud persistence)
+    if (process.env.BLOB_READ_WRITE_TOKEN) {
+      await put('comments.json', jsonString, {
+        access: 'private',
+        addRandomSuffix: false,
+        allowOverwrite: true,
+        contentType: 'application/json',
       });
     }
 
-    // 2. Also save to local file for dev
+    // 2. Also save to local file for dev environment
     try {
       if (!fs.existsSync(DATA_DIR)) {
         fs.mkdirSync(DATA_DIR, { recursive: true });
