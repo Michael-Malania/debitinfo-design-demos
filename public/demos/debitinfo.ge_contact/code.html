@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ka"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>კონტაქტი — Debitinfo.GE | დავალიანებების მონიტორინგი და მედიაცია</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Noto+Sans+Georgian:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-bright": "#fbf8ff",
+            "surface-container": "#edecfb",
+            "inverse-primary": "#bac3ff",
+            "on-error-container": "#93000a",
+            "rating-b": "#FBBF24",
+            "surface-container-low": "#f4f2ff",
+            "primary-fixed-dim": "#bac3ff",
+            "outline-variant": "#c4c5da",
+            "surface-card": "#FFFFFF",
+            "inverse-surface": "#2e303a",
+            "rating-c": "#EF4444",
+            "border-subtle": "#E2E8F0",
+            "on-primary-container": "#d2d7ff",
+            "primary-container": "#0d45fc",
+            "surface-container-lowest": "#ffffff",
+            "primary": "#0032c6",
+            "surface-bg": "#F8FAFC",
+            "surface-container-highest": "#e2e1ef",
+            "on-tertiary-fixed": "#3d0700",
+            "surface-variant": "#e2e1ef",
+            "on-secondary-fixed": "#001e2c",
+            "error": "#ba1a1a",
+            "surface-container-high": "#e8e7f5",
+            "on-secondary-container": "#004964",
+            "on-primary-fixed": "#001159",
+            "primary-fixed": "#dee1ff",
+            "secondary": "#00668a",
+            "text-muted": "#64748B",
+            "on-background": "#191b25",
+            "on-surface": "#191b25",
+            "secondary-fixed-dim": "#7cd0ff",
+            "on-primary": "#ffffff",
+            "secondary-container": "#12bdfd",
+            "surface-tint": "#0b44fc",
+            "tertiary": "#8b1c00",
+            "on-tertiary-container": "#ffcec3",
+            "secondary-fixed": "#c4e7ff",
+            "background": "#fbf8ff",
+            "rating-a": "#0DFCC4",
+            "tertiary-fixed-dim": "#ffb4a3",
+            "on-tertiary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#434657",
+            "text-primary": "#0F172A",
+            "accent-mint": "#0DFCC4",
+            "inverse-on-surface": "#f0effe",
+            "outline": "#747688",
+            "on-error": "#ffffff",
+            "surface-dim": "#d9d9e7",
+            "tertiary-container": "#b62700",
+            "on-primary-fixed-variant": "#0031c5",
+            "surface": "#fbf8ff",
+            "error-container": "#ffdad6",
+            "tertiary-fixed": "#ffdad2",
+            "on-tertiary-fixed-variant": "#8a1b00",
+            "on-secondary-fixed-variant": "#004c69"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "margin": "1rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "gutter-desktop": "1.5rem",
+            "margin-desktop": "2rem",
+            "space-sm": "0.5rem",
+            "gutter": "1rem"
+          },
+          "fontFamily": {
+            "headline-xl": ["'Noto Sans Georgian'", "Inter", "sans-serif"],
+            "data-mono-md": ["JetBrains Mono", "monospace"],
+            "headline-sm": ["'Noto Sans Georgian'", "Inter", "sans-serif"],
+            "headline-lg": ["'Noto Sans Georgian'", "Inter", "sans-serif"],
+            "label-md": ["'Noto Sans Georgian'", "Inter", "sans-serif"],
+            "headline-md": ["'Noto Sans Georgian'", "Inter", "sans-serif"],
+            "body-sm": ["'Noto Sans Georgian'", "Inter", "sans-serif"],
+            "headline-xl-mobile": ["'Noto Sans Georgian'", "Inter", "sans-serif"],
+            "body-lg": ["'Noto Sans Georgian'", "Inter", "sans-serif"],
+            "data-mono-lg": ["JetBrains Mono", "monospace"],
+            "label-sm": ["JetBrains Mono", "monospace"],
+            "body-md": ["'Noto Sans Georgian'", "Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "headline-xl": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+            "data-mono-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-lg": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+            "headline-md": ["22px", { "lineHeight": "30px", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-xl-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "data-mono-lg": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "fontWeight": "500" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Noto Sans Georgian', 'Inter', sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .geo-font {
+      font-family: 'Noto Sans Georgian', 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-surface-bg text-text-primary min-h-screen flex flex-col antialiased selection:bg-secondary-container selection:text-text-primary">
+<!-- ================= TOP NAVIGATION BAR (SHARED COMPONENT) ================= -->
+<header class="bg-surface-card dark:bg-inverse-surface docked full-width top-0 sticky z-50 shadow-sm border-b border-border-subtle dark:border-outline">
+<div class="w-full px-4 lg:px-8 max-w-7xl mx-auto flex items-center justify-between h-16">
+<!-- Brand Logo -->
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 group" href="#">
+<div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-on-primary shadow-sm group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-xl" data-icon="account_balance">account_balance</span>
+</div>
+<span class="text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary tracking-tight">Debitinfo.GE</span>
+</a>
+<span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container text-secondary font-semibold border border-border-subtle">
+          FINTECH REGISTRY
+        </span>
+</div>
+<!-- Navigation Links (Desktop) -->
+<nav class="hidden md:flex items-center space-x-6 lg:space-x-8">
+<a class="text-text-muted dark:text-outline-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">სერვისები</a>
+<a class="text-text-muted dark:text-outline-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">რეესტრი</a>
+<a class="text-text-muted dark:text-outline-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">ტარიფები</a>
+<a class="text-text-muted dark:text-outline-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150" href="#">ბლოგი</a>
+<!-- Active link: კონტაქტი (JSON exact label match) -->
+<a class="text-primary dark:text-inverse-primary font-label-md text-label-md border-b-2 border-primary dark:border-inverse-primary pb-1 font-semibold" href="#">კონტაქტი</a>
+</nav>
+<!-- Trailing Action Cluster -->
+<div class="flex items-center space-x-3">
+<!-- Language Switcher -->
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-text-muted hover:text-primary hover:bg-surface-bg transition-colors active:scale-95 text-label-md font-label-md">
+<span class="material-symbols-outlined text-base" data-icon="language">language</span>
+<span class="font-data-mono-md text-data-mono-md">GE</span>
+</button>
+<!-- Secondary: შესვლა -->
+<a class="hidden sm:inline-flex items-center px-4 py-2 rounded-lg text-primary text-body-md font-medium hover:bg-surface-container-low transition-colors duration-150 active:scale-95" href="#">
+          შესვლა
+        </a>
+<!-- Primary: რეგისტრაცია -->
+<a class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-primary-container text-on-primary text-body-md font-medium shadow-sm hover:bg-primary transition-all duration-150 active:scale-95" href="#">
+          რეგისტრაცია
+        </a>
+</div>
+</div>
+</header>
+<!-- ================= CONTACT HERO SECTION ================= -->
+<section class="relative bg-surface-card border-b border-border-subtle overflow-hidden">
+<!-- Subtle technical grid ambient background -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#0D45FC 1px, transparent 1px); background-size: 24px 24px;"></div>
+<div class="max-w-7xl mx-auto px-4 lg:px-8 py-12 md:py-16 relative">
+<div class="max-w-3xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-bg border border-border-subtle mb-4">
+<span class="inline-block w-2 h-2 rounded-full bg-accent-mint animate-pulse"></span>
+<span class="text-label-md font-label-md text-text-muted">ოპერატიული მხარდაჭერა 24/7</span>
+<span class="text-text-muted">•</span>
+<span class="text-label-md font-label-md text-primary font-semibold">საქართველოს მასშტაბით</span>
+</div>
+<h1 class="text-headline-xl-mobile md:text-headline-xl font-headline-xl text-text-primary tracking-tight mb-4">
+          დაგვიკავშირდით
+        </h1>
+<p class="text-body-lg font-body-lg text-text-muted leading-relaxed">
+          ჩვენი გუნდი მზადაა უპასუხოს თქვენს შეკითხვებს და დაგეხმაროთ ფინანსური დავებისა და დავალიანებების მედიაციაში. მიიღეთ კვალიფიციური იურიდიული და ანალიტიკური კონსულტაცია.
+        </p>
+</div>
+<!-- Quick Telemetry Strip -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-8 border-t border-border-subtle">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="timer">timer</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-text-muted uppercase">რეაგირების დრო</div>
+<div class="text-data-mono-md font-data-mono-md font-semibold text-text-primary">~15 წუთი</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-text-muted uppercase">სისტემური სტატუსი</div>
+<div class="text-body-sm font-body-sm font-semibold text-text-primary flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-rating-a"></span> RS.GE Online
+            </div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="handshake">handshake</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-text-muted uppercase">მედიატორები</div>
+<div class="text-data-mono-md font-data-mono-md font-semibold text-text-primary">18 აკრედიტებული</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="security">security</span>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-text-muted uppercase">უსაფრთხოება</div>
+<div class="text-data-mono-md font-data-mono-md font-semibold text-text-primary">256-bit SSL</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= MAIN TWO-COLUMN WORKSPACE ================= -->
+<main class="flex-grow max-w-7xl mx-auto w-full px-4 lg:px-8 py-10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+<!-- LEFT COLUMN: Institutional Contact Channels (5 Cols) -->
+<div class="lg:col-span-5 space-y-6">
+<!-- Central Office Card -->
+<div class="bg-surface-card rounded-xl p-6 border border-border-subtle shadow-sm hover:border-outline-variant transition-colors">
+<div class="flex items-start gap-4">
+<div class="w-11 h-11 rounded-lg bg-surface-container-low text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-2xl" data-icon="corporate_fare">corporate_fare</span>
+</div>
+<div class="space-y-1">
+<span class="text-label-sm font-label-sm text-primary uppercase font-bold tracking-wide">მთავარი ოფისი</span>
+<h2 class="text-headline-sm font-headline-sm text-text-primary">ცენტრალური ფილიალი</h2>
+<p class="text-body-md font-body-md text-text-muted mt-2">
+                ქ. თბილისი, ი. ჭავჭავაძის გამზ. 34, მე-5 სართული, ბიზნეს ცენტრი "Pixel"
+              </p>
+<div class="pt-3 flex items-center gap-2 text-label-md font-label-md text-text-muted">
+<span class="material-symbols-outlined text-base text-primary" data-icon="schedule">schedule</span>
+<span>სამუშაო საათები: ორშ - პარ 09:00 - 19:00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Call Center & Hotlines -->
+<div class="bg-surface-card rounded-xl p-6 border border-border-subtle shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-lg bg-surface-container-low text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="call">call</span>
+</div>
+<div>
+<span class="text-label-sm font-label-sm text-primary uppercase font-bold tracking-wide">ქოლ-ცენტრი</span>
+<h3 class="text-headline-sm font-headline-sm text-text-primary">ცხელი ხაზი</h3>
+</div>
+</div>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-accent-mint/15 text-text-primary font-semibold">
+              ხაზი თავისუფალია
+            </span>
+</div>
+<div class="space-y-3 pt-2">
+<a class="flex items-center justify-between p-3 rounded-lg bg-surface-bg hover:bg-surface-container-low transition-colors group" href="tel:+995322123456">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary" data-icon="phone_in_talk">phone_in_talk</span>
+<span class="text-body-md font-body-md text-text-muted">ქალაქის ნომერი:</span>
+</div>
+<span class="font-data-mono-md text-data-mono-md font-semibold text-text-primary group-hover:text-primary transition-colors">+995 32 2 123 456</span>
+</a>
+<a class="flex items-center justify-between p-3 rounded-lg bg-surface-bg hover:bg-surface-container-low transition-colors group" href="tel:+995599000000">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-text-muted group-hover:text-primary" data-icon="smartphone">smartphone</span>
+<span class="text-body-md font-body-md text-text-muted">მობილური კონსიერჟი:</span>
+</div>
+<span class="font-data-mono-md text-data-mono-md font-semibold text-text-primary group-hover:text-primary transition-colors">+995 599 00 00 00</span>
+</a>
+</div>
+</div>
+<!-- Official Department Inboxes -->
+<div class="bg-surface-card rounded-xl p-6 border border-border-subtle shadow-sm">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-11 h-11 rounded-lg bg-surface-container-low text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="mark_email_read">mark_email_read</span>
+</div>
+<div>
+<span class="text-label-sm font-label-sm text-primary uppercase font-bold tracking-wide">ოფიციალური მიმოწერა</span>
+<h3 class="text-headline-sm font-headline-sm text-text-primary">სპეციალიზებული ელფოსტა</h3>
+</div>
+</div>
+<ul class="divide-y divide-border-subtle text-body-md font-body-md">
+<li class="py-2.5 flex items-center justify-between">
+<span class="text-text-muted">საერთო საინფორმაციო:</span>
+<a class="font-data-mono-md text-data-mono-md text-primary font-medium hover:underline" href="mailto:info@debitinfo.ge">info@debitinfo.ge</a>
+</li>
+<li class="py-2.5 flex items-center justify-between">
+<span class="text-text-muted">იურიდიული დეპარტამენტი:</span>
+<a class="font-data-mono-md text-data-mono-md text-primary font-medium hover:underline" href="mailto:legal@debitinfo.ge">legal@debitinfo.ge</a>
+</li>
+<li class="py-2.5 flex items-center justify-between">
+<span class="text-text-muted">მედიაციის პალატა:</span>
+<a class="font-data-mono-md text-data-mono-md text-primary font-medium hover:underline" href="mailto:mediation@debitinfo.ge">mediation@debitinfo.ge</a>
+</li>
+</ul>
+</div>
+<!-- Instant Channels (Live Chat / Social) -->
+<div class="bg-surface-card rounded-xl p-6 border border-border-subtle shadow-sm">
+<h4 class="text-label-md font-label-md text-text-muted uppercase tracking-wider mb-3 font-semibold">მესინჯერები &amp; სწრაფი არხები</h4>
+<div class="grid grid-cols-3 gap-3">
+<a class="flex flex-col items-center justify-center p-3 rounded-lg border border-border-subtle hover:border-primary-container hover:bg-surface-container-low transition-all text-center group" href="#">
+<span class="material-symbols-outlined text-2xl text-primary mb-1 group-hover:scale-110 transition-transform" data-icon="forum">forum</span>
+<span class="text-label-md font-label-md text-text-primary font-medium">Live Chat</span>
+<span class="text-label-sm font-label-sm text-rating-b font-mono">ონლაინ</span>
+</a>
+<a class="flex flex-col items-center justify-center p-3 rounded-lg border border-border-subtle hover:border-primary-container hover:bg-surface-container-low transition-all text-center group" href="#">
+<span class="material-symbols-outlined text-2xl text-secondary mb-1 group-hover:scale-110 transition-transform" data-icon="send">send</span>
+<span class="text-label-md font-label-md text-text-primary font-medium">Telegram</span>
+<span class="text-label-sm font-label-sm text-text-muted font-mono">@debitinfo</span>
+</a>
+<a class="flex flex-col items-center justify-center p-3 rounded-lg border border-border-subtle hover:border-primary-container hover:bg-surface-container-low transition-all text-center group" href="#">
+<span class="material-symbols-outlined text-2xl text-emerald-600 mb-1 group-hover:scale-110 transition-transform" data-icon="chat">chat</span>
+<span class="text-label-md font-label-md text-text-primary font-medium">WhatsApp</span>
+<span class="text-label-sm font-label-sm text-text-muted font-mono">Business</span>
+</a>
+</div>
+</div>
+<!-- Official Bank Requisites Card -->
+<div class="bg-surface-card rounded-xl p-6 border border-border-subtle shadow-sm space-y-4">
+<div class="flex items-center gap-2 border-b border-border-subtle pb-3">
+<span class="material-symbols-outlined text-text-muted text-xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+<h4 class="text-headline-sm font-headline-sm text-text-primary">საბანკო რეკვიზიტები</h4>
+</div>
+<div class="space-y-2 text-body-sm font-body-sm">
+<div class="flex justify-between items-center text-text-muted">
+<span>კომპანიის ს/კ:</span>
+<span class="font-data-mono-md text-data-mono-md text-text-primary font-bold">405234981</span>
+</div>
+<div class="flex justify-between items-center text-text-muted">
+<span>მიმღები:</span>
+<span class="text-text-primary font-medium">შპს დებიტინფო ჯორჯია</span>
+</div>
+<div class="pt-2 border-t border-border-subtle">
+<div class="text-label-sm font-label-sm text-text-muted mb-1">საქართველოს ბანკი (BOG):</div>
+<div class="flex items-center justify-between bg-surface-bg p-2 rounded border border-border-subtle">
+<span class="font-data-mono-md text-data-mono-md text-text-primary tracking-tight">GE29BG0000000123456789</span>
+<button class="text-primary hover:text-secondary active:scale-95 text-xs font-semibold" title="კოპირება">Copy</button>
+</div>
+</div>
+<div class="pt-1">
+<div class="text-label-sm font-label-sm text-text-muted mb-1">თიბისი ბანკი (TBC):</div>
+<div class="flex items-center justify-between bg-surface-bg p-2 rounded border border-border-subtle">
+<span class="font-data-mono-md text-data-mono-md text-text-primary tracking-tight">GE73TB7000000987654321</span>
+<button class="text-primary hover:text-secondary active:scale-95 text-xs font-semibold" title="კოპირება">Copy</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Official Feedback & Mediation Inquiry Form (7 Cols) -->
+<div class="lg:col-span-7">
+<div class="bg-surface-card rounded-xl p-6 md:p-8 border border-border-subtle shadow-sm">
+<div class="border-b border-border-subtle pb-6 mb-6">
+<div class="flex items-center justify-between flex-wrap gap-2">
+<div>
+<span class="text-label-sm font-label-sm text-primary uppercase font-bold tracking-wide">ონლაინ განაცხადი</span>
+<h2 class="text-headline-md font-headline-md text-text-primary mt-1">შეტყობინების გაგზავნა</h2>
+</div>
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-bg border border-border-subtle text-label-sm font-label-sm text-text-muted">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="lock">lock</span>
+                დაცულია 256-bit SSL
+              </span>
+</div>
+<p class="text-body-md font-body-md text-text-muted mt-2">
+              შეავსეთ მოცემული ფორმა. ჩვენი იურიდიული მრჩეველი ან მედიატორი გიპასუხებთ 1 საათის განმავლობაში.
+            </p>
+</div>
+<form class="space-y-6" id="contactForm" onsubmit="event.preventDefault(); document.getElementById('formSuccessModal').classList.remove('hidden');">
+<!-- Subject Type Radio Buttons -->
+<div>
+<label class="block text-label-md font-label-md text-text-primary mb-2 font-medium">სუბიექტის ტიპი *</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="flex items-center gap-3 p-3.5 rounded-lg border border-border-subtle bg-surface-bg hover:bg-surface-container-low cursor-pointer transition-colors has-[:checked]:border-primary has-[:checked]:bg-surface-container-low">
+<input checked="" class="w-4 h-4 text-primary focus:ring-primary border-border-subtle" name="entity_type" type="radio" value="individual"/>
+<span class="flex items-center gap-2 text-body-md font-body-md text-text-primary font-medium">
+<span class="material-symbols-outlined text-lg text-primary" data-icon="person">person</span>
+                    ფიზიკური პირი
+                  </span>
+</label>
+<label class="flex items-center gap-3 p-3.5 rounded-lg border border-border-subtle bg-surface-bg hover:bg-surface-container-low cursor-pointer transition-colors has-[:checked]:border-primary has-[:checked]:bg-surface-container-low">
+<input class="w-4 h-4 text-primary focus:ring-primary border-border-subtle" name="entity_type" type="radio" value="legal"/>
+<span class="flex items-center gap-2 text-body-md font-body-md text-text-primary font-medium">
+<span class="material-symbols-outlined text-lg text-secondary" data-icon="domain">domain</span>
+                    იურიდიული პირი
+                  </span>
+</label>
+</div>
+</div>
+<!-- Two-column inputs -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+<!-- Full Name / Org Name -->
+<div>
+<label class="block text-label-md font-label-md text-text-primary mb-1.5 font-medium" for="fullName">
+                  სახელი და გვარი / კომპანია *
+                </label>
+<div class="relative">
+<input class="w-full bg-surface-card border border-border-subtle rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-text-primary placeholder:text-text-muted focus:border-secondary-container focus:ring-2 focus:ring-secondary-container/20 outline-none transition-all" id="fullName" placeholder="მაგ: გიორგი ბერიძე" required="" type="text"/>
+</div>
+</div>
+<!-- Identification Number -->
+<div>
+<label class="block text-label-md font-label-md text-text-primary mb-1.5 font-medium" for="idNumber">
+                  პირადი ნომერი / ს/კ <span class="text-text-muted text-body-sm font-normal">(არასავალდებულო)</span>
+</label>
+<input class="w-full bg-surface-card border border-border-subtle rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-text-primary font-data-mono-md placeholder:text-text-muted focus:border-secondary-container focus:ring-2 focus:ring-secondary-container/20 outline-none transition-all" id="idNumber" placeholder="11 ან 9 ნიშნა კოდი" type="text"/>
+</div>
+<!-- Phone -->
+<div>
+<label class="block text-label-md font-label-md text-text-primary mb-1.5 font-medium" for="phone">
+                  ტელეფონის ნომერი *
+                </label>
+<div class="relative">
+<input class="w-full bg-surface-card border border-border-subtle rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-text-primary font-data-mono-md placeholder:text-text-muted focus:border-secondary-container focus:ring-2 focus:ring-secondary-container/20 outline-none transition-all" id="phone" placeholder="+995 5XX XX XX XX" required="" type="tel"/>
+</div>
+</div>
+<!-- Email -->
+<div>
+<label class="block text-label-md font-label-md text-text-primary mb-1.5 font-medium" for="email">
+                  ელფოსტის მისამართი *
+                </label>
+<input class="w-full bg-surface-card border border-border-subtle rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-text-primary placeholder:text-text-muted focus:border-secondary-container focus:ring-2 focus:ring-secondary-container/20 outline-none transition-all" id="email" placeholder="name@domain.ge" required="" type="email"/>
+</div>
+</div>
+<!-- Subject Select -->
+<div>
+<label class="block text-label-md font-label-md text-text-primary mb-1.5 font-medium" for="inquiryType">
+                მიმართვის თემა / კატეგორია *
+              </label>
+<select class="w-full bg-surface-card border border-border-subtle rounded-lg px-3.5 py-2.5 text-body-md font-body-md text-text-primary focus:border-secondary-container focus:ring-2 focus:ring-secondary-container/20 outline-none transition-all" id="inquiryType" required="">
+<option disabled="" selected="" value="">აირჩიეთ კატეგორია...</option>
+<option value="consultation">ზოგადი კონსულტაცია</option>
+<option value="debt-check">დავალიანების გადამოწმება &amp; სტატუსი</option>
+<option value="mediation">მედიაციის მოთხოვნა (კრედიტორსა და მსესხებელს შორის)</option>
+<option value="legal">იურიდიული მხარდაჭერა &amp; საჩივრები</option>
+<option value="tech">ტექნიკური დახმარება პორტალზე</option>
+</select>
+</div>
+<!-- Message Textarea -->
+<div>
+<label class="block text-label-md font-label-md text-text-primary mb-1.5 font-medium" for="message">
+                შეტყობინების დეტალური აღწერა *
+              </label>
+<textarea class="w-full bg-surface-card border border-border-subtle rounded-lg p-3.5 text-body-md font-body-md text-text-primary placeholder:text-text-muted focus:border-secondary-container focus:ring-2 focus:ring-secondary-container/20 outline-none transition-all resize-y" id="message" placeholder="დეტალურად აღწერეთ თქვენი საქმე, დავალიანების ხასიათი ან საკითხი..." required="" rows="4"></textarea>
+</div>
+<!-- File Upload Attachment -->
+<div>
+<label class="block text-label-md font-label-md text-text-primary mb-1.5 font-medium">
+                დოკუმენტაციის მიბმა <span class="text-text-muted font-normal text-body-sm">(ხელშეკრულება, შედარების აქტი, PDF/DOCX - მაქს. 15MB)</span>
+</label>
+<div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-border-subtle border-dashed rounded-lg hover:border-primary-container transition-colors bg-surface-bg cursor-pointer group">
+<div class="space-y-1 text-center">
+<span class="material-symbols-outlined text-3xl text-text-muted group-hover:text-primary transition-colors" data-icon="cloud_upload">cloud_upload</span>
+<div class="flex text-body-sm font-body-sm text-text-muted justify-center items-center">
+<label class="relative cursor-pointer font-semibold text-primary hover:underline" for="file-upload">
+<span>ატვირთეთ ფაილი</span>
+<input class="sr-only" id="file-upload" name="file-upload" type="file"/>
+</label>
+<p class="pl-1">ან ჩააგდეთ აქ</p>
+</div>
+<p class="text-label-sm font-label-sm text-text-muted">PDF, PNG, JPG, DOCX 15 მბ-მდე</p>
+</div>
+</div>
+</div>
+<!-- Agreement Checkbox -->
+<div class="flex items-start gap-3">
+<input class="h-4 w-4 mt-0.5 rounded border-border-subtle text-primary-container focus:ring-primary-container" id="terms" required="" type="checkbox"/>
+<label class="text-body-sm font-body-sm text-text-muted" for="terms">
+                ვეთანხმები პერსონალურ მონაცემთა დამუშავების პირობებსა და <a class="text-primary underline" href="#">კონფიდენციალურობის პოლიტიკას</a>.
+              </label>
+</div>
+<!-- Submit Button & Security Note -->
+<div class="pt-2">
+<button class="w-full py-3.5 px-6 rounded-lg bg-primary-container hover:bg-primary text-on-primary font-headline-sm text-body-md font-semibold shadow-sm transition-all duration-150 active:scale-[0.99] flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined text-xl" data-icon="send">send</span>
+                შეტყობინების გაგზავნა
+              </button>
+<div class="flex items-center justify-center gap-2 mt-4 text-label-sm font-label-sm text-text-muted">
+<span class="material-symbols-outlined text-sm text-rating-a" data-icon="verified">verified</span>
+<span>თქვენი მონაცემები დაცულია 256-bit SSL დაშიფვრით და ინახება საქართველოს კანონმდებლობის შესაბამისად.</span>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</main>
+<!-- ================= INTERACTIVE LOCATION & MAP SECTION ================= -->
+<section class="max-w-7xl mx-auto w-full px-4 lg:px-8 py-10">
+<div class="bg-surface-card rounded-xl border border-border-subtle shadow-sm overflow-hidden">
+<!-- Section Header Inside Card -->
+<div class="p-6 md:p-8 border-b border-border-subtle flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="map">map</span>
+<span class="text-label-sm font-label-sm text-primary uppercase font-bold tracking-wide">ლოკაცია და მისვლა</span>
+</div>
+<h2 class="text-headline-md font-headline-md text-text-primary mt-1">როგორ მოგვაგნოთ</h2>
+<p class="text-body-md font-body-md text-text-muted mt-0.5">ქ. თბილისი, ჭავჭავაძის გამზ. 34, ბიზნეს ცენტრი 'Pixel' (სართული 5)</p>
+</div>
+<div class="flex items-center gap-3">
+<a class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-border-subtle hover:bg-surface-bg text-text-primary text-body-md font-medium transition-colors" href="https://maps.google.com" rel="noopener noreferrer" target="_blank">
+<span class="material-symbols-outlined text-base text-primary" data-icon="open_in_new">open_in_new</span>
+            Google Maps-ში გახსნა
+          </a>
+<a class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-container-low text-primary hover:bg-surface-container text-body-md font-medium transition-colors" href="#directions">
+<span class="material-symbols-outlined text-base" data-icon="directions">directions</span>
+            მარშრუტი
+          </a>
+</div>
+</div>
+<!-- Map Mockup Graphic Canvas & Location Specs -->
+<div class="grid grid-cols-1 lg:grid-cols-12">
+<!-- Interactive Map Canvas Area -->
+<div class="lg:col-span-8 relative min-h-[360px] bg-surface-bg flex items-center justify-center overflow-hidden border-b lg:border-b-0 lg:border-r border-border-subtle" data-location="Tbilisi, Georgia" style="">
+<!-- Stylized Mock Map Canvas using vector graphics & ambient elements -->
+<div class="absolute inset-0 bg-[#EBF2F7] opacity-90"></div>
+<!-- Stylized road vectors -->
+<svg class="absolute inset-0 w-full h-full opacity-40" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="grid-pattern" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="#CBD5E1" stroke-width="0.8"></path>
+</pattern>
+</defs>
+<rect fill="url(#grid-pattern)" height="100%" width="100%"></rect>
+<path d="M-50,220 C200,200 400,240 850,190" fill="none" stroke="#FFFFFF" stroke-width="16"></path>
+<path d="M-50,220 C200,200 400,240 850,190" fill="none" stroke="#94A3B8" stroke-dasharray="8 6" stroke-width="2"></path>
+<path d="M300,-20 C320,150 280,300 310,500" fill="none" stroke="#FFFFFF" stroke-width="20"></path>
+<path d="M520,-20 C540,150 490,300 530,500" fill="none" stroke="#FFFFFF" stroke-width="14"></path>
+</svg>
+<!-- Metro Stations & Parks Mock markers -->
+<div class="absolute top-1/4 left-1/4 px-2.5 py-1 rounded-full bg-white shadow-sm border border-border-subtle text-xs font-medium text-text-muted flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span> ვაკის პარკი (500მ)
+          </div>
+<!-- Active Pin: Pixel Center -->
+<div class="relative z-10 flex flex-col items-center animate-bounce duration-1000">
+<div class="px-3.5 py-1.5 rounded-lg bg-text-primary text-white shadow-lg text-xs font-semibold flex items-center gap-1.5 mb-1">
+<span class="material-symbols-outlined text-sm text-accent-mint" data-icon="apartment">apartment</span>
+              Pixel Business Center (Debitinfo)
+            </div>
+<div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center shadow-md ring-4 ring-primary-container/20">
+<span class="material-symbols-outlined text-base" data-icon="location_on">location_on</span>
+</div>
+<div class="w-2.5 h-1 bg-text-primary/30 rounded-full blur-[1px] mt-0.5"></div>
+</div>
+<!-- Map Controls UI Mockup -->
+<div class="absolute bottom-4 right-4 flex flex-col shadow-sm rounded-lg overflow-hidden border border-border-subtle bg-surface-card">
+<button class="w-9 h-9 flex items-center justify-center hover:bg-surface-bg border-b border-border-subtle text-text-muted font-bold text-lg">+</button>
+<button class="w-9 h-9 flex items-center justify-center hover:bg-surface-bg text-text-muted font-bold text-lg">−</button>
+</div>
+<div class="absolute top-4 left-4 bg-surface-card/95 backdrop-blur-sm px-3 py-1.5 rounded-md border border-border-subtle text-label-sm font-label-sm text-text-primary flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="navigation">navigation</span>
+<span>41.7102° N, 44.7578° E</span>
+</div>
+</div>
+<!-- Location Specs & Transport Access Details (4 Cols) -->
+<div class="lg:col-span-4 p-6 md:p-8 space-y-6 bg-surface-card justify-between flex flex-col">
+<div class="space-y-5">
+<h3 class="text-headline-sm font-headline-sm text-text-primary">ტრანსპორტი &amp; პარკინგი</h3>
+<!-- Item 1: Metro -->
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-low text-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-xl" data-icon="directions_subway">directions_subway</span>
+</div>
+<div>
+<div class="text-body-md font-body-md font-semibold text-text-primary">მეტრო</div>
+<div class="text-body-sm font-body-sm text-text-muted mt-0.5">მ/ს "რუსთაველი" ან "დელისი", შემდგომ ავტობუსი ჭავჭავაძის მიმართულებით (10-12 წუთი).</div>
+</div>
+</div>
+<!-- Item 2: Bus -->
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-low text-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-xl" data-icon="directions_bus">directions_bus</span>
+</div>
+<div>
+<div class="text-body-md font-body-md font-semibold text-text-primary">ავტობუსის გაჩერება</div>
+<div class="text-body-sm font-body-sm text-text-muted mt-0.5">გაჩერება: "ჭავჭავაძის 34" (ავტობუსები: #301, #307, #345, #351, #354 პირდაპირ ბიზნეს ცენტრთან).</div>
+</div>
+</div>
+<!-- Item 3: Parking -->
+<div class="flex items-start gap-3">
+<div class="w-9 h-9 rounded-lg bg-surface-container-low text-primary flex items-center justify-center flex-shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-xl" data-icon="local_parking">local_parking</span>
+</div>
+<div>
+<div class="text-body-md font-body-md font-semibold text-text-primary">პარკინგი</div>
+<div class="text-body-sm font-body-sm text-text-muted mt-0.5">ბიზნეს ცენტრს გააჩნია მიწისქვეშა 2-დონიანი ვიზიტორთა პარკინგი და თბილისის ზონალური პარკინგი (ზონა A).</div>
+</div>
+</div>
+</div>
+<!-- Access Pass Note -->
+<div class="p-4 rounded-lg bg-surface-bg border border-border-subtle text-body-sm font-body-sm text-text-muted flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-lg mt-0.5" data-icon="badge">badge</span>
+<span>შენობაში შემოსვლისას რეგისტრატურაში მოითხოვეთ საშვი <strong>Debitinfo.GE</strong>-ის მე-5 სართულის სათაო ოფისში.</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ================= FAQ QUICK ACCORDION SECTION ================= -->
+<section class="max-w-7xl mx-auto w-full px-4 lg:px-8 py-8 mb-10">
+<div class="bg-surface-card rounded-xl p-6 md:p-8 border border-border-subtle shadow-sm">
+<div class="text-center max-w-2xl mx-auto mb-8">
+<span class="text-label-sm font-label-sm text-primary uppercase font-bold tracking-wide">მხარდაჭერა &amp; გზამკვლევი</span>
+<h2 class="text-headline-md font-headline-md text-text-primary mt-1">ხშირად დასმული კითხვები</h2>
+<p class="text-body-md font-body-md text-text-muted mt-1">პასუხები ყველაზე გავრცელებულ კითხვებზე მედიაციისა და სერვისების შესახებ</p>
+</div>
+<div class="max-w-3xl mx-auto space-y-4">
+<!-- Accordion Item 1 -->
+<details class="group bg-surface-bg rounded-lg border border-border-subtle open:bg-surface-container-low transition-colors">
+<summary class="flex items-center justify-between p-4 cursor-pointer list-none font-semibold text-body-md text-text-primary">
+<span>როგორ შემიძლია ჩავერთო ფინანსური დავალიანების მედიაციაში?</span>
+<span class="material-symbols-outlined text-text-muted group-open:rotate-180 transition-transform" data-icon="expand_more">expand_more</span>
+</summary>
+<div class="px-4 pb-4 text-body-md font-body-md text-text-muted leading-relaxed">
+            მედიაციის პროცესის დასაწყებად შეავსეთ საკონტაქტო ფორმა თემით "მედიაციის მოთხოვნა" ან დაგვირეკეთ ცხელ ხაზზე. ჩვენი იურიდიული მრჩეველი შეამოწმებს დავალიანების რეესტრის სტატუსს, მოამზადებს შეთავაზებას და დაუკავშირდება ორივე მხარეს გრაფიკის რესტრუქტურიზაციის მიზნით.
+          </div>
+</details>
+<!-- Accordion Item 2 -->
+<details class="group bg-surface-bg rounded-lg border border-border-subtle open:bg-surface-container-low transition-colors">
+<summary class="flex items-center justify-between p-4 cursor-pointer list-none font-semibold text-body-md text-text-primary">
+<span>რა დოკუმენტებია საჭირო საქმის პირველადი განხილვისთვის?</span>
+<span class="material-symbols-outlined text-text-muted group-open:rotate-180 transition-transform" data-icon="expand_more">expand_more</span>
+</summary>
+<div class="px-4 pb-4 text-body-md font-body-md text-text-muted leading-relaxed">
+            პირველად ეტაპზე საკმარისია პირადობის მოწმობა / კომპანიის ამონაწერი და ვალდებულების წარმოშობის დოკუმენტი (ხელშეკრულება, ინვოისი ან მიღება-ჩაბარების აქტი). დამატებითი დოკუმენტების აუცილებლობას განსაზღვრავს საქმის მწარმოებელი.
+          </div>
+</details>
+<!-- Accordion Item 3 -->
+<details class="group bg-surface-bg rounded-lg border border-border-subtle open:bg-surface-container-low transition-colors">
+<summary class="flex items-center justify-between p-4 cursor-pointer list-none font-semibold text-body-md text-text-primary">
+<span>რა საათებში მუშაობს ფიზიკური მიღების ცენტრი?</span>
+<span class="material-symbols-outlined text-text-muted group-open:rotate-180 transition-transform" data-icon="expand_more">expand_more</span>
+</summary>
+<div class="px-4 pb-4 text-body-md font-body-md text-text-muted leading-relaxed">
+            ცენტრალური ოფისის მიღება მუშაობს ორშაბათიდან პარასკევის ჩათვლით 09:00 საათიდან 19:00 საათამდე. ონლაინ მონიტორინგის სისტემა და ჩატბოტი ხელმისაწვდომია 24/7 რეჟიმში.
+          </div>
+</details>
+</div>
+</div>
+</section>
+<!-- ================= SUBMISSION SUCCESS MODAL (MICRO-INTERACTION) ================= -->
+<div class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4" id="formSuccessModal">
+<div class="bg-surface-card rounded-xl p-6 md:p-8 max-w-md w-full border border-border-subtle shadow-2xl text-center space-y-4 animate-scale-up">
+<div class="w-14 h-14 rounded-full bg-accent-mint/20 text-emerald-700 mx-auto flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl" data-icon="check_circle">check_circle</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-text-primary">განაცხადი მიღებულია!</h3>
+<p class="text-body-md font-body-md text-text-muted">
+        თქვენი შეტყობინება წარმატებით გაეგზავნა Debitinfo.GE-ის შესაბამის დეპარტამენტს. ჩვენი წარმომადგენელი უახლოეს დროში დაგიკავშირდებათ.
+      </p>
+<div class="pt-2">
+<button class="w-full py-2.5 px-4 rounded-lg bg-primary-container text-on-primary font-medium hover:bg-primary transition-colors" onclick="document.getElementById('formSuccessModal').classList.add('hidden')">
+          დახურვა
+        </button>
+</div>
+</div>
+</div>
+<!-- ================= COMPREHENSIVE FOOTER (SHARED COMPONENT) ================= -->
+<footer class="bg-surface-card dark:bg-inverse-surface border-t border-border-subtle dark:border-outline docked full-width bottom-0 mt-auto">
+<div class="w-full max-w-7xl mx-auto px-4 lg:px-8 py-12 flex flex-col gap-8">
+<!-- Top Row: Brand & Integration Badges -->
+<div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-border-subtle">
+<div>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-lg" data-icon="account_balance">account_balance</span>
+</div>
+<span class="text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary tracking-tight">Debitinfo.GE</span>
+</div>
+<p class="text-body-sm font-body-sm text-text-muted mt-1">ფინანსური დავალიანებების მონიტორინგი, იურიდიული მედიაცია და რეესტრი</p>
+</div>
+<!-- Trust & RS.GE Integration Badges -->
+<div class="flex flex-wrap items-center gap-3">
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-bg border border-border-subtle text-label-sm font-label-sm text-text-primary">
+<span class="material-symbols-outlined text-primary text-base" data-icon="verified">verified</span>
+<span>RS.GE სისტემური ინტეგრაცია</span>
+</div>
+<div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-surface-bg border border-border-subtle text-label-sm font-label-sm text-text-primary">
+<span class="material-symbols-outlined text-secondary text-base" data-icon="security">security</span>
+<span>ISO 27001 სტანდარტი</span>
+</div>
+</div>
+</div>
+<!-- Links Grid from JSON -->
+<div class="flex flex-wrap items-center justify-between gap-4 text-body-sm font-body-sm">
+<div class="flex flex-wrap gap-6">
+<a class="text-text-muted dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 hover:underline" href="#">კონფიდენციალურობის პოლიტიკა</a>
+<a class="text-text-muted dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 hover:underline" href="#">მომსახურების პირობები</a>
+<a class="text-text-muted dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 hover:underline" href="#">რეკვიზიტები</a>
+<a class="text-text-muted dark:text-outline-variant hover:text-primary dark:hover:text-inverse-primary transition-colors duration-150 hover:underline" href="#">საგადასახადო შემოწმება</a>
+<!-- Active link in footer: საკონტაქტო პირი -->
+<a class="text-primary dark:text-inverse-primary font-semibold hover:underline" href="#">საკონტაქტო პირი</a>
+</div>
+<!-- Partner Banks Indicators -->
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-text-muted font-mono">
+<span>PARTNERS: BOG • TBC • CREDO</span>
+</div>
+</div>
+<!-- Copyright & Bottom Disclaimer from JSON -->
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-border-subtle text-body-sm font-body-sm text-text-muted">
+<div>
+          © 2024 Debitinfo.GE. ყველა უფლება დაცულია. ინტეგრირებულია RS.GE სისტემასთან.
+        </div>
+<div class="flex items-center gap-4 text-label-sm font-label-sm">
+<span>ვერსია: v2.4.1 (Stable)</span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-accent-mint"></span>
+<span>სერვერები: თბილისი / ფრანკფურტი</span>
+</div>
+</div>
+</div>
+</footer>
+</body></html>

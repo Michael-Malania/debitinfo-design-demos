@@ -6,11 +6,14 @@ import {
   fetchRemoteComments, 
   getLocalComments, 
   addComment, 
+  addReply,
+  deleteReply,
   toggleResolve, 
   deleteComment, 
   getUserName, 
   setUserName,
-  SimpleComment 
+  SimpleComment,
+  CommentReply
 } from '@/lib/comments-store';
 import { 
   MousePointer, 
@@ -23,8 +26,34 @@ import {
   Edit2, 
   X, 
   Send, 
-  ExternalLink
+  ExternalLink,
+  CornerDownRight,
+  MessageCircle
 } from 'lucide-react';
+
+function escapeHtml(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatShortDate(iso: string): string {
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString('ka-GE', { 
+      month: 'short', 
+      day: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    });
+  } catch {
+    return '';
+  }
+}
 
 export default function App() {
   const [selectedPageId, setSelectedPageId] = useState<string>('debitinfo.ge_1');
@@ -40,6 +69,10 @@ export default function App() {
   const [comments, setComments] = useState<SimpleComment[]>([]);
   const [activePinId, setActivePinId] = useState<string | null>(null);
 
+  // Sidebar Reply state for each comment: commentId -> boolean
+  const [replyingToId, setReplyingToId] = useState<string | null>(null);
+  const [sidebarReplyText, setSidebarReplyText] = useState<string>('');
+
   // Draft Comment Popover state
   const [draftComment, setDraftComment] = useState<{
     x: number;
@@ -51,6 +84,13 @@ export default function App() {
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Keep ref to latest comments for event handlers inside iframe
+  const commentsRef = useRef<SimpleComment[]>(comments);
+  commentsRef.current = comments;
+
+  const userNameRef = useRef<string>(userName);
+  userNameRef.current = userName;
 
   // Initial load from cloud DB and background polling for real-time cross-platform sync
   useEffect(() => {
@@ -133,7 +173,27 @@ export default function App() {
     if (activePinId === id) setActivePinId(null);
   };
 
-  // Helper to sync pins & popovers into the iframe DOM (positioned directly next to each pin!)
+  const handleAddReplyToComment = useCallback((commentId: string, replyText: string) => {
+    const currentName = getUserName();
+    if (!currentName) {
+      setIsNameModalOpen(true);
+      return;
+    }
+    if (!replyText.trim()) return;
+
+    const { updated } = addReply(commentsRef.current, commentId, {
+      author: currentName,
+      text: replyText.trim(),
+    });
+    setComments(updated);
+  }, []);
+
+  const handleDeleteReplyFromComment = useCallback((commentId: string, replyId: string) => {
+    const updated = deleteReply(commentsRef.current, commentId, replyId);
+    setComments(updated);
+  }, []);
+
+  // Helper to sync pins & popovers into the iframe DOM (with Smart Boundary Detection & Replies!)
   const syncPinsToIframe = useCallback(() => {
     const iframe = iframeRef.current;
     if (!iframe || !iframe.contentDocument) return;
@@ -172,15 +232,44 @@ export default function App() {
       const pinWrapper = doc.createElement('div');
       pinWrapper.id = `pin-wrap-${c.id}`;
       pinWrapper.style.position = 'absolute';
-      pinWrapper.style.left = `${(c.x / 100) * scrollW}px`;
-      pinWrapper.style.top = `${(c.y / 100) * scrollH}px`;
+
+      const pinPixelX = (c.x / 100) * scrollW;
+      const pinPixelY = (c.y / 100) * scrollH;
+
+      pinWrapper.style.left = `${pinPixelX}px`;
+      pinWrapper.style.top = `${pinPixelY}px`;
       pinWrapper.style.pointerEvents = 'auto';
       pinWrapper.style.zIndex = c.id === activePinId ? '1000000' : '999998';
 
       const isResolved = c.resolved;
       const isSelected = c.id === activePinId;
+      const replies = Array.isArray(c.replies) ? c.replies : [];
 
-      // Inner HTML: Pin marker + Attached Popover directly above it!
+      // Smart Boundary Detection:
+      // If pin is near the top of document (y < 16% or pinPixelY < 230px), open DOWNWARDS so it NEVER clips off screen!
+      const opensDownward = pinPixelY < 230 || c.y < 16;
+
+      // Horizontal alignment: clamp if near left or right edge of document
+      const isNearLeft = pinPixelX < 170;
+      const isNearRight = pinPixelX > (scrollW - 170);
+
+      let horizontalPopoverStyle = 'left: 50%; transform: translateX(-50%);';
+      let arrowHorizontalStyle = 'left: 50%; transform: translateX(-50%);';
+      if (isNearLeft) {
+        horizontalPopoverStyle = 'left: -10px; transform: none;';
+        arrowHorizontalStyle = 'left: 24px; transform: none;';
+      } else if (isNearRight) {
+        horizontalPopoverStyle = 'right: -10px; left: auto; transform: none;';
+        arrowHorizontalStyle = 'right: 24px; left: auto; transform: none;';
+      }
+
+      // Vertical placement and arrow direction
+      const verticalPopoverStyle = opensDownward ? 'top: 24px;' : 'bottom: 24px;';
+      const arrowVerticalStyle = opensDownward 
+        ? 'bottom: 100%; border-bottom: 7px solid #0f172a; border-top: none;'
+        : 'top: 100%; border-top: 7px solid #0f172a; border-bottom: none;';
+
+      // Inner HTML: Pin marker + Attached Popover
       pinWrapper.innerHTML = `
         <div style="position: relative;">
           <!-- Pin Circle -->
@@ -210,17 +299,16 @@ export default function App() {
           ${isSelected ? `
             <div id="popover-${c.id}" style="
               position: absolute;
-              bottom: 22px;
-              left: 50%;
-              transform: translateX(-50%);
-              width: 280px;
+              ${verticalPopoverStyle}
+              ${horizontalPopoverStyle}
+              width: 300px;
               background: #0f172a;
               color: white;
-              padding: 14px;
+              padding: 12px 14px;
               border-radius: 16px;
               box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
               border: 1px solid #334155;
-              font-family: system-ui, sans-serif;
+              font-family: system-ui, -apple-system, sans-serif;
               z-index: 1000001;
               cursor: default;
             ">
@@ -230,15 +318,71 @@ export default function App() {
                   <span style="display: flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 9999px; background: ${isResolved ? '#059669' : '#0D45FC'}; color: white; font-family: monospace; font-size: 10px; font-weight: bold;">
                     ${isResolved ? '✓' : index + 1}
                   </span>
-                  <span style="font-size: 12px; font-weight: 700; color: #f8fafc;">${c.author}</span>
+                  <span style="font-size: 12px; font-weight: 700; color: #f8fafc;">${escapeHtml(c.author)}</span>
+                  <span style="font-size: 10px; color: #64748b;">${formatShortDate(c.createdAt)}</span>
                 </div>
                 <button id="close-pop-${c.id}" style="background: transparent; border: none; color: #94a3b8; cursor: pointer; font-size: 16px; line-height: 1; padding: 2px;">✕</button>
               </div>
 
-              <!-- Comment Message -->
-              <p style="font-size: 12px; line-height: 1.5; color: ${isResolved ? '#94a3b8' : '#e2e8f0'}; margin: 0 0 12px 0; ${isResolved ? 'text-decoration: line-through;' : ''}">
-                ${c.text}
+              <!-- Main Comment Message -->
+              <p style="font-size: 12px; line-height: 1.5; color: ${isResolved ? '#94a3b8' : '#e2e8f0'}; margin: 0 0 10px 0; ${isResolved ? 'text-decoration: line-through;' : ''} word-break: break-word;">
+                ${escapeHtml(c.text)}
               </p>
+
+              <!-- Replies List (if any) -->
+              ${replies.length > 0 ? `
+                <div style="margin: 8px 0; max-height: 130px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 2px;">
+                  ${replies.map(r => `
+                    <div style="background: rgba(30, 41, 59, 0.7); border: 1px solid #334155; border-radius: 8px; padding: 6px 8px;">
+                      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2px;">
+                        <span style="font-size: 10px; font-weight: 700; color: #60a5fa;">${escapeHtml(r.author)}</span>
+                        <div style="display: flex; align-items: center; gap: 4px;">
+                          <span style="font-size: 9px; color: #64748b;">${formatShortDate(r.createdAt)}</span>
+                          <button id="del-reply-${c.id}-${r.id}" style="background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 10px; padding: 1px 3px;" title="Delete reply">✕</button>
+                        </div>
+                      </div>
+                      <p style="font-size: 11px; color: #cbd5e1; margin: 0; line-height: 1.4; word-break: break-word;">${escapeHtml(r.text)}</p>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
+
+              <!-- Inline Reply Input Box -->
+              <div style="display: flex; gap: 4px; margin-top: 8px; margin-bottom: 10px;">
+                <input 
+                  id="reply-input-${c.id}" 
+                  type="text" 
+                  placeholder="პასუხის დაწერა (Reply)..." 
+                  style="
+                    flex: 1; 
+                    padding: 6px 9px; 
+                    font-size: 11px; 
+                    border-radius: 8px; 
+                    background: #1e293b; 
+                    border: 1px solid #475569; 
+                    color: white; 
+                    outline: none;
+                  " 
+                />
+                <button 
+                  id="reply-btn-${c.id}" 
+                  style="
+                    background: #0D45FC; 
+                    color: white; 
+                    border: none; 
+                    border-radius: 8px; 
+                    padding: 5px 10px; 
+                    font-size: 11px; 
+                    font-weight: 600; 
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  Send
+                </button>
+              </div>
 
               <!-- Popover Actions: Resolve & Delete -->
               <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 1px solid #1e293b;">
@@ -270,24 +414,22 @@ export default function App() {
                 </button>
               </div>
 
-              <!-- Teardrop Arrow -->
+              <!-- Teardrop Arrow (flips automatically!) -->
               <div style="
                 position: absolute;
-                top: 100%;
-                left: 50%;
-                transform: translateX(-50%);
+                ${arrowVerticalStyle}
+                ${arrowHorizontalStyle}
                 width: 0;
                 height: 0;
                 border-left: 7px solid transparent;
                 border-right: 7px solid transparent;
-                border-top: 7px solid #0f172a;
               "></div>
             </div>
           ` : ''}
         </div>
       `;
 
-      // Event Listeners inside iframe for Popover buttons
+      // Event Listeners inside iframe for Popover elements
       const pinBtn = pinWrapper.querySelector(`#pin-btn-${c.id}`) as HTMLElement;
       if (pinBtn) {
         pinBtn.onclick = (e) => {
@@ -298,6 +440,11 @@ export default function App() {
       }
 
       if (isSelected) {
+        const popoverEl = pinWrapper.querySelector(`#popover-${c.id}`) as HTMLElement;
+        if (popoverEl) {
+          popoverEl.onclick = (e) => e.stopPropagation();
+        }
+
         const closeBtn = pinWrapper.querySelector(`#close-pop-${c.id}`) as HTMLElement;
         if (closeBtn) {
           closeBtn.onclick = (e) => {
@@ -321,12 +468,53 @@ export default function App() {
             handleDeleteComment(c.id);
           };
         }
+
+        // Reply submission inside popover
+        const replyInput = pinWrapper.querySelector(`#reply-input-${c.id}`) as HTMLInputElement;
+        const replyBtn = pinWrapper.querySelector(`#reply-btn-${c.id}`) as HTMLButtonElement;
+
+        const submitReply = () => {
+          if (!replyInput) return;
+          const text = replyInput.value.trim();
+          if (!text) return;
+          handleAddReplyToComment(c.id, text);
+          replyInput.value = '';
+        };
+
+        if (replyInput) {
+          replyInput.onclick = (e) => e.stopPropagation();
+          replyInput.onkeydown = (e) => {
+            e.stopPropagation();
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              submitReply();
+            }
+          };
+        }
+
+        if (replyBtn) {
+          replyBtn.onclick = (e) => {
+            e.stopPropagation();
+            submitReply();
+          };
+        }
+
+        // Delete reply buttons inside popover
+        replies.forEach(r => {
+          const delRepBtn = pinWrapper.querySelector(`#del-reply-${c.id}-${r.id}`) as HTMLElement;
+          if (delRepBtn) {
+            delRepBtn.onclick = (e) => {
+              e.stopPropagation();
+              handleDeleteReplyFromComment(c.id, r.id);
+            };
+          }
+        });
       }
 
       pinContainer?.appendChild(pinWrapper);
     });
 
-  }, [toolMode, pageComments, activePinId]);
+  }, [toolMode, pageComments, activePinId, handleAddReplyToComment, handleDeleteReplyFromComment]);
 
   // Attach click listener to iframe document for dropping comments
   useEffect(() => {
@@ -357,7 +545,7 @@ export default function App() {
         e.preventDefault();
         e.stopPropagation();
 
-        const scrollW = doc.documentElement.scrollWidth || doc.body.scrollWidth;
+        const scrollW = doc.documentElement.scrollWidth || doc.body.scrollHeight;
         const scrollH = doc.documentElement.scrollHeight || doc.body.scrollHeight;
 
         const x = (e.pageX / scrollW) * 100;
@@ -429,6 +617,14 @@ export default function App() {
     setDraftText('');
     setToolMode('select');
     setActivePinId(newComment.id);
+  };
+
+  // Submit Sidebar Reply
+  const handleSidebarReplySubmit = (commentId: string) => {
+    if (!sidebarReplyText.trim()) return;
+    handleAddReplyToComment(commentId, sidebarReplyText.trim());
+    setSidebarReplyText('');
+    setReplyingToId(null);
   };
 
   return (
@@ -544,9 +740,11 @@ export default function App() {
                   ჯერ შენიშვნები არაა. დააჭირეთ Comment (C) ღილაკს და დააკლიკეთ გვერდზე.
                 </p>
               ) : (
-                <div className="space-y-1.5 mt-1.5">
+                <div className="space-y-2 mt-1.5">
                   {pageComments.map((comment, index) => {
                     const isSelected = activePinId === comment.id;
+                    const replies = Array.isArray(comment.replies) ? comment.replies : [];
+                    const isReplying = replyingToId === comment.id;
 
                     return (
                       <div
@@ -598,9 +796,71 @@ export default function App() {
                           </div>
                         </div>
 
+                        {/* Comment body */}
                         <p className={`text-[11px] leading-relaxed ${comment.resolved ? 'line-through text-slate-500' : 'text-slate-200'}`}>
                           {comment.text}
                         </p>
+
+                        {/* Thread Replies in Sidebar */}
+                        {replies.length > 0 && (
+                          <div className="mt-2 pl-2 border-l-2 border-blue-500/40 space-y-1.5">
+                            {replies.map(r => (
+                              <div key={r.id} className="text-[10px] bg-slate-950/60 rounded-lg p-2 border border-slate-800">
+                                <div className="flex items-center justify-between text-blue-400 font-semibold mb-0.5">
+                                  <span>{r.author}</span>
+                                  <span className="text-slate-500 font-normal text-[9px]">{formatShortDate(r.createdAt)}</span>
+                                </div>
+                                <p className="text-slate-300 leading-snug">{r.text}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Sidebar Reply Trigger & Input */}
+                        <div className="mt-2 pt-1 flex items-center justify-between text-[10px] text-slate-400">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setReplyingToId(isReplying ? null : comment.id);
+                              setSidebarReplyText('');
+                            }}
+                            className="inline-flex items-center gap-1 hover:text-blue-400 transition-colors"
+                          >
+                            <CornerDownRight className="w-3 h-3" />
+                            <span>{replies.length > 0 ? `${replies.length} პასუხი` : 'Reply'}</span>
+                          </button>
+                          <span className="text-slate-500 text-[9px]">{formatShortDate(comment.createdAt)}</span>
+                        </div>
+
+                        {isReplying && (
+                          <div 
+                            onClick={(e) => e.stopPropagation()} 
+                            className="mt-2 pt-2 border-t border-slate-700 flex gap-1.5 animate-in fade-in"
+                          >
+                            <input
+                              type="text"
+                              autoFocus
+                              value={sidebarReplyText}
+                              onChange={(e) => setSidebarReplyText(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault();
+                                  handleSidebarReplySubmit(comment.id);
+                                }
+                              }}
+                              placeholder="დაწერეთ პასუხი..."
+                              className="flex-1 px-2 py-1 text-[11px] rounded-lg bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                            />
+                            <button
+                              onClick={() => handleSidebarReplySubmit(comment.id)}
+                              disabled={!sidebarReplyText.trim()}
+                              className="px-2.5 py-1 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-[10px] font-semibold disabled:opacity-50"
+                            >
+                              Send
+                            </button>
+                          </div>
+                        )}
+
                       </div>
                     );
                   })}
@@ -649,7 +909,7 @@ export default function App() {
             className="w-full h-full border-0"
           />
 
-          {/* New Comment Draft Popover at Click Coordinates */}
+          {/* New Comment Draft Popover at Click Coordinates (with smart boundary detection!) */}
           {draftComment && (
             <div
               style={{
@@ -663,10 +923,12 @@ export default function App() {
                 +
               </div>
 
-              {/* Popover Form */}
+              {/* Popover Form (flips downward if click is near top of screen!) */}
               <form
                 onSubmit={handlePostComment}
-                className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-72 bg-slate-900 text-white p-3.5 rounded-2xl shadow-2xl border border-slate-700 text-left"
+                className={`absolute left-1/2 -translate-x-1/2 ${
+                  draftComment.screenY < 260 ? 'top-full mt-2' : 'bottom-full mb-2'
+                } w-72 bg-slate-900 text-white p-3.5 rounded-2xl shadow-2xl border border-slate-700 text-left`}
               >
                 <div className="flex items-center justify-between text-xs mb-2">
                   <span className="font-semibold text-slate-300 text-[11px]">

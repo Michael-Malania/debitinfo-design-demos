@@ -1,3 +1,10 @@
+export interface CommentReply {
+  id: string;
+  author: string;
+  text: string;
+  createdAt: string;
+}
+
 export interface SimpleComment {
   id: string;
   pageId: string;
@@ -7,6 +14,7 @@ export interface SimpleComment {
   y: number; // percentage
   createdAt: string;
   resolved: boolean;
+  replies?: CommentReply[];
 }
 
 const STORAGE_KEY = 'debitinfo_figma_comments_v2';
@@ -72,13 +80,14 @@ export async function saveComments(comments: SimpleComment[]): Promise<void> {
 
 export function addComment(
   current: SimpleComment[],
-  comment: Omit<SimpleComment, 'id' | 'createdAt' | 'resolved'>
+  comment: Omit<SimpleComment, 'id' | 'createdAt' | 'resolved' | 'replies'>
 ): { updated: SimpleComment[]; newComment: SimpleComment } {
   const newComment: SimpleComment = {
     ...comment,
     id: 'c_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
     createdAt: new Date().toISOString(),
     resolved: false,
+    replies: [],
   };
   const updated = [...current, newComment];
   saveComments(updated);
@@ -93,6 +102,53 @@ export function toggleResolve(current: SimpleComment[], id: string): SimpleComme
 
 export function deleteComment(current: SimpleComment[], id: string): SimpleComment[] {
   const updated = current.filter(c => c.id !== id);
+  saveComments(updated);
+  return updated;
+}
+
+export function addReply(
+  current: SimpleComment[],
+  commentId: string,
+  reply: { author: string; text: string }
+): { updated: SimpleComment[]; newReply: CommentReply } {
+  const newReply: CommentReply = {
+    id: 'r_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
+    author: reply.author.trim() || 'Reviewer',
+    text: reply.text.trim(),
+    createdAt: new Date().toISOString(),
+  };
+
+  const updated = current.map(c => {
+    if (c.id === commentId) {
+      const existingReplies = Array.isArray(c.replies) ? c.replies : [];
+      return {
+        ...c,
+        replies: [...existingReplies, newReply],
+      };
+    }
+    return c;
+  });
+
+  saveComments(updated);
+  return { updated, newReply };
+}
+
+export function deleteReply(
+  current: SimpleComment[],
+  commentId: string,
+  replyId: string
+): SimpleComment[] {
+  const updated = current.map(c => {
+    if (c.id === commentId) {
+      const existingReplies = Array.isArray(c.replies) ? c.replies : [];
+      return {
+        ...c,
+        replies: existingReplies.filter(r => r.id !== replyId),
+      };
+    }
+    return c;
+  });
+
   saveComments(updated);
   return updated;
 }
