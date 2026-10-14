@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { DEMO_PAGES } from '@/lib/demos-data';
 import { 
   fetchRemoteComments, 
@@ -92,6 +92,9 @@ export default function App() {
   const userNameRef = useRef<string>(userName);
   userNameRef.current = userName;
 
+  // Track draft replies per comment so typing is never interrupted by syncs
+  const replyDraftsRef = useRef<Record<string, string>>({});
+
   // Initial load from cloud DB and background polling for real-time cross-platform sync
   useEffect(() => {
     const name = getUserName();
@@ -103,12 +106,20 @@ export default function App() {
       if (data && data.length > 0) setComments(data);
     });
 
-    // Real-time polling every 3 seconds (syncs across computers and incognito tabs)
+    // Real-time polling: ONLY update state if data actually changed
+    // This stops constant DOM re-renders while typing!
     const interval = setInterval(() => {
       fetchRemoteComments().then(data => {
-        if (data) setComments(data);
+        if (data && Array.isArray(data)) {
+          setComments(prev => {
+            if (JSON.stringify(prev) === JSON.stringify(data)) {
+              return prev; // Identical: don't re-render
+            }
+            return data;
+          });
+        }
       });
-    }, 3000);
+    }, 4000);
 
     const handleLocalChange = () => setComments(getLocalComments());
     window.addEventListener('debitinfo_comments_changed', handleLocalChange);
@@ -120,7 +131,11 @@ export default function App() {
   }, []);
 
   const currentPage = DEMO_PAGES.find(p => p.id === selectedPageId) || DEMO_PAGES[0];
-  const pageComments = comments.filter(c => c.pageId === selectedPageId);
+  
+  // Memoize pageComments so syncPinsToIframe is not re-triggered on every unrelated render
+  const pageComments = useMemo(() => {
+    return comments.filter(c => c.pageId === selectedPageId);
+  }, [comments, selectedPageId]);
 
   // Keyboard shortcut listener: 'c' for comment, 'v' or 'Escape' for select
   useEffect(() => {
@@ -223,6 +238,20 @@ export default function App() {
       doc.body.appendChild(pinContainer);
     }
 
+    // Save state of any actively focused reply input to restore text & cursor seamlessly
+    const activeEl = doc.activeElement as HTMLInputElement | null;
+    let focusedReplyInputId: string | null = null;
+    let cursorStart: number | null = null;
+    let cursorEnd: number | null = null;
+
+    if (activeEl && activeEl.id && activeEl.id.startsWith('reply-input-')) {
+      focusedReplyInputId = activeEl.id;
+      cursorStart = activeEl.selectionStart;
+      cursorEnd = activeEl.selectionEnd;
+      const cId = activeEl.id.replace('reply-input-', '');
+      replyDraftsRef.current[cId] = activeEl.value;
+    }
+
     // Clear previous pins
     pinContainer.innerHTML = '';
     const scrollH = doc.documentElement.scrollHeight || doc.body.scrollHeight;
@@ -244,6 +273,7 @@ export default function App() {
       const isResolved = c.resolved;
       const isSelected = c.id === activePinId;
       const replies = Array.isArray(c.replies) ? c.replies : [];
+      const currentDraft = replyDraftsRef.current[c.id] || '';
 
       // Smart Boundary Detection:
       // If pin is near the top of document (y < 16% or pinPixelY < 230px), open DOWNWARDS so it NEVER clips off screen!
@@ -352,6 +382,7 @@ export default function App() {
                 <input 
                   id="reply-input-${c.id}" 
                   type="text" 
+                  value="${escapeHtml(currentDraft)}"
                   placeholder="პასუხის დაწერა (Reply)..." 
                   style="
                     flex: 1; 
@@ -477,12 +508,16 @@ export default function App() {
           if (!replyInput) return;
           const text = replyInput.value.trim();
           if (!text) return;
+          delete replyDraftsRef.current[c.id];
           handleAddReplyToComment(c.id, text);
           replyInput.value = '';
         };
 
         if (replyInput) {
           replyInput.onclick = (e) => e.stopPropagation();
+          replyInput.oninput = () => {
+            replyDraftsRef.current[c.id] = replyInput.value;
+          };
           replyInput.onkeydown = (e) => {
             e.stopPropagation();
             if (e.key === 'Enter') {
@@ -513,6 +548,19 @@ export default function App() {
 
       pinContainer?.appendChild(pinWrapper);
     });
+
+    // Restore focus and cursor selection if an input was focused before sync
+    if (focusedReplyInputId) {
+      const restoredInput = pinContainer.querySelector(`#${focusedReplyInputId}`) as HTMLInputElement | null;
+      if (restoredInput) {
+        restoredInput.focus();
+        if (cursorStart !== null && cursorEnd !== null) {
+          try {
+            restoredInput.setSelectionRange(cursorStart, cursorEnd);
+          } catch {}
+        }
+      }
+    }
 
   }, [toolMode, pageComments, activePinId, handleAddReplyToComment, handleDeleteReplyFromComment]);
 
