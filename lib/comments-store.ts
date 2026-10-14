@@ -12,29 +12,6 @@ export interface SimpleComment {
 const STORAGE_KEY = 'debitinfo_figma_comments_v2';
 const USER_KEY = 'debitinfo_commenter_name';
 
-export const INITIAL_COMMENTS: SimpleComment[] = [
-  {
-    id: 'c1',
-    pageId: 'debitinfo.ge_1',
-    author: 'Nika',
-    text: 'Please adjust this CTA button color to solid brand blue.',
-    x: 48,
-    y: 28,
-    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
-    resolved: false,
-  },
-  {
-    id: 'c2',
-    pageId: 'debitinfo.ge_2',
-    author: 'Giorgi',
-    text: 'Need a status filter dropdown above this table.',
-    x: 62,
-    y: 36,
-    createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
-    resolved: false,
-  },
-];
-
 export function getUserName(): string {
   if (typeof window === 'undefined') return '';
   return localStorage.getItem(USER_KEY) || '';
@@ -45,40 +22,58 @@ export function setUserName(name: string): void {
   localStorage.setItem(USER_KEY, name.trim());
 }
 
-export function getComments(): SimpleComment[] {
-  if (typeof window === 'undefined') return INITIAL_COMMENTS;
+export function getLocalComments(): SimpleComment[] {
+  if (typeof window === 'undefined') return [];
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_COMMENTS));
-      return INITIAL_COMMENTS;
-    }
+    if (!raw) return [];
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : INITIAL_COMMENTS;
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
-    return INITIAL_COMMENTS;
+    return [];
   }
 }
 
-export function saveComments(comments: SimpleComment[]): void {
-  if (typeof window === 'undefined') return;
+// Fetch from Cloud Database API
+export async function fetchRemoteComments(): Promise<SimpleComment[]> {
   try {
+    const res = await fetch('/api/comments', { cache: 'no-store' });
+    if (!res.ok) return getLocalComments();
+    const data = await res.json();
+    if (Array.isArray(data.comments)) {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data.comments));
+      }
+      return data.comments;
+    }
+    return getLocalComments();
+  } catch {
+    return getLocalComments();
+  }
+}
+
+// Save to both LocalStorage and Cloud Database API
+export async function saveComments(comments: SimpleComment[]): Promise<void> {
+  if (typeof window !== 'undefined') {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(comments));
     window.dispatchEvent(new Event('debitinfo_comments_changed'));
+  }
 
-    // Serverless background sync
-    fetch('/api/comments', {
+  try {
+    await fetch('/api/comments', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ comments }),
-    }).catch(() => {});
+    });
   } catch (err) {
-    console.error('Failed to save comments', err);
+    console.error('Failed to save to cloud database', err);
   }
 }
 
-export function addComment(comment: Omit<SimpleComment, 'id' | 'createdAt' | 'resolved'>): SimpleComment {
-  const current = getComments();
+export function addComment(
+  current: SimpleComment[],
+  comment: Omit<SimpleComment, 'id' | 'createdAt' | 'resolved'>
+): { updated: SimpleComment[]; newComment: SimpleComment } {
   const newComment: SimpleComment = {
     ...comment,
     id: 'c_' + Date.now() + '_' + Math.random().toString(36).substring(2, 6),
@@ -87,17 +82,17 @@ export function addComment(comment: Omit<SimpleComment, 'id' | 'createdAt' | 're
   };
   const updated = [...current, newComment];
   saveComments(updated);
-  return newComment;
+  return { updated, newComment };
 }
 
-export function toggleResolve(id: string): void {
-  const current = getComments();
+export function toggleResolve(current: SimpleComment[], id: string): SimpleComment[] {
   const updated = current.map(c => c.id === id ? { ...c, resolved: !c.resolved } : c);
   saveComments(updated);
+  return updated;
 }
 
-export function deleteComment(id: string): void {
-  const current = getComments();
+export function deleteComment(current: SimpleComment[], id: string): SimpleComment[] {
   const updated = current.filter(c => c.id !== id);
   saveComments(updated);
+  return updated;
 }

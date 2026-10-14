@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { DEMO_PAGES } from '@/lib/demos-data';
 import { 
-  getComments, 
-  saveComments, 
+  fetchRemoteComments, 
+  getLocalComments, 
   addComment, 
   toggleResolve, 
   deleteComment, 
@@ -52,16 +52,31 @@ export default function App() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Load user name & comments on mount
+  // Initial load from cloud DB and background polling for real-time cross-platform sync
   useEffect(() => {
     const name = getUserName();
     setUserNameState(name);
     setTempName(name);
 
-    const loadComments = () => setComments(getComments());
-    loadComments();
-    window.addEventListener('debitinfo_comments_changed', loadComments);
-    return () => window.removeEventListener('debitinfo_comments_changed', loadComments);
+    // Initial load from cloud database
+    fetchRemoteComments().then(data => {
+      if (data && data.length > 0) setComments(data);
+    });
+
+    // Real-time polling every 3 seconds (syncs across computers and incognito tabs)
+    const interval = setInterval(() => {
+      fetchRemoteComments().then(data => {
+        if (data) setComments(data);
+      });
+    }, 3000);
+
+    const handleLocalChange = () => setComments(getLocalComments());
+    window.addEventListener('debitinfo_comments_changed', handleLocalChange);
+
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('debitinfo_comments_changed', handleLocalChange);
+    };
   }, []);
 
   const currentPage = DEMO_PAGES.find(p => p.id === selectedPageId) || DEMO_PAGES[0];
@@ -107,6 +122,15 @@ export default function App() {
     setUserNameState(finalName);
     setIsNameModalOpen(false);
     setToolMode('comment'); // Immediately activate comment tool!
+  };
+
+  const handleToggleResolve = (id: string) => {
+    setComments(prev => toggleResolve(prev, id));
+  };
+
+  const handleDeleteComment = (id: string) => {
+    setComments(prev => deleteComment(prev, id));
+    if (activePinId === id) setActivePinId(null);
   };
 
   // Helper to sync pins & popovers into the iframe DOM (positioned directly next to each pin!)
@@ -286,7 +310,7 @@ export default function App() {
         if (resolveBtn) {
           resolveBtn.onclick = (e) => {
             e.stopPropagation();
-            toggleResolve(c.id);
+            handleToggleResolve(c.id);
           };
         }
 
@@ -294,8 +318,7 @@ export default function App() {
         if (delBtn) {
           delBtn.onclick = (e) => {
             e.stopPropagation();
-            deleteComment(c.id);
-            setActivePinId(null);
+            handleDeleteComment(c.id);
           };
         }
       }
@@ -387,13 +410,13 @@ export default function App() {
     });
   };
 
-  // Post Draft Comment
+  // Post Draft Comment to Cloud Database
   const handlePostComment = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (!draftText.trim() || !draftComment) return;
 
     const author = userName.trim() || 'Reviewer';
-    const newComment = addComment({
+    const { updated, newComment } = addComment(comments, {
       pageId: selectedPageId,
       author,
       text: draftText.trim(),
@@ -401,6 +424,7 @@ export default function App() {
       y: draftComment.y,
     });
 
+    setComments(updated);
     setDraftComment(null);
     setDraftText('');
     setToolMode('select');
@@ -552,7 +576,7 @@ export default function App() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                toggleResolve(comment.id);
+                                handleToggleResolve(comment.id);
                               }}
                               className={`p-1 rounded hover:bg-slate-700 ${
                                 comment.resolved ? 'text-emerald-400' : 'text-slate-400'
@@ -564,8 +588,7 @@ export default function App() {
                             <button
                               onClick={(e) => {
                                 e.stopPropagation();
-                                deleteComment(comment.id);
-                                if (activePinId === comment.id) setActivePinId(null);
+                                handleDeleteComment(comment.id);
                               }}
                               className="p-1 rounded text-slate-400 hover:text-rose-400 hover:bg-slate-700"
                               title="Delete Comment"
@@ -753,7 +776,7 @@ export default function App() {
 
       </main>
 
-      {/* 3. Obvious Name Input Modal (Prompted if name is missing or when clicking edit) */}
+      {/* 3. Obvious Name Input Modal */}
       {isNameModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-xs animate-in fade-in duration-200">
           <div 

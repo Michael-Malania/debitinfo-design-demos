@@ -1,64 +1,48 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import { INITIAL_COMMENTS } from '@/lib/comments-store';
+
+const GIST_ID = process.env.GIST_ID || '4fc3639e846602d89c228973948ecaf5';
+const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DATA_FILE = path.join(DATA_DIR, 'comments.json');
 
-// Helper to check if Vercel KV / Upstash Redis is configured
-const hasKV = () => Boolean(process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN);
-
-async function getFromKV() {
-  const url = `${process.env.KV_REST_API_URL}/get/debitinfo_comments`;
-  const res = await fetch(url, {
-    headers: { Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}` },
-    cache: 'no-store',
-  });
-  if (!res.ok) return null;
-  const data = await res.json();
-  if (data.result) {
-    try {
-      return JSON.parse(data.result);
-    } catch {
-      return null;
-    }
-  }
-  return null;
-}
-
-async function saveToKV(comments: any) {
-  const url = `${process.env.KV_REST_API_URL}/set/debitinfo_comments`;
-  await fetch(url, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${process.env.KV_REST_API_TOKEN}` },
-    body: JSON.stringify(comments),
-  });
-}
-
+// Read comments from GitHub Gist or local file
 export async function GET() {
   try {
-    // 1. Try Vercel KV / Upstash
-    if (hasKV()) {
-      const kvData = await getFromKV();
-      if (kvData) {
-        return NextResponse.json({ comments: kvData, source: 'kv' });
+    if (GIST_ID && GITHUB_TOKEN) {
+      const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          'User-Agent': 'Debitinfo-Comments-App',
+        },
+        cache: 'no-store',
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        const content = data.files?.['comments.json']?.content;
+        if (content) {
+          const parsed = JSON.parse(content);
+          return NextResponse.json({ comments: parsed, source: 'cloud-db' });
+        }
       }
     }
 
-    // 2. Try Local File (Dev / Server)
+    // Fallback to local file if Gist read fails
     if (fs.existsSync(DATA_FILE)) {
       const content = fs.readFileSync(DATA_FILE, 'utf-8');
       return NextResponse.json({ comments: JSON.parse(content), source: 'local-file' });
     }
 
-    // 3. Fallback to Initial Default
-    return NextResponse.json({ comments: INITIAL_COMMENTS, source: 'defaults' });
+    return NextResponse.json({ comments: [], source: 'empty' });
   } catch (err: any) {
-    return NextResponse.json({ comments: INITIAL_COMMENTS, error: err.message }, { status: 200 });
+    return NextResponse.json({ comments: [], error: err.message }, { status: 200 });
   }
 }
 
+// Write comments to GitHub Gist and local file
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -68,23 +52,38 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Comments must be an array' }, { status: 400 });
     }
 
-    // 1. Try Vercel KV if available
-    if (hasKV()) {
-      await saveToKV(comments);
-      return NextResponse.json({ success: true, target: 'kv' });
+    const jsonString = JSON.stringify(comments, null, 2);
+
+    // 1. Sync to GitHub Gist Cloud Database
+    if (GIST_ID && GITHUB_TOKEN) {
+      await fetch(`https://api.github.com/gists/${GIST_ID}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${GITHUB_TOKEN}`,
+          'User-Agent': 'Debitinfo-Comments-App',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          files: {
+            'comments.json': {
+              content: jsonString,
+            },
+          },
+        }),
+      });
     }
 
-    // 2. Try Local File (only works in Node dev environments, not on serverless readonly fs)
+    // 2. Also save to local file for dev
     try {
       if (!fs.existsSync(DATA_DIR)) {
         fs.mkdirSync(DATA_DIR, { recursive: true });
       }
-      fs.writeFileSync(DATA_FILE, JSON.stringify(comments, null, 2), 'utf-8');
-      return NextResponse.json({ success: true, target: 'local-file' });
+      fs.writeFileSync(DATA_FILE, jsonString, 'utf-8');
     } catch {
-      // In serverless readonly environments without KV, client handles persistence in localStorage
-      return NextResponse.json({ success: true, target: 'client-storage' });
+      // Ignored in read-only production environments
     }
+
+    return NextResponse.json({ success: true, count: comments.length });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

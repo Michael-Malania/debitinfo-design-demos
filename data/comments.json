@@ -1,42 +1,22 @@
 [
   {
-    "id": "c1",
+    "id": "test1",
     "pageId": "debitinfo.ge_1",
-    "author": "Nika",
-    "text": "Please adjust this CTA button color to solid brand blue.",
-    "x": 48,
-    "y": 28,
-    "createdAt": "2026-10-14T00:02:30.772Z",
-    "resolved": false
-  },
-  {
-    "id": "c2",
-    "pageId": "debitinfo.ge_2",
-    "author": "Giorgi",
-    "text": "Need a status filter dropdown above this table.",
-    "x": 62,
-    "y": 36,
-    "createdAt": "2026-10-13T21:02:30.772Z",
-    "resolved": false
-  },
-  {
-    "pageId": "debitinfo.ge_3",
-    "author": "ნიკა",
-    "text": "ასდა ასდა სდ ას ა ს",
-    "x": 24.7,
-    "y": 26.4,
-    "id": "c_1791943607911_7w2h",
-    "createdAt": "2026-10-14T02:06:47.911Z",
+    "author": "LiveTest",
+    "text": "Works in real time across computers!",
+    "x": 50,
+    "y": 50,
+    "createdAt": "2026-10-14T06:20:00Z",
     "resolved": false
   },
   {
     "pageId": "debitinfo.ge_1",
     "author": "ნიკა",
-    "text": "ეს ტექსტი შემიცვალე",
-    "x": 11.8,
-    "y": 7,
-    "id": "c_1791944148184_hwwb",
-    "createdAt": "2026-10-14T02:15:48.184Z",
-    "resolved": false
+    "text": "asd as a sdas  asd",
+    "x": 16.7,
+    "y": 8.1,
+    "id": "c_1791944775637_mels",
+    "createdAt": "2026-10-14T02:26:15.637Z",
+    "resolved": true
   }
 ]
